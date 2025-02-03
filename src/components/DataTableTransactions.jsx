@@ -78,6 +78,7 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                         <Typography
                                             variant="body1"
                                             gutterBottom
+                                            fontWeight={500}
                                         >
                                             {title}
                                         </Typography>

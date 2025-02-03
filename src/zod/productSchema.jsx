@@ -18,11 +18,21 @@ export const productSchema = z.object({
         .refine(
             (val) => {
                 const parsed = parseFloat(val);
-                return parsed <= 18446744073709551615;
+                return parsed >= 1000;
+            },
+            {
+                message: "Harga Produk tidak boleh kurang dari 1.000",
+            },
+        )
+        .refine(
+            (val) => {
+                if (!val || Number.isNaN(Number(val))) return false;
+                const parsed = BigInt(val);
+                return parsed <= 9007199254740992n;
             },
             {
                 message:
-                    "Harga Produk tidak boleh lebih dari 18.446.744.073.709.551.615",
+                    "Harga Produk tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
     type: z

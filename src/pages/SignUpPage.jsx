@@ -143,7 +143,7 @@ const SignUpPage = () => {
                                             <TextField
                                                 {...field}
                                                 type="password"
-                                                autocomplete="on"
+                                                autoComplete="on"
                                                 size="small"
                                                 placeholder="Kata Sandi"
                                                 error={fieldState.invalid}

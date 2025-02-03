@@ -1,12 +1,7 @@
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
-import {
-    Card,
-    CardActions,
-    CardContent,
-    Skeleton,
-} from "@mui/material";
+import { Card, CardActions, CardContent, Skeleton } from "@mui/material";
 
 const SkeletonPage = () => {
     return (

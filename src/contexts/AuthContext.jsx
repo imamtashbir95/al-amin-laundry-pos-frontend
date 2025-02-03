@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
                 setError("Username atau Kata Sandi salah");
                 return false;
             }
-        } catch (err) {
+        } catch {
             toast.error("Gagal terhubung ke server!");
             return false;
         }
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
                 toast.success("Pengguna berhasil didaftarkan!");
                 return true;
             }
-        } catch (err) {
+        } catch {
             toast.error("Gagal terhubung ke server!");
             return false;
         }

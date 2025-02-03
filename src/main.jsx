@@ -26,6 +26,12 @@ const theme = createTheme({
             dark: "#2f12aa",
             contrastText: "#ffffff",
         },
+        gray: {
+            main: "#8c8c8c",
+            light: "#c7c7c7",
+            dark: "#4d4d4d",
+            contrastText: "#ffffff",
+        },
     },
 });
 

@@ -14,7 +14,7 @@ const TransactionDetailsPage = lazy(
 );
 const SkeletonPage = lazy(() => import("./pages/SkeletonPage"));
 
-function App() {
+const App = () => {
     return (
         <AuthProvider>
             <Toaster />

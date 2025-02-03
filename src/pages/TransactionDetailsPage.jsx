@@ -11,12 +11,12 @@ const TransactionDetailsPage = () => {
                 <TopBar />
                 <Sidebar />
                 <div
-                    className="absolute top-[4.167rem] left-[18.75rem] z-10 p-[2.083rem]"
-                    style={{ width: "calc(100% - 18.75rem)" }}
+                    className="absolute top-[4.167rem] left-[17.5rem] z-10 p-[2.083rem]"
+                    style={{ width: "calc(100% - 17.5rem)" }}
                 >
                     <DataTableDetailsTransaction />
                 </div>
-                <div className="h-[12rem] w-[18.75rem]"></div>
+                <div className="h-[12rem] w-[17.5rem]"></div>
                 <FootBar />
             </div>
         </TransactionProvider>

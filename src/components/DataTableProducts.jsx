@@ -67,6 +67,7 @@ const DataTableProducts = ({ onAddProduct }) => {
                                         <Typography
                                             variant="body1"
                                             gutterBottom
+                                            fontWeight={500}
                                         >
                                             {title}
                                         </Typography>

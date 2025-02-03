@@ -25,14 +25,14 @@ const TransactionsPage = () => {
                         <TopBar />
                         <Sidebar />
                         <div
-                            className="absolute top-[4.167rem] left-[18.75rem] z-10 p-[2.083rem]"
-                            style={{ width: "calc(100% - 18.75rem)" }}
+                            className="absolute top-[4.167rem] left-[17.5rem] z-10 p-[2.083rem]"
+                            style={{ width: "calc(100% - 17.5rem)" }}
                         >
                             <DataTableTransactions
                                 onAddTransaction={handleOpenModal}
                             />
                         </div>
-                        <div className="z-200 h-[12rem] w-[18.75rem] bg-amber-700"></div>
+                        <div className="h-[12rem] w-[17.5rem]"></div>
                         <FootBar />
                     </div>
                     {showModal && (
