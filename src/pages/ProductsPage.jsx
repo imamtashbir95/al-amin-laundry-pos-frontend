@@ -1,10 +1,10 @@
+import { useState } from "react";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
 import { ProductModal } from "../modals/ProductModal";
 import { ProductProvider } from "../contexts/ProductContext";
 import DataTableProducts from "../components/DataTableProducts";
-import { useState } from "react";
 
 const ProductsPage = () => {
     const [modalState, setModalState] = useState({

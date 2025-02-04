@@ -9,10 +9,10 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
+import logo_black from "../assets/logo_el.png";
 import { useAuth } from "../contexts/AuthContext";
 import { signInSchema } from "../zod/signInSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.jpg";
-import logo_black from "../assets/logo_el.png";
 
 const SignInPage = () => {
     const form = useForm({
@@ -108,7 +108,6 @@ const SignInPage = () => {
                                     );
                                 }}
                             ></Controller>
-                            {/* {error && <p className="text-red-500">{error}</p>} */}
                             <div className="flex justify-end gap-4">
                                 <Button
                                     variant="contained"

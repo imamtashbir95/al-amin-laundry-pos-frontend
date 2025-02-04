@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
 import logo_black from "../assets/logo_el.png";
-// import logo_white from "../assets/logo_white.png";
-// import logo_black from "../assets/logo_black.png";
 import { useAuth } from "../contexts/AuthContext";
 import default_profile_pic from "../assets/default_profile_pic.png";
 

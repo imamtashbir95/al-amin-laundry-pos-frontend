@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,7 +63,7 @@ export const TransactionModal = ({ onClose }) => {
         );
 
         if (!selectedCustomer || !selectedProduct) {
-            console.error("Customer atau Produk tidak ditemukan");
+            toast.error("Customer atau Produk tidak ditemukan");
             return;
         }
 
@@ -95,24 +96,6 @@ export const TransactionModal = ({ onClose }) => {
                             )}
                             className="flex flex-col gap-4"
                         >
-                            {/* <Controller
-                                name="billId"
-                                control={form.control}
-                                render={({ field }) => {
-                                    return (
-                                        <>
-                                            <InputLabel id="text-transaction">
-                                                Kode Transaksi
-                                            </InputLabel>
-                                            <TextField
-                                                {...field}
-                                                disabled
-                                                size="small"
-                                            />
-                                        </>
-                                    );
-                                }}
-                            ></Controller> */}
                             <Controller
                                 name="customer"
                                 control={form.control}

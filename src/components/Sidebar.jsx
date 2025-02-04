@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBox, faReceipt, faUsers } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -9,9 +10,6 @@ import {
     ListItemButton,
     ListItemText,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
-// import logo_black from "../assets/logo_el.png";
-
 const Sidebar = () => {
     const location = useLocation();
 

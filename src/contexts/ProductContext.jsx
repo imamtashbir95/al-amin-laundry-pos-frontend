@@ -1,22 +1,20 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import PropTypes from "prop-types";
-import { useAuth } from "./AuthContext";
 import { axiosInstance } from "../lib/axios";
 
 export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
-    const { token } = useAuth(); // Token dari backend
     const [products, setProducts] = useState([]);
 
     const fetchProducts = async () => {
-        const response = await axiosInstance.get("/products", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        // setProducts(response.data);
-        setProducts(response.data.data);
+        try {
+            const response = await axiosInstance.get("/products");
+            setProducts(response.data.data);
+        } catch (err) {
+            toast.error("Gagal mengambil data produk.");
+        }
     };
 
     useEffect(() => {
@@ -24,30 +22,30 @@ export const ProductProvider = ({ children }) => {
     }, []);
 
     const addProduct = async (newProduct) => {
-        await axiosInstance.post("/products", newProduct, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        fetchProducts();
+        try {
+            await axiosInstance.post("/products", newProduct);
+            fetchProducts();
+        } catch (err) {
+            toast.error("Gagal menambah data produk.");
+        }
     };
 
     const updateProduct = async (updatedProduct) => {
-        await axiosInstance.put(`/products`, updatedProduct, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        fetchProducts();
+        try {
+            await axiosInstance.put(`/products`, updatedProduct);
+            fetchProducts();
+        } catch (err) {
+            toast.error("Gagal memperbarui data produk.");
+        }
     };
 
     const deleteProduct = async (id) => {
-        await axiosInstance.delete(`/products/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        fetchProducts();
+        try {
+            await axiosInstance.delete(`/products/${id}`);
+            fetchProducts();
+        } catch (err) {
+            toast.error("Gagal menghapus data produk.");
+        }
     };
 
     return (

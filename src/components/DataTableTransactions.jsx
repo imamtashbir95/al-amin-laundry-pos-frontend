@@ -111,7 +111,6 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                             variant="body1"
                                             className="text-gray-500"
                                         >
-                                            {/* {item.billDetails.length} transaksi */}
                                             {item.transactionCount} transaksi
                                         </Typography>
                                     </CardContent>

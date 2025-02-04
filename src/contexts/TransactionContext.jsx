@@ -1,21 +1,20 @@
 import { createContext, useEffect, useState } from "react";
-import { axiosInstance } from "../lib/axios";
+import { toast } from "sonner";
 import PropTypes from "prop-types";
-import { useAuth } from "./AuthContext";
+import { axiosInstance } from "../lib/axios";
 
 export const TransactionContext = createContext();
 
 export const TransactionProvider = ({ children }) => {
-    const { token } = useAuth(); // Token dari backend
     const [transactions, setTransactions] = useState([]);
 
     const fetchTransactions = async () => {
-        const response = await axiosInstance.get("/bills", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        setTransactions(response.data.data);
+        try {
+            const response = await axiosInstance.get("/bills");
+            setTransactions(response.data.data);
+        } catch (err) {
+            toast.error("Gagal mengambil data transaksi.");
+        }
     };
 
     useEffect(() => {
@@ -23,12 +22,12 @@ export const TransactionProvider = ({ children }) => {
     }, []);
 
     const addTransaction = async (newTransaction) => {
-        await axiosInstance.post("/bills", newTransaction, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        fetchTransactions();
+        try {
+            await axiosInstance.post("/bills", newTransaction);
+            fetchTransactions();
+        } catch (err) {
+            toast.error("Gagal menambah data transaksi.");
+        }
     };
 
     return (

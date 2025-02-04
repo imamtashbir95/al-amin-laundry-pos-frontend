@@ -9,10 +9,10 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
+import logo_black from "../assets/logo_el.png";
 import { useAuth } from "../contexts/AuthContext";
 import { signUpSchema } from "../zod/signUpSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.jpg";
-import logo_black from "../assets/logo_el.png";
 
 const SignUpPage = () => {
     const form = useForm({

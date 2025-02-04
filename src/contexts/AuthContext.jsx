@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
-import { toast } from "sonner";
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -28,7 +27,6 @@ export const AuthProvider = ({ children }) => {
             if (response.data?.data.token) {
                 setToken(response.data.data.token || newToken);
                 setError("");
-                console.log(response);
                 return true;
             } else {
                 setError("Username atau Kata Sandi salah");

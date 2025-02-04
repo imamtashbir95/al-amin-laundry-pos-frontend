@@ -63,10 +63,10 @@ To set up the project locally, follow these steps:
 
 4. Start the application:
     ```bash
-    npm start
+    npm run dev
     ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
+The application will be available at [http://localhost:5173](http://localhost:5173).
 
 ## Usage Instructions
 

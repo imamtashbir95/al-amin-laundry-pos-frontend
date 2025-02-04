@@ -7,11 +7,9 @@ export const ProtectedRoute = ({ children }) => {
     const location = useLocation();
 
     if (!token) {
-        console.log(token);
         return <Navigate to="/signin" state={{ from: location }} replace />;
     }
 
-    console.log("Token: ", token);
     return children;
 };
 

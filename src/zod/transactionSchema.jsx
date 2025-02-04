@@ -1,23 +1,8 @@
 import { z } from "zod";
-import { customerSchema } from "./customerSchema";
-import { productSchema } from "./productSchema";
 
 export const transactionSchema = z.object({
-    // billId: z.string(),
     customer: z.any(),
-    // customer: z
-    //     .string()
-    //     .min(1, { message: "Pilih konsumen yang valid" })
-    //     .refine((val) => !val.includes("Pilih Konsumen"), {
-    //         message: "Konsumen tidak boleh bernilai 'Pilih Konsumen'",
-    //     }),
     product: z.any(),
-    // laundryPackage: z
-    //     .string()
-    //     .min(1, { message: "Pilih paket laundry yang valid" })
-    //     .refine((val) => !val.includes("Pilih Paket Laundry"), {
-    //         message: "Paket laundry tidak boleh bernilai 'Pilih Paket Laundry'",
-    //     }),
     qty: z
         .string()
         .min(1, "Kuantitas harus diisi")
@@ -30,12 +15,13 @@ export const transactionSchema = z.object({
         )
         .refine(
             (val) => {
-                const parsed = parseFloat(val);
-                return parsed <= 18446744073709551615;
+                if (!val || Number.isNaN(Number(val))) return false;
+                const parsed = BigInt(val);
+                return parsed <= 9007199254740992n;
             },
             {
                 message:
-                    "Kuantitas tidak boleh lebih dari 18.446.744.073.709.551.615",
+                    "Kuantitas tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
     price: z.string(),

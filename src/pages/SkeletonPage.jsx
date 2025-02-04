@@ -1,7 +1,7 @@
+import { Card, CardActions, CardContent, Skeleton } from "@mui/material";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
-import { Card, CardActions, CardContent, Skeleton } from "@mui/material";
 
 const SkeletonPage = () => {
     return (
@@ -46,12 +46,6 @@ const SkeletonPage = () => {
                                                 width={"10rem"}
                                                 sx={{ fontSize: "1rem" }}
                                             />
-                                            {/* <Typography
-                                                variant="body1"
-                                                gutterBottom
-                                            >
-                                                Nama Produk
-                                            </Typography> */}
                                         </CardContent>
                                     </div>
                                     <div className="w-[25%]">
