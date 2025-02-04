@@ -13,6 +13,7 @@ const TransactionDetailsPage = lazy(
     () => import("./pages/TransactionDetailsPage"),
 );
 const SkeletonPage = lazy(() => import("./pages/SkeletonPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
             <Toaster />
             <BrowserRouter>
                 <Routes>
+                    <Route path="*" element={<NotFoundPage></NotFoundPage>} />
                     <Route
                         path="/"
                         element={
@@ -80,6 +82,6 @@ const App = () => {
             </BrowserRouter>
         </AuthProvider>
     );
-}
+};
 
 export default App;
