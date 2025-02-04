@@ -75,60 +75,66 @@ const DataTableCustomers = ({ onAddCustomer }) => {
                             ))}
                         </div>
                     </div>
-                    {paginatedCustomers.length > 0 ? (
-                        paginatedCustomers.map((customer) => (
-                            <div
-                                className="flex px-[0.83rem]"
-                                key={customer.id}
-                            >
-                                <div className="w-[25%]">
-                                    <CardContent>
-                                        <Typography variant="body1">
-                                            {customer.name}
-                                        </Typography>
-                                    </CardContent>
+                    <div data-testid="customer-table">
+                        {paginatedCustomers.length > 0 ? (
+                            paginatedCustomers.map((customer) => (
+                                <div
+                                    className="flex px-[0.83rem]"
+                                    key={customer.id}
+                                >
+                                    <div className="w-[25%]">
+                                        <CardContent>
+                                            <Typography variant="body1">
+                                                {customer.name}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    <div className="w-[25%]">
+                                        <CardContent>
+                                            <Typography variant="body1">
+                                                {customer.phoneNumber}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    <div className="w-[25%]">
+                                        <CardContent>
+                                            <Typography variant="body1">
+                                                {customer.address}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    <div className="flex w-[25%] items-center justify-center gap-[1rem]">
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="hanPurple"
+                                            onClick={() =>
+                                                onAddCustomer(customer)
+                                            }
+                                        >
+                                            Ubah
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            color="hanPurple"
+                                            onClick={() =>
+                                                handleDeleteCustomer(
+                                                    customer.id,
+                                                )
+                                            }
+                                        >
+                                            Hapus
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div className="w-[25%]">
-                                    <CardContent>
-                                        <Typography variant="body1">
-                                            {customer.phoneNumber}
-                                        </Typography>
-                                    </CardContent>
-                                </div>
-                                <div className="w-[25%]">
-                                    <CardContent>
-                                        <Typography variant="body1">
-                                            {customer.address}
-                                        </Typography>
-                                    </CardContent>
-                                </div>
-                                <div className="flex w-[25%] items-center justify-center gap-[1rem]">
-                                    <Button
-                                        variant="contained"
-                                        size="small"
-                                        color="hanPurple"
-                                        onClick={() => onAddCustomer(customer)}
-                                    >
-                                        Ubah
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        color="hanPurple"
-                                        onClick={() =>
-                                            handleDeleteCustomer(customer.id)
-                                        }
-                                    >
-                                        Hapus
-                                    </Button>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <Typography className="p-4 text-center">
-                            Belum ada pelanggan.
-                        </Typography>
-                    )}
+                            ))
+                        ) : (
+                            <Typography className="p-4 text-center">
+                                Belum ada pelanggan.
+                            </Typography>
+                        )}
+                    </div>
                 </Card>
                 {customerData.length > itemsPerPage && (
                     <Pagination
