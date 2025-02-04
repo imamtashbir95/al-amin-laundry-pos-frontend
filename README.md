@@ -46,7 +46,7 @@ To set up the project locally, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone <repository-url>
+    git clone git@github.com:imamtashbir95/enigma-laundry.git
     ```
 
 2. Navigate to the project directory:
