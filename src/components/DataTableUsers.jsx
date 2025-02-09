@@ -8,28 +8,27 @@ import {
     Pagination,
     Typography,
 } from "@mui/material";
-import { CustomerContext } from "../contexts/CustomerContext";
+import { UserContext } from "../contexts/UserContext";
 
-const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
-    const { customers } = useContext(CustomerContext);
+const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
+    const { users } = useContext(UserContext);
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 5;
 
-    const customerData = useMemo(
-        () => (Array.isArray(customers) ? customers : []),
-        [customers],
+    const userData = useMemo(
+        () => (Array.isArray(users) ? users : []),
+        [users],
     );
 
     const pageCount = useMemo(
-        () => Math.ceil(customerData.length / itemsPerPage),
-        [customerData.length, itemsPerPage],
+        () => Math.ceil(userData.length / itemsPerPage),
+        [userData.length, itemsPerPage],
     );
 
-    const paginatedCustomers = useMemo(
-        () =>
-            customerData.slice((page - 1) * itemsPerPage, page * itemsPerPage),
-        [customerData, page, itemsPerPage],
+    const paginatedUsers = useMemo(
+        () => userData.slice((page - 1) * itemsPerPage, page * itemsPerPage),
+        [userData, page, itemsPerPage],
     );
 
     const handlePageChange = (event, value) => {
@@ -45,7 +44,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
                                     <Typography variant="h5" gutterBottom>
-                                        Daftar Pelanggan
+                                        Daftar Karyawan
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
@@ -53,17 +52,17 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                         variant="contained"
                                         size="small"
                                         color="hanPurple"
-                                        onClick={onAddCustomer}
+                                        onClick={onRegisterUser}
                                     >
-                                        Tambah Pelanggan
+                                        Tambah Karyawan
                                     </Button>
                                 </CardActions>
                             </div>
                             <div className="flex px-[0.83rem]">
                                 {[
-                                    "Nama Pelanggan",
-                                    "No. Telepon",
-                                    "Alamat",
+                                    "Nama Karyawan",
+                                    "E-mail",
+                                    "Username",
                                     "Ubah/Hapus",
                                 ].map((title) => (
                                     <div className="w-[25%]" key={title}>
@@ -80,31 +79,31 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                 ))}
                             </div>
                         </div>
-                        <div data-testid="customer-table">
-                            {paginatedCustomers.length > 0 ? (
-                                paginatedCustomers.map((customer) => (
+                        <div data-testid="user-table">
+                            {paginatedUsers.length > 0 ? (
+                                paginatedUsers.map((user) => (
                                     <div
                                         className="flex px-[0.83rem]"
-                                        key={customer.id}
+                                        key={user.id}
                                     >
                                         <div className="w-[25%]">
                                             <CardContent>
                                                 <Typography variant="body1">
-                                                    {customer.name}
+                                                    {user.name}
                                                 </Typography>
                                             </CardContent>
                                         </div>
                                         <div className="w-[25%]">
                                             <CardContent>
                                                 <Typography variant="body1">
-                                                    {customer.phoneNumber}
+                                                    {user.email}
                                                 </Typography>
                                             </CardContent>
                                         </div>
                                         <div className="w-[25%]">
                                             <CardContent>
                                                 <Typography variant="body1">
-                                                    {customer.address}
+                                                    {user.username}
                                                 </Typography>
                                             </CardContent>
                                         </div>
@@ -114,7 +113,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                                 size="small"
                                                 color="hanPurple"
                                                 onClick={() =>
-                                                    onAddCustomer(customer)
+                                                    onRegisterUser(user)
                                                 }
                                             >
                                                 Ubah
@@ -124,9 +123,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                                 size="small"
                                                 color="hanPurple"
                                                 onClick={() =>
-                                                    onDeleteCustomer(
-                                                        customer.id,
-                                                    )
+                                                    onDeleteUser(user.id)
                                                 }
                                             >
                                                 Hapus
@@ -143,7 +140,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                     </Card>
                 </div>
             </div>
-            {customerData.length > itemsPerPage && (
+            {userData.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}
                     page={page}
@@ -155,9 +152,9 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
     );
 };
 
-DataTableCustomers.propTypes = {
-    onAddCustomer: PropTypes.func,
-    onDeleteCustomer: PropTypes.func.isRequired,
+DataTableUsers.propTypes = {
+    onRegisterUser: PropTypes.func,
+    onDeleteUser: PropTypes.func,
 };
 
-export default DataTableCustomers;
+export default DataTableUsers;

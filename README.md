@@ -1,5 +1,12 @@
 # Enigma Laundry Web Application
 
+<p align="center">
+  <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">
+    <img width="180" src="https://i.imgur.com/G0oCCuf.png" alt="Node.js logo">
+  </a>
+</p>
+<br/>
+
 ## Introduction
 
 Enigma Laundry is a simple web-based application designed to help Enigma Laundry manage transactions efficiently. This application provides features for managing products, customers, and transactions, enabling smooth business operations.

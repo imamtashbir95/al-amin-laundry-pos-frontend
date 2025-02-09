@@ -12,7 +12,7 @@ export const ProductProvider = ({ children }) => {
         try {
             const response = await axiosInstance.get("/products");
             setProducts(response.data.data);
-        } catch (err) {
+        } catch {
             toast.error("Gagal mengambil data produk.");
         }
     };
@@ -24,8 +24,9 @@ export const ProductProvider = ({ children }) => {
     const addProduct = async (newProduct) => {
         try {
             await axiosInstance.post("/products", newProduct);
+            toast.success("Berhasil menambah data produk.");
             fetchProducts();
-        } catch (err) {
+        } catch {
             toast.error("Gagal menambah data produk.");
         }
     };
@@ -33,18 +34,30 @@ export const ProductProvider = ({ children }) => {
     const updateProduct = async (updatedProduct) => {
         try {
             await axiosInstance.put(`/products`, updatedProduct);
+            toast.success("Berhasil memperbarui data produk.");
             fetchProducts();
-        } catch (err) {
-            toast.error("Gagal memperbarui data produk.");
+        } catch (error) {
+            if (error.response) {
+                // toast.error(error.response.data.error);
+                toast.error("Produk tidak ditemukan.");
+            } else {
+                toast.error("Gagal memperbarui data produk.");
+            }
         }
     };
 
     const deleteProduct = async (id) => {
         try {
             await axiosInstance.delete(`/products/${id}`);
+            toast.success("Berhasil menghapus data produk.");
             fetchProducts();
-        } catch (err) {
-            toast.error("Gagal menghapus data produk.");
+        } catch (error) {
+            if (error.response) {
+                // toast.error(error.response.data.error);
+                toast.error("Produk tidak ditemukan.");
+            } else {
+                toast.error("Gagal menghapus data produk.");
+            }
         }
     };
 

@@ -12,7 +12,7 @@ import {
 import logo_black from "../assets/logo_el.png";
 import { useAuth } from "../contexts/AuthContext";
 import { signUpSchema } from "../zod/signUpSchema";
-import background from "../assets/pexels-bri-schneiter-28802-346529.jpg";
+import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 
 const SignUpPage = () => {
     const form = useForm({
@@ -26,7 +26,7 @@ const SignUpPage = () => {
         resolver: zodResolver(signUpSchema),
     });
 
-    const { token, signUp, error } = useAuth();
+    const { token, signUp } = useAuth();
     const navigate = useNavigate();
 
     const handleSignUp = async () => {
@@ -54,12 +54,21 @@ const SignUpPage = () => {
         <>
             <form onSubmit={form.handleSubmit(handleSignUp)}>
                 <div
-                    className="flex h-screen items-center justify-center bg-cover bg-center"
+                    className="flex h-[60.875rem] items-center justify-center bg-cover bg-center"
                     style={{
                         backgroundImage: `url(${background})`,
                     }}
                 >
-                    <Card className="w-[31.25rem] bg-white/80 backdrop-blur-md">
+                    <Card
+                        sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                            backdropFilter: "blur(12px)",
+                            width: "31.25rem",
+                            "@media (max-width: 36rem)": {
+                                width: "calc(100vw - 2rem)",
+                            },
+                        }}
+                    >
                         <CardContent className="flex flex-col gap-4">
                             <img
                                 className="h-[2.5rem] w-[7.625rem]"
@@ -148,7 +157,6 @@ const SignUpPage = () => {
                                                 placeholder="Kata Sandi"
                                                 error={fieldState.invalid}
                                                 helperText={
-                                                    error ||
                                                     fieldState.error?.message
                                                 }
                                             />

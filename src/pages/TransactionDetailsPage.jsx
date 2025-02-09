@@ -1,22 +1,24 @@
+import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
+import SidebarExtender from "../components/SidebarExtender";
+import PageContentWrapper from "../components/PageContentWrapper";
 import { TransactionProvider } from "../contexts/TransactionContext";
 import DataTableDetailsTransaction from "../components/DataTableDetailsTransaction";
 
 const TransactionDetailsPage = () => {
+    const isDesktop = useMediaQuery({ minWidth: 1024 });
+
     return (
         <TransactionProvider>
             <div className="relative flex flex-col">
                 <TopBar />
-                <Sidebar />
-                <div
-                    className="absolute top-[4.167rem] left-[17.5rem] z-10 p-[2.083rem]"
-                    style={{ width: "calc(100% - 17.5rem)" }}
-                >
+                {isDesktop && <Sidebar />}
+                <PageContentWrapper>
                     <DataTableDetailsTransaction />
-                </div>
-                <div className="h-[12rem] w-[17.5rem]"></div>
+                </PageContentWrapper>
+                <SidebarExtender />
                 <FootBar />
             </div>
         </TransactionProvider>

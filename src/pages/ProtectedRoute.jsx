@@ -2,12 +2,22 @@ import PropTypes from "prop-types";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-export const ProtectedRoute = ({ children }) => {
-    const { token } = useAuth();
+export const ProtectedRoute = ({ children, requiredRole }) => {
+    const { token, user } = useAuth();
     const location = useLocation();
+
+    if (token && user === null) {
+        return null; // Bisa diganti dengan loading spinner
+    }
 
     if (!token) {
         return <Navigate to="/signin" state={{ from: location }} replace />;
+    }
+
+    console.log("User role: ", user);
+
+    if (requiredRole && user?.role !== requiredRole) {
+        return <Navigate to="/transactions" replace />;
     }
 
     return children;
@@ -15,4 +25,5 @@ export const ProtectedRoute = ({ children }) => {
 
 ProtectedRoute.propTypes = {
     children: PropTypes.node.isRequired,
+    requiredRole: PropTypes.string,
 };

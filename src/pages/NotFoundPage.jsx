@@ -6,7 +6,7 @@ const NotFoundPage = () => {
 
     return (
         <>
-            <div className="relative h-[100vh] w-[100%] bg-white">
+            <div className="relative h-screen w-screen bg-white">
                 <div className="absolute top-1/2 left-1/2 z-20 flex h-[2.083rem] w-[75rem] -translate-x-1/2 -translate-y-[500%] items-center justify-center bg-gradient-to-r from-white from-10% via-indigo-500 via-50% to-white to-90%">
                     <div className="flex h-[200%] w-[5rem] items-center justify-center bg-white">
                         <Typography

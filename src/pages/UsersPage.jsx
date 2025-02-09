@@ -3,40 +3,41 @@ import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
+import { UserContext } from "../contexts/UserContext";
+import DataTableUsers from "../components/DataTableUsers";
 import SidebarExtender from "../components/SidebarExtender";
-import { CustomerContext } from "../contexts/CustomerContext";
-import DataTableCustomers from "../components/DataTableCustomers";
 import PageContentWrapper from "../components/PageContentWrapper";
 
-const CustomerModal = lazy(() => import("../modals/CustomerModal"));
-const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
+const UserModal = lazy(() => import("../modals/UserModal"));
+const DeleteConfirmationModal = lazy(
+    () => import("../modals/DeleteConfirmationModal"),
+);
 
-const CustomersPage = () => {
-    const { deleteCustomer } = useContext(CustomerContext);
+const UsersPage = () => {
+    const { deleteUser } = useContext(UserContext);
 
     const [modalState, setModalState] = useState({
         show: false,
-        product: null,
+        user: null,
     });
     const [confirmationModalState, setConfirmationModalState] = useState({
         show: false,
-        customerId: null,
+        userId: null,
     });
     const isDesktop = useMediaQuery({ minWidth: 1024 });
 
-    const handleOpenModal = (customer = null) =>
-        setModalState({ show: true, customer });
-    const handleCloseModal = () =>
-        setModalState({ show: false, customer: null });
+    const handleOpenModal = (user = null) =>
+        setModalState({ show: true, user });
+    const handleCloseModal = () => setModalState({ show: false, user: null });
 
-    const handleOpenConfirmationModal = (customerId = null) =>
-        setConfirmationModalState({ show: true, customerId });
+    const handleOpenConfirmationModal = (userId = null) =>
+        setConfirmationModalState({ show: true, userId });
 
     const handleCloseConfirmationModal = () =>
-        setConfirmationModalState({ show: false, customerId: null });
+        setConfirmationModalState({ show: false, userId: null });
 
     const handleDeleteConfirm = () => {
-        deleteCustomer(confirmationModalState.customerId);
+        deleteUser(confirmationModalState.userId);
     };
 
     return (
@@ -53,12 +54,12 @@ const CustomersPage = () => {
                 <TopBar />
                 {isDesktop && <Sidebar />}
                 <PageContentWrapper>
-                    <DataTableCustomers
-                        onAddCustomer={handleOpenModal}
-                        onDeleteCustomer={handleOpenConfirmationModal}
+                    <DataTableUsers
+                        onRegisterUser={handleOpenModal}
+                        onDeleteUser={handleOpenConfirmationModal}
                     />
                 </PageContentWrapper>
-                <SidebarExtender />
+                <SidebarExtender></SidebarExtender>
                 <FootBar />
             </div>
             {modalState.show && (
@@ -67,9 +68,9 @@ const CustomersPage = () => {
                         className="fixed inset-0 z-10 bg-black opacity-50"
                         onClick={handleCloseModal}
                     ></div>
-                    <CustomerModal
+                    <UserModal
                         onClose={handleCloseModal}
-                        customer={modalState.customer}
+                        user={modalState.user}
                     />
                 </>
             )}
@@ -82,7 +83,7 @@ const CustomersPage = () => {
                     <DeleteConfirmationModal
                         onClose={handleCloseConfirmationModal}
                         onConfirm={handleDeleteConfirm}
-                        entityName="pelanggan"
+                        entityName="karyawan"
                     />
                 </>
             )}
@@ -90,4 +91,4 @@ const CustomersPage = () => {
     );
 };
 
-export default CustomersPage;
+export default UsersPage;

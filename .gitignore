@@ -11,9 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-src/assets/logo_black.png
-src/assets/logo_white.png
-src/utils
 db.json
 
 # Editor directories and files

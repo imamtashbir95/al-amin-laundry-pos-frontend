@@ -1,23 +1,44 @@
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBox, faReceipt, faUsers } from "@fortawesome/free-solid-svg-icons";
 import {
     Box,
-    Divider,
     List,
     ListItem,
     ListItemAvatar,
     ListItemButton,
     ListItemText,
 } from "@mui/material";
+import {
+    faBox,
+    faReceipt,
+    faShop,
+    faUsers,
+    faUserShield,
+    faWallet,
+} from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../contexts/AuthContext";
+
 const Sidebar = () => {
     const location = useLocation();
+    const { user } = useAuth();
 
     const navItems = [
         { path: "/products", label: "Manajemen Produk", icon: faBox },
         { path: "/customers", label: "Pelanggan", icon: faUsers },
         { path: "/transactions", label: "Transaksi", icon: faReceipt },
+        { path: "/pengeluaran", label: "Pengeluaran", icon: faWallet },
     ];
+
+    if (user?.role === "admin") {
+        navItems.unshift(
+            {
+                path: "/users",
+                label: "Karyawan",
+                icon: faUserShield,
+            },
+            { path: "/outlets", label: "Cabang", icon: faShop },
+        );
+    }
 
     const activeColor = "#441fee";
     const defaultColor = "#4d4d4d";
@@ -25,10 +46,10 @@ const Sidebar = () => {
     return (
         <>
             <div
-                className="sticky top-[4.167rem] z-5 flex w-[17.5rem] bg-white"
+                className="sticky top-[4.167rem] z-5 flex w-[17.5rem] shadow-xl"
                 style={{ height: "calc(100vh - 4.167rem)" }}
             >
-                <div className="flex flex-col items-center py-[2.5rem] pr-[2.083rem] pl-[1.04167rem] shadow-xl">
+                <div className="flex flex-col items-center bg-white py-[2.5rem] pr-[2.083rem] pl-[1.04167rem]">
                     <Box
                         sx={{
                             width: "100%",
@@ -42,6 +63,9 @@ const Sidebar = () => {
                                     location.pathname.startsWith(path);
                                 return (
                                     <ListItem disablePadding key={path}>
+                                        {isActive && (
+                                            <div className="absolute top-1/2 left-0 h-[80%] w-[0.25rem] -translate-y-1/2 bg-[#441fee]"></div>
+                                        )}
                                         <ListItemButton
                                             href={path}
                                             sx={{
@@ -80,7 +104,6 @@ const Sidebar = () => {
                         </List>
                     </Box>
                 </div>
-                <Divider orientation="vertical" flexItem />
             </div>
         </>
     );

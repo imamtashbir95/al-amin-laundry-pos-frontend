@@ -12,7 +12,7 @@ export const CustomerProvider = ({ children }) => {
         try {
             const response = await axiosInstance.get("/customers");
             setCustomers(response.data.data);
-        } catch (err) {
+        } catch {
             toast.error("Gagal mengambil data pelanggan.");
         }
     };
@@ -24,8 +24,9 @@ export const CustomerProvider = ({ children }) => {
     const addCustomer = async (newCustomer) => {
         try {
             await axiosInstance.post("/customers", newCustomer);
+            toast.success("Berhasil menambah data pelanggan.");
             fetchCustomers();
-        } catch (err) {
+        } catch {
             toast.error("Gagal menambah data pelanggan.");
         }
     };
@@ -33,18 +34,30 @@ export const CustomerProvider = ({ children }) => {
     const updateCustomer = async (updatedCustomer) => {
         try {
             await axiosInstance.put(`/customers`, updatedCustomer);
+            toast.success("Berhasil memperbarui data pelanggan.");
             fetchCustomers();
-        } catch (err) {
-            toast.error("Gagal memperbarui data pelanggan.");
+        } catch (error) {
+            if (error.response) {
+                // toast.error(error.response.data.error);
+                toast.error("Pelanggan tidak ditemukan.");
+            } else {
+                toast.error("Gagal memperbarui data pelanggan.");
+            }
         }
     };
 
     const deleteCustomer = async (id) => {
         try {
             await axiosInstance.delete(`/customers/${id}`);
+            toast.success("Berhasil menghapus data pelanggan.");
             fetchCustomers();
-        } catch (err) {
-            toast.error("Gagal menghapus data pelanggan.");
+        } catch (error) {
+            if (error.response) {
+                // toast.error(error.response.data.error);
+                toast.error("Pelanggan tidak ditemukan.");
+            } else {
+                toast.error("Gagal menghapus data pelanggan.");
+            }
         }
     };
 

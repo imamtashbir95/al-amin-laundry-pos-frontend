@@ -12,7 +12,7 @@ import {
 import logo_black from "../assets/logo_el.png";
 import { useAuth } from "../contexts/AuthContext";
 import { signInSchema } from "../zod/signInSchema";
-import background from "../assets/pexels-bri-schneiter-28802-346529.jpg";
+import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 
 const SignInPage = () => {
     const form = useForm({
@@ -23,7 +23,7 @@ const SignInPage = () => {
         resolver: zodResolver(signInSchema),
     });
 
-    const { token, signIn, error } = useAuth();
+    const { token, signIn } = useAuth();
     const navigate = useNavigate();
 
     const handleSignIn = async () => {
@@ -55,7 +55,16 @@ const SignInPage = () => {
                         backgroundImage: `url(${background})`,
                     }}
                 >
-                    <Card className="w-[31.25rem] bg-white/80 backdrop-blur-md">
+                    <Card
+                        sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                            backdropFilter: "blur(12px)",
+                            width: "31.25rem",
+                            "@media (max-width: 36rem)": {
+                                width: "calc(100vw - 2rem)",
+                            },
+                        }}
+                    >
                         <CardContent className="flex flex-col gap-4">
                             <img
                                 className="h-[2.5rem] w-[7.625rem]"
@@ -100,7 +109,6 @@ const SignInPage = () => {
                                                 placeholder="Kata Sandi"
                                                 error={fieldState.invalid}
                                                 helperText={
-                                                    error ||
                                                     fieldState.error?.message
                                                 }
                                             />

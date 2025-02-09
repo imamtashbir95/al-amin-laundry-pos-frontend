@@ -1,18 +1,26 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
+import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "../lib/axios";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || null);
-    const [error, setError] = useState("");
 
     useEffect(() => {
         if (token) {
             localStorage.setItem("token", token);
+            try {
+                setUser(jwtDecode(token));
+            } catch {
+                setUser(null);
+                toast.error("Token tidak valid.");
+            }
         } else {
+            setUser(null);
             localStorage.removeItem("token");
         }
     }, [token]);
@@ -26,15 +34,17 @@ export const AuthProvider = ({ children }) => {
 
             if (response.data?.data.token) {
                 setToken(response.data.data.token || newToken);
-                setError("");
                 return true;
+            }
+        } catch (error) {
+            if (error.response) {
+                // toast.error(error.response.data.error);
+                toast.error("Username atau kata sandi salah.");
+                return false;
             } else {
-                setError("Username atau Kata Sandi salah");
+                toast.error("Gagal terhubung ke server!");
                 return false;
             }
-        } catch {
-            toast.error("Gagal terhubung ke server!");
-            return false;
         }
     };
 
@@ -52,9 +62,15 @@ export const AuthProvider = ({ children }) => {
                 toast.success("Pengguna berhasil didaftarkan!");
                 return true;
             }
-        } catch {
-            toast.error("Gagal terhubung ke server!");
-            return false;
+        } catch (error) {
+            if (error.response) {
+                // toast.error(error.response.data.error);
+                toast.error("Username atau e-mail sudah ada.");
+                return false;
+            } else {
+                toast.error("Gagal terhubung ke server!");
+                return false;
+            }
         }
     };
 
@@ -71,7 +87,6 @@ export const AuthProvider = ({ children }) => {
                 signIn,
                 signUp,
                 signOut,
-                error,
             }}
         >
             {children}

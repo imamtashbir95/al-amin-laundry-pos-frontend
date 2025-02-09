@@ -12,7 +12,7 @@ import {
 import { customerSchema } from "../zod/customerSchema";
 import { CustomerContext } from "../contexts/CustomerContext";
 
-export const CustomerModal = ({ onClose, customer }) => {
+const CustomerModal = ({ onClose, customer }) => {
     const form = useForm({
         defaultValues: {
             name: "",
@@ -27,9 +27,9 @@ export const CustomerModal = ({ onClose, customer }) => {
     useEffect(() => {
         if (customer) {
             form.reset({
-                name: customer.name,
-                phoneNumber: customer.phoneNumber,
-                address: customer.address,
+                name: customer?.name || "",
+                phoneNumber: customer?.phoneNumber || "",
+                address: customer?.address || "",
             });
         }
     }, [customer, form]);
@@ -54,7 +54,16 @@ export const CustomerModal = ({ onClose, customer }) => {
     return (
         <>
             <div className="fixed top-1/2 left-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-                <Card className="w-[31.25rem]">
+                <Card
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        backdropFilter: "blur(12px)",
+                        width: "31.25rem",
+                        "@media (max-width: 36rem)": {
+                            width: "calc(100vw - 2rem)",
+                        },
+                    }}
+                >
                     <CardContent>
                         <form
                             onSubmit={form.handleSubmit(handleCustomerSubmit)}
@@ -151,6 +160,8 @@ export const CustomerModal = ({ onClose, customer }) => {
         </>
     );
 };
+
+export default CustomerModal;
 
 CustomerModal.propTypes = {
     onClose: PropTypes.func.isRequired,

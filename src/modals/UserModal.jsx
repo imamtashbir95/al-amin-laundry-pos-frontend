@@ -9,45 +9,50 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
-import { productSchema } from "../zod/productSchema";
-import { ProductContext } from "../contexts/ProductContext";
+import { signUpSchema } from "../zod/signUpSchema";
+import { UserContext } from "../contexts/UserContext";
 
-const ProductModal = ({ onClose, product }) => {
+const UserModal = ({ onClose, user }) => {
     const form = useForm({
         defaultValues: {
             name: "",
-            price: "",
-            type: "",
+            email: "",
+            username: "",
+            password: "",
+            role: "employee",
         },
-        resolver: zodResolver(productSchema),
+        resolver: zodResolver(signUpSchema),
     });
 
-    const { addProduct, updateProduct } = useContext(ProductContext);
+    const { registerUser, updateUser } = useContext(UserContext);
 
     useEffect(() => {
-        if (product) {
+        if (user) {
             form.reset({
-                name: product?.name || "",
-                price: String(product?.price) || "",
-                type: product?.type,
+                name: user?.name || "",
+                email: user?.email || "",
+                username: user?.username || "",
+                password: "",
+                role: user?.role || "employee",
             });
         }
-    }, [product, form]);
+    }, [user, form]);
 
-    const handleProductSubmit = () => {
+    const handleUserSubmit = () => {
         const finalData = form.getValues();
 
-        finalData.price = parseInt(finalData.price, 10);
-        if (product && product.id) {
+        if (user && user.id) {
             const requestData = {
-                id: product.id,
+                id: user.id,
                 name: finalData.name,
-                price: finalData.price,
-                type: finalData.type,
+                email: finalData.email,
+                username: finalData.username,
+                password: finalData.password,
+                role: finalData.role,
             };
-            updateProduct(requestData);
+            updateUser(requestData);
         } else {
-            addProduct(finalData);
+            registerUser(finalData);
         }
         onClose();
     };
@@ -67,7 +72,7 @@ const ProductModal = ({ onClose, product }) => {
                 >
                     <CardContent>
                         <form
-                            onSubmit={form.handleSubmit(handleProductSubmit)}
+                            onSubmit={form.handleSubmit(handleUserSubmit)}
                             className="flex flex-col gap-4"
                         >
                             <Controller
@@ -76,13 +81,13 @@ const ProductModal = ({ onClose, product }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-product">
-                                                Nama Produk
+                                            <InputLabel id="text-user">
+                                                Nama Karyawan
                                             </InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
-                                                placeholder="Nama Produk"
+                                                placeholder="Nama Karyawan"
                                                 error={fieldState.invalid}
                                                 helperText={
                                                     fieldState.error?.message
@@ -93,19 +98,18 @@ const ProductModal = ({ onClose, product }) => {
                                 }}
                             ></Controller>
                             <Controller
-                                name="price"
+                                name="email"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-price">
-                                                Harga Produk Per Unit
+                                            <InputLabel id="text-email">
+                                                E-mail
                                             </InputLabel>
                                             <TextField
                                                 {...field}
-                                                type="number"
                                                 size="small"
-                                                placeholder="Harga Produk Per Unit"
+                                                placeholder="E-mail"
                                                 error={fieldState.invalid}
                                                 helperText={
                                                     fieldState.error?.message
@@ -116,18 +120,41 @@ const ProductModal = ({ onClose, product }) => {
                                 }}
                             ></Controller>
                             <Controller
-                                name="type"
+                                name="username"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-unit">
-                                                Unit
+                                            <InputLabel id="text-username">
+                                                Username
                                             </InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
-                                                placeholder="Unit"
+                                                placeholder="Username"
+                                                error={fieldState.invalid}
+                                                helperText={
+                                                    fieldState.error?.message
+                                                }
+                                            />
+                                        </>
+                                    );
+                                }}
+                            ></Controller>
+                            <Controller
+                                name="password"
+                                control={form.control}
+                                render={({ field, fieldState }) => {
+                                    return (
+                                        <>
+                                            <InputLabel id="text-password">
+                                                Kata Sandi
+                                            </InputLabel>
+                                            <TextField
+                                                {...field}
+                                                size="small"
+                                                placeholder="Kata Sandi"
+                                                type="password"
                                                 error={fieldState.invalid}
                                                 helperText={
                                                     fieldState.error?.message
@@ -163,9 +190,9 @@ const ProductModal = ({ onClose, product }) => {
     );
 };
 
-export default ProductModal;
+export default UserModal;
 
-ProductModal.propTypes = {
+UserModal.propTypes = {
     onClose: PropTypes.func.isRequired,
-    product: PropTypes.object.isRequired,
+    user: PropTypes.object,
 };

@@ -19,7 +19,7 @@ import { transactionSchema } from "../zod/transactionSchema";
 import { CustomerContext } from "../contexts/CustomerContext";
 import { TransactionContext } from "../contexts/TransactionContext";
 
-export const TransactionModal = ({ onClose }) => {
+const TransactionModal = ({ onClose }) => {
     const form = useForm({
         defaultValues: {
             customer: {
@@ -63,7 +63,7 @@ export const TransactionModal = ({ onClose }) => {
         );
 
         if (!selectedCustomer || !selectedProduct) {
-            toast.error("Customer atau Produk tidak ditemukan");
+            toast.error("Pelanggan atau produk tidak ditemukan");
             return;
         }
 
@@ -88,7 +88,16 @@ export const TransactionModal = ({ onClose }) => {
     return (
         <>
             <div className="fixed top-1/2 left-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-                <Card className="w-[31.25rem]">
+                <Card
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        backdropFilter: "blur(12px)",
+                        width: "31.25rem",
+                        "@media (max-width: 36rem)": {
+                            width: "calc(100vw - 2rem)",
+                        },
+                    }}
+                >
                     <CardContent>
                         <form
                             onSubmit={form.handleSubmit(
@@ -306,6 +315,8 @@ export const TransactionModal = ({ onClose }) => {
         </>
     );
 };
+
+export default TransactionModal;
 
 TransactionModal.propTypes = {
     onClose: PropTypes.func.isRequired,
