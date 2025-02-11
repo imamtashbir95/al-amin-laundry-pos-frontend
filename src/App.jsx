@@ -6,7 +6,7 @@ import { lazy, Suspense } from "react";
 import { ProductProvider } from "./contexts/ProductContext";
 import { CustomerProvider } from "./contexts/CustomerContext";
 import { UserProvider } from "./contexts/UserContext";
-import TestComponent from "./components/TestComponent";
+import ScrollToTop from "./components/ScrollToTop";
 
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
@@ -25,12 +25,9 @@ const App = () => {
         <AuthProvider>
             <Toaster />
             <BrowserRouter>
+                <ScrollToTop />
                 <Routes>
                     <Route path="*" element={<NotFoundPage></NotFoundPage>} />
-                    <Route
-                        path="/test"
-                        element={<TestComponent></TestComponent>}
-                    ></Route>
                     <Route
                         path="/"
                         element={

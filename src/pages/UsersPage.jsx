@@ -1,4 +1,4 @@
-import { lazy, useContext, useState } from "react";
+import { lazy, useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
@@ -7,6 +7,8 @@ import { UserContext } from "../contexts/UserContext";
 import DataTableUsers from "../components/DataTableUsers";
 import SidebarExtender from "../components/SidebarExtender";
 import PageContentWrapper from "../components/PageContentWrapper";
+import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
+import { AnimatePresence } from "motion/react";
 
 const UserModal = lazy(() => import("../modals/UserModal"));
 const DeleteConfirmationModal = lazy(
@@ -26,6 +28,14 @@ const UsersPage = () => {
     });
     const isDesktop = useMediaQuery({ minWidth: 1024 });
 
+    useEffect(() => {
+        const isModalOpen = modalState.show || confirmationModalState.show;
+        document.body.style.overflow = isModalOpen ? "hidden" : "auto";
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [modalState.show, confirmationModalState.show]);
     const handleOpenModal = (user = null) =>
         setModalState({ show: true, user });
     const handleCloseModal = () => setModalState({ show: false, user: null });
@@ -62,31 +72,39 @@ const UsersPage = () => {
                 <SidebarExtender></SidebarExtender>
                 <FootBar />
             </div>
-            {modalState.show && (
-                <>
-                    <div
-                        className="fixed inset-0 z-10 bg-black opacity-50"
-                        onClick={handleCloseModal}
-                    ></div>
-                    <UserModal
-                        onClose={handleCloseModal}
-                        user={modalState.user}
-                    />
-                </>
-            )}
-            {confirmationModalState.show && (
-                <>
-                    <div
-                        className="fixed inset-0 z-10 bg-black opacity-50"
-                        onClick={handleCloseConfirmationModal}
-                    ></div>
-                    <DeleteConfirmationModal
-                        onClose={handleCloseConfirmationModal}
-                        onConfirm={handleDeleteConfirm}
-                        entityName="karyawan"
-                    />
-                </>
-            )}
+            <AnimatePresence>
+                {modalState.show && (
+                    <>
+                        <div
+                            className="fixed inset-0 z-10 bg-black opacity-50"
+                            onClick={handleCloseModal}
+                        ></div>
+                        <ModalAnimationWrapper>
+                            <UserModal
+                                onClose={handleCloseModal}
+                                user={modalState.user}
+                            />
+                        </ModalAnimationWrapper>
+                    </>
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {confirmationModalState.show && (
+                    <>
+                        <div
+                            className="fixed inset-0 z-10 bg-black opacity-50"
+                            onClick={handleCloseConfirmationModal}
+                        ></div>
+                        <ModalAnimationWrapper>
+                            <DeleteConfirmationModal
+                                onClose={handleCloseConfirmationModal}
+                                onConfirm={handleDeleteConfirm}
+                                entityName="karyawan"
+                            />
+                        </ModalAnimationWrapper>
+                    </>
+                )}
+            </AnimatePresence>
         </>
     );
 };

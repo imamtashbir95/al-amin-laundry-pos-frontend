@@ -1,40 +1,75 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import {
     Button,
     Card,
     CardActions,
     CardContent,
+    MenuItem,
     Pagination,
+    Select,
     Typography,
 } from "@mui/material";
 import { CustomerContext } from "../contexts/CustomerContext";
+import SearchField from "./SearchField";
 
 const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
     const { customers } = useContext(CustomerContext);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [sortBy, setSortBy] = useState("Terlama");
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 5;
 
-    const customerData = useMemo(
-        () => (Array.isArray(customers) ? customers : []),
-        [customers],
-    );
+    const filteredCustomers = useMemo(() => {
+        let filtered = Array.isArray(customers) ? customers : [];
+
+        if (searchTerm) {
+            filtered = filtered.filter((customer) =>
+                customer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+            );
+        }
+
+        if (sortBy === "Nama") {
+            filtered = [...filtered].sort((a, b) =>
+                a.name.localeCompare(b.name),
+            );
+        } else if (sortBy === "Terbaru") {
+            filtered = [...filtered].sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+            );
+        } else if (sortBy === "Terlama") {
+            filtered = [...filtered].sort(
+                (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+            );
+        }
+
+        return filtered;
+    }, [customers, searchTerm, sortBy]);
 
     const pageCount = useMemo(
-        () => Math.ceil(customerData.length / itemsPerPage),
-        [customerData.length, itemsPerPage],
+        () => Math.ceil(filteredCustomers.length / itemsPerPage),
+        [filteredCustomers.length, itemsPerPage],
     );
 
     const paginatedCustomers = useMemo(
         () =>
-            customerData.slice((page - 1) * itemsPerPage, page * itemsPerPage),
-        [customerData, page, itemsPerPage],
+            filteredCustomers.slice(
+                (page - 1) * itemsPerPage,
+                page * itemsPerPage,
+            ),
+        [filteredCustomers, page, itemsPerPage],
     );
 
     const handlePageChange = (event, value) => {
         setPage(value);
     };
+
+    useEffect(() => {
+        setPage(1);
+    }, [searchTerm, sortBy]);
 
     return (
         <>
@@ -55,9 +90,41 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                         color="hanPurple"
                                         onClick={onAddCustomer}
                                     >
-                                        Tambah Pelanggan
+                                        <div className="flex items-center gap-[0.5rem]">
+                                            <FontAwesomeIcon
+                                                icon={faFileImport}
+                                            />
+                                            Tambah Pelanggan
+                                        </div>
                                     </Button>
                                 </CardActions>
+                            </div>
+                            <div className="relative h-[4.167rem] p-[2.583rem]">
+                                <SearchField setSearchTerm={setSearchTerm} />
+                                <div className="absolute top-1/2 right-[2.583rem] flex w-[12rem] -translate-y-1/2 flex-col gap-[0.5rem]">
+                                    Urutkan Berdasarkan
+                                    <Select
+                                        labelId="sort-by-label"
+                                        id="sort-by"
+                                        onChange={(e) =>
+                                            setSortBy(e.target.value)
+                                        }
+                                        value={sortBy}
+                                        size="small"
+                                        sx={{
+                                            width: "100%",
+                                            backgroundColor: "white",
+                                        }}
+                                    >
+                                        <MenuItem value="Terbaru">
+                                            Terbaru
+                                        </MenuItem>
+                                        <MenuItem value="Terlama">
+                                            Terlama
+                                        </MenuItem>
+                                        <MenuItem value="Nama">Nama</MenuItem>
+                                    </Select>
+                                </div>
                             </div>
                             <div className="flex px-[0.83rem]">
                                 {[
@@ -143,7 +210,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                     </Card>
                 </div>
             </div>
-            {customerData.length > itemsPerPage && (
+            {filteredCustomers.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}
                     page={page}

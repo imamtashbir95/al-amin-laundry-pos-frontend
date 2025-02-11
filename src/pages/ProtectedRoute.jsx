@@ -14,8 +14,6 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
         return <Navigate to="/signin" state={{ from: location }} replace />;
     }
 
-    console.log("User role: ", user);
-
     if (requiredRole && user?.role !== requiredRole) {
         return <Navigate to="/transactions" replace />;
     }

@@ -11,6 +11,8 @@ import {
     Typography,
 } from "@mui/material";
 import { TransactionContext } from "../contexts/TransactionContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 
 const DataTableTransactions = ({ onAddTransaction }) => {
     const { transactions } = useContext(TransactionContext);
@@ -80,7 +82,12 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                         color="hanPurple"
                                         onClick={onAddTransaction}
                                     >
-                                        Tambah Transaksi
+                                        <div className="flex items-center gap-[0.5rem]">
+                                            <FontAwesomeIcon
+                                                icon={faFileImport}
+                                            />
+                                            Tambah Transaksi
+                                        </div>
                                     </Button>
                                 </CardActions>
                             </div>

@@ -1,13 +1,1 @@
 @import "tailwindcss";
-
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-
-:root {
-    --han-purple: #441fee;
-    --raisin-black: #2c2626;
-}
-
-.ff {
-    font-family: "Montserrat", sans-serif;
-    line-height: 1.5;
-}

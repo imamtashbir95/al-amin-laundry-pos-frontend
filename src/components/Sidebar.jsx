@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Box,
@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import {
     faBox,
+    faChartSimple,
     faReceipt,
     faShop,
     faUsers,
@@ -26,7 +27,8 @@ const Sidebar = () => {
         { path: "/products", label: "Manajemen Produk", icon: faBox },
         { path: "/customers", label: "Pelanggan", icon: faUsers },
         { path: "/transactions", label: "Transaksi", icon: faReceipt },
-        { path: "/pengeluaran", label: "Pengeluaran", icon: faWallet },
+        { path: "/expenses", label: "Pengeluaran", icon: faWallet },
+        { path: "/report", label: "Laporan", icon: faChartSimple },
     ];
 
     if (user?.role === "admin") {
@@ -36,7 +38,7 @@ const Sidebar = () => {
                 label: "Karyawan",
                 icon: faUserShield,
             },
-            { path: "/outlets", label: "Cabang", icon: faShop },
+            // { path: "/branches", label: "Cabang", icon: faShop },
         );
     }
 
@@ -67,7 +69,8 @@ const Sidebar = () => {
                                             <div className="absolute top-1/2 left-0 h-[80%] w-[0.25rem] -translate-y-1/2 bg-[#441fee]"></div>
                                         )}
                                         <ListItemButton
-                                            href={path}
+                                            component={Link}
+                                            to={path}
                                             sx={{
                                                 gap: "0.5rem",
                                             }}

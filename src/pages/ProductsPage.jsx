@@ -1,4 +1,4 @@
-import { lazy, useContext, useState } from "react";
+import { lazy, useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
@@ -7,9 +7,13 @@ import { ProductContext } from "../contexts/ProductContext";
 import SidebarExtender from "../components/SidebarExtender";
 import DataTableProducts from "../components/DataTableProducts";
 import PageContentWrapper from "../components/PageContentWrapper";
+import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
+import { AnimatePresence } from "motion/react";
 
 const ProductModal = lazy(() => import("../modals/ProductModal"));
-const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
+const DeleteConfirmationModal = lazy(
+    () => import("../modals/DeleteConfirmationModal"),
+);
 
 const ProductsPage = () => {
     const { deleteProduct } = useContext(ProductContext);
@@ -23,6 +27,15 @@ const ProductsPage = () => {
         productId: null,
     });
     const isDesktop = useMediaQuery({ minWidth: 1024 });
+
+    useEffect(() => {
+        const isModalOpen = modalState.show || confirmationModalState.show;
+        document.body.style.overflow = isModalOpen ? "hidden" : "auto";
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [modalState.show, confirmationModalState.show]);
 
     const handleOpenModal = (product = null) =>
         setModalState({ show: true, product });
@@ -61,31 +74,39 @@ const ProductsPage = () => {
                 <SidebarExtender />
                 <FootBar />
             </div>
-            {modalState.show && (
-                <>
-                    <div
-                        className="fixed inset-0 z-10 bg-black opacity-50"
-                        onClick={handleCloseModal}
-                    ></div>
-                    <ProductModal
-                        onClose={handleCloseModal}
-                        product={modalState.product}
-                    />
-                </>
-            )}
-            {confirmationModalState.show && (
-                <>
-                    <div
-                        className="fixed inset-0 z-10 bg-black opacity-50"
-                        onClick={handleCloseConfirmationModal}
-                    ></div>
-                    <DeleteConfirmationModal
-                        onClose={handleCloseConfirmationModal}
-                        onConfirm={handleDeleteConfirm}
-                        entityName="produk"
-                    />
-                </>
-            )}
+            <AnimatePresence>
+                {modalState.show && (
+                    <>
+                        <div
+                            className="fixed inset-0 z-10 bg-black opacity-50"
+                            onClick={handleCloseModal}
+                        ></div>
+                        <ModalAnimationWrapper>
+                            <ProductModal
+                                onClose={handleCloseModal}
+                                product={modalState.product}
+                            />
+                        </ModalAnimationWrapper>
+                    </>
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {confirmationModalState.show && (
+                    <>
+                        <div
+                            className="fixed inset-0 z-10 bg-black opacity-50"
+                            onClick={handleCloseConfirmationModal}
+                        ></div>
+                        <ModalAnimationWrapper>
+                            <DeleteConfirmationModal
+                                onClose={handleCloseConfirmationModal}
+                                onConfirm={handleDeleteConfirm}
+                                entityName="produk"
+                            />
+                        </ModalAnimationWrapper>
+                    </>
+                )}
+            </AnimatePresence>
         </>
     );
 };

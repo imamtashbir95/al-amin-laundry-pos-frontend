@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
@@ -29,12 +29,22 @@ const TopBar = () => {
 
     const toggleSidebar = () => setShowSidebar(!showSidebar);
 
+    useEffect(() => {
+        if (!isMobile) {
+            setShowSidebar(false);
+        }
+    }, [isMobile]);
+
     return (
         <>
             <div className="sticky top-0 z-15 flex flex-col bg-white">
                 <div className="relative flex h-[4.167rem] flex-row items-center justify-end px-[2.083rem] shadow-xl">
                     <div className="absolute top-[0.83rem] left-[2.083rem] z-20 flex max-lg:left-1/2 max-lg:-translate-x-1/2">
-                        <img className="h-[2.5rem]" src={logo_black} />
+                        <img
+                            className="h-[2.5rem]"
+                            alt="logo"
+                            src={logo_black}
+                        />
                     </div>
                     <div className="absolute top-[0.83rem] left-[2.083rem] lg:hidden">
                         <Avatar

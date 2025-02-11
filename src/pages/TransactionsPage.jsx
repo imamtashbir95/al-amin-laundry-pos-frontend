@@ -1,4 +1,4 @@
-import { lazy, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
@@ -9,12 +9,23 @@ import { CustomerProvider } from "../contexts/CustomerContext";
 import PageContentWrapper from "../components/PageContentWrapper";
 import { TransactionProvider } from "../contexts/TransactionContext";
 import DataTableTransactions from "../components/DataTableTransactions";
+import { AnimatePresence } from "motion/react";
+import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 
 const TransactionModal = lazy(() => import("../modals/TransactionModal"));
 
 const TransactionsPage = () => {
     const [showModal, setShowModal] = useState(false);
     const isDesktop = useMediaQuery({ minWidth: 1024 });
+
+    useEffect(() => {
+        const isModalOpen = showModal;
+        document.body.style.overflow = isModalOpen ? "hidden" : "auto";
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [showModal]);
 
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -39,15 +50,21 @@ const TransactionsPage = () => {
                         <SidebarExtender />
                         <FootBar />
                     </div>
-                    {showModal && (
-                        <>
-                            <div
-                                className="fixed inset-0 z-10 bg-black opacity-50"
-                                onClick={handleCloseModal}
-                            ></div>
-                            <TransactionModal onClose={handleCloseModal} />
-                        </>
-                    )}
+                    <AnimatePresence>
+                        {showModal && (
+                            <>
+                                <div
+                                    className="fixed inset-0 z-10 bg-black opacity-50"
+                                    onClick={handleCloseModal}
+                                ></div>
+                                <ModalAnimationWrapper>
+                                    <TransactionModal
+                                        onClose={handleCloseModal}
+                                    />
+                                </ModalAnimationWrapper>
+                            </>
+                        )}
+                    </AnimatePresence>
                 </ProductProvider>
             </CustomerProvider>
         </TransactionProvider>
