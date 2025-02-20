@@ -3,7 +3,6 @@ import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
-import SidebarExtender from "../components/SidebarExtender";
 import { ProductProvider } from "../contexts/ProductContext";
 import { CustomerProvider } from "../contexts/CustomerContext";
 import PageContentWrapper from "../components/PageContentWrapper";
@@ -15,43 +14,42 @@ import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 const TransactionModal = lazy(() => import("../modals/TransactionModal"));
 
 const TransactionsPage = () => {
-    const [showModal, setShowModal] = useState(false);
+    const [modalState, setModalState] = useState({
+        show: false,
+        transaction: null,
+    });
     const isDesktop = useMediaQuery({ minWidth: 1024 });
 
     useEffect(() => {
-        const isModalOpen = showModal;
+        const isModalOpen = modalState.show;
         document.body.style.overflow = isModalOpen ? "hidden" : "auto";
 
         return () => {
             document.body.style.overflow = "auto";
         };
-    }, [showModal]);
+    }, [modalState.show]);
 
-    const handleOpenModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
+    const handleOpenModal = (transaction = null) =>
+        setModalState({ show: true, transaction });
+    const handleCloseModal = () =>
+        setModalState({ show: false, transaction: null });
 
     return (
         <TransactionProvider>
             <CustomerProvider>
                 <ProductProvider>
-                    <div
-                        className="relative flex flex-col"
-                        style={{
-                            filter: showModal ? "blur(5px)" : "none",
-                        }}
-                    >
+                    <div className="relative flex flex-col bg-[#fafafa]">
                         <TopBar />
                         {isDesktop && <Sidebar />}
                         <PageContentWrapper>
                             <DataTableTransactions
-                                onAddTransaction={handleOpenModal}
+                                onAddTransaction={() => handleOpenModal(null)}
                             />
                         </PageContentWrapper>
-                        <SidebarExtender />
                         <FootBar />
                     </div>
                     <AnimatePresence>
-                        {showModal && (
+                        {modalState.show && (
                             <>
                                 <div
                                     className="fixed inset-0 z-10 bg-black opacity-50"
@@ -60,6 +58,7 @@ const TransactionsPage = () => {
                                 <ModalAnimationWrapper>
                                     <TransactionModal
                                         onClose={handleCloseModal}
+                                        transaction={modalState.transaction}
                                     />
                                 </ModalAnimationWrapper>
                             </>

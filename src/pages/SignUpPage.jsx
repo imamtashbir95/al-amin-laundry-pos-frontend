@@ -9,7 +9,7 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
-import logo_black from "../assets/logo_el.png";
+import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/AuthContext";
 import { signUpSchema } from "../zod/signUpSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
@@ -30,14 +30,8 @@ const SignUpPage = () => {
     const navigate = useNavigate();
 
     const handleSignUp = async () => {
-        const finalData = form.getValues();
-        const success = await signUp(
-            finalData.name,
-            finalData.email,
-            finalData.username,
-            finalData.password,
-            finalData.role,
-        );
+        const signUpData = form.getValues();
+        const success = await signUp(signUpData);
         if (success) {
             navigate("/signin");
         }
@@ -45,7 +39,7 @@ const SignUpPage = () => {
 
     useEffect(() => {
         if (token) {
-            const from = location.state?.from?.pathname || "/transactions";
+            const from = location.state?.from?.pathname || "/dashboard";
             navigate(from, { replace: true });
         }
     }, [token, navigate]);
@@ -70,10 +64,9 @@ const SignUpPage = () => {
                         }}
                     >
                         <CardContent className="flex flex-col gap-4">
-                            <img
-                                className="h-[2.5rem] w-[7.625rem]"
-                                src={logo_black}
-                            />
+                            <div>
+                                <img className="h-[2.5rem]" src={logo_black} />
+                            </div>
                             <Controller
                                 name="name"
                                 control={form.control}
@@ -167,9 +160,8 @@ const SignUpPage = () => {
                             <div className="flex justify-end gap-4">
                                 <Button
                                     variant="contained"
-                                    className="w-[12.5rem]"
-                                    color="hanPurple"
                                     type="submit"
+                                    sx={{ width: "100%" }}
                                 >
                                     Daftarkan Saya
                                 </Button>

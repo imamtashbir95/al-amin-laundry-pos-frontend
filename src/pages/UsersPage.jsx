@@ -5,7 +5,6 @@ import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
 import { UserContext } from "../contexts/UserContext";
 import DataTableUsers from "../components/DataTableUsers";
-import SidebarExtender from "../components/SidebarExtender";
 import PageContentWrapper from "../components/PageContentWrapper";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import { AnimatePresence } from "motion/react";
@@ -52,15 +51,7 @@ const UsersPage = () => {
 
     return (
         <>
-            <div
-                className="relative flex flex-col"
-                style={{
-                    filter:
-                        modalState.show || confirmationModalState.show
-                            ? "blur(5px)"
-                            : "none",
-                }}
-            >
+            <div className="relative flex flex-col bg-[#fafafa]">
                 <TopBar />
                 {isDesktop && <Sidebar />}
                 <PageContentWrapper>
@@ -69,7 +60,6 @@ const UsersPage = () => {
                         onDeleteUser={handleOpenConfirmationModal}
                     />
                 </PageContentWrapper>
-                <SidebarExtender></SidebarExtender>
                 <FootBar />
             </div>
             <AnimatePresence>

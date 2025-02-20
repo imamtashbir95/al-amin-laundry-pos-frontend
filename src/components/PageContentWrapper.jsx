@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
+import { useAuth } from "../contexts/AuthContext";
 
 const PageContentWrapper = ({ children }) => {
     const [greeting, setGreeting] = useState("");
@@ -23,8 +24,8 @@ const PageContentWrapper = ({ children }) => {
     }, []);
 
     return (
-        <div className="absolute top-[4.167rem] left-[17.5rem] z-10 w-[calc(100%-17.5rem)] p-[2.083rem] max-lg:left-0 max-lg:w-full">
-            <div className="flex flex-col items-center gap-[1rem] pb-[1rem]">
+        <div className="mt-[4.167rem] ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
+            <div className="flex flex-col items-center gap-[1rem]">
                 <div className="w-full">
                     <Typography
                         variant="h5"

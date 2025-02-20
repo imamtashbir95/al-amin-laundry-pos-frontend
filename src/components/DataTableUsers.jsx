@@ -1,19 +1,18 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import {
     Button,
     Card,
     CardActions,
     CardContent,
-    MenuItem,
     Pagination,
-    Select,
     Typography,
 } from "@mui/material";
-import { UserContext } from "../contexts/UserContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileImport } from "@fortawesome/free-solid-svg-icons";
+import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
+import { UserContext } from "../contexts/UserContext";
 
 const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
     const { users } = useContext(UserContext);
@@ -51,7 +50,7 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
 
     const pageCount = useMemo(
         () => Math.ceil(filteredUsers.length / itemsPerPage),
-        [filteredUsers.length, itemsPerPage],
+        [filteredUsers, itemsPerPage],
     );
 
     const paginatedUsers = useMemo(
@@ -72,7 +71,13 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
         <>
             <div className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
-                    <Card sx={{ backgroundColor: "#f5f5f5" }}>
+                    <Card
+                        sx={{
+                            backgroundColor: "#ffffff",
+                            padding: "0.625rem",
+                            borderRadius: "1.375rem",
+                        }}
+                    >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
@@ -84,8 +89,7 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                     <Button
                                         variant="contained"
                                         size="small"
-                                        color="hanPurple"
-                                        onClick={onRegisterUser}
+                                        onClick={() => onRegisterUser(null)}
                                     >
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon
@@ -98,32 +102,9 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                             </div>
                             <div className="relative h-[4.167rem] p-[2.583rem]">
                                 <SearchField setSearchTerm={setSearchTerm} />
-                                <div className="absolute top-1/2 right-[2.583rem] flex w-[12rem] -translate-y-1/2 flex-col gap-[0.5rem]">
-                                    Urutkan Berdasarkan
-                                    <Select
-                                        labelId="sort-by-label"
-                                        id="sort-by"
-                                        onChange={(e) =>
-                                            setSortBy(e.target.value)
-                                        }
-                                        value={sortBy}
-                                        size="small"
-                                        sx={{
-                                            width: "100%",
-                                            backgroundColor: "white",
-                                        }}
-                                    >
-                                        <MenuItem value="Terbaru">
-                                            Terbaru
-                                        </MenuItem>
-                                        <MenuItem value="Terlama">
-                                            Terlama
-                                        </MenuItem>
-                                        <MenuItem value="Nama">Nama</MenuItem>
-                                    </Select>
-                                </div>
+                                <SortBy sortBy={sortBy} setSortBy={setSortBy} />
                             </div>
-                            <div className="flex px-[0.83rem]">
+                            <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
                                 {[
                                     "Nama Karyawan",
                                     "E-mail",
@@ -151,23 +132,23 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                         className="flex px-[0.83rem]"
                                         key={user.id}
                                     >
-                                        <div className="w-[25%]">
+                                        <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {user.name}
                                                 </Typography>
                                             </CardContent>
                                         </div>
-                                        <div className="w-[25%]">
+                                        <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {user.email}
                                                 </Typography>
                                             </CardContent>
                                         </div>
-                                        <div className="w-[25%]">
+                                        <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {user.username}
                                                 </Typography>
                                             </CardContent>
@@ -176,7 +157,6 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                             <Button
                                                 variant="contained"
                                                 size="small"
-                                                color="hanPurple"
                                                 onClick={() =>
                                                     onRegisterUser(user)
                                                 }
@@ -186,7 +166,6 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                             <Button
                                                 variant="outlined"
                                                 size="small"
-                                                color="hanPurple"
                                                 onClick={() =>
                                                     onDeleteUser(user.id)
                                                 }
@@ -218,8 +197,8 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
 };
 
 DataTableUsers.propTypes = {
-    onRegisterUser: PropTypes.func,
-    onDeleteUser: PropTypes.func,
+    onRegisterUser: PropTypes.func.isRequired,
+    onDeleteUser: PropTypes.func.isRequired,
 };
 
 export default DataTableUsers;

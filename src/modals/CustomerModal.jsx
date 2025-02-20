@@ -139,7 +139,6 @@ const CustomerModal = ({ onClose, customer }) => {
                                 <Button
                                     variant="contained"
                                     className="w-[6.25rem]"
-                                    color="hanPurple"
                                     type="submit"
                                 >
                                     Simpan
@@ -147,7 +146,6 @@ const CustomerModal = ({ onClose, customer }) => {
                                 <Button
                                     variant="outlined"
                                     className="w-[6.25rem]"
-                                    color="hanPurple"
                                     onClick={onClose}
                                 >
                                     Tutup

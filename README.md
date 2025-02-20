@@ -1,4 +1,4 @@
-# Enigma Laundry Web Application
+# Al-Amin Laundry POS Web App
 
 <p align="center">
   <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">
@@ -9,7 +9,7 @@
 
 ## Introduction
 
-Enigma Laundry is a simple web-based application designed to help Enigma Laundry manage transactions efficiently. This application provides features for managing products, customers, and transactions, enabling smooth business operations.
+Al-Amin Laundry POS is a POS simple web-based application designed to help Al-Amin Laundry manage transactions efficiently. This application provides features for managing products, customers, and transactions, enabling smooth business operations.
 
 ## Features
 
@@ -45,6 +45,8 @@ Enigma Laundry is a simple web-based application designed to help Enigma Laundry
 - Create a new transaction.
 - View a list of all transactions.
 - Display detailed information for each transaction.
+- Update transaction information.
+- Delete transaction records.
 
 ## Installation
 
@@ -101,8 +103,8 @@ The application will be available at [http://localhost:5173](http://localhost:51
 
 - **Frontend:** React.js
 - **State Management:** Context API
-- **Styling:** Tailwind CSS and Material UI
-- **Backend API:** Integration with Enigma backend services
+- **Styling:** Tailwind CSS, Material UI, and Font Awesome
+- **Backend API:** Integration with backend services
 
 ## Contributing
 

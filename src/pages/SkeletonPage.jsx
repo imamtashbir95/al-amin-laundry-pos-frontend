@@ -4,7 +4,6 @@ import { Card, CardActions, CardContent, Skeleton } from "@mui/material";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
-import SidebarExtender from "../components/SidebarExtender";
 
 const SkeletonText = ({ width }) => (
     <CardContent>
@@ -31,14 +30,14 @@ const SkeletonPage = () => {
 
     return (
         <>
-            <div className="relative flex flex-col">
+            <div className="relative flex flex-col bg-[#fafafa]">
                 <TopBar />
                 {isDesktop && <Sidebar />}
-                <div className="absolute top-[4.167rem] left-[17.5rem] z-10 w-[calc(100%-17.5rem)] p-[2.083rem] max-lg:left-0 max-lg:w-full">
-                    <div className="flex flex-col items-center gap-[1rem] pb-[1rem]">
+                <div className="z-10 ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
+                    <div className="flex flex-col items-center gap-[1rem]">
                         <div className="h-full w-full max-lg:overflow-x-scroll">
                             <div className="h-full max-lg:w-[58.33rem]">
-                                <Card sx={{ backgroundColor: "#f5f5f5" }}>
+                                <Card sx={{ backgroundColor: "#ffffff" }}>
                                     <div className="">
                                         <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                             <CardContent>
@@ -95,7 +94,6 @@ const SkeletonPage = () => {
                         </div>
                     </div>
                 </div>
-                <SidebarExtender />
                 <FootBar />
             </div>
         </>

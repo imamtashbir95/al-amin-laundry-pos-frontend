@@ -2,6 +2,7 @@ import { useLocation, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Box,
+    Divider,
     List,
     ListItem,
     ListItemAvatar,
@@ -11,36 +12,47 @@ import {
 import {
     faBox,
     faChartSimple,
+    faHome,
     faReceipt,
     faShop,
     faUsers,
     faUserShield,
-    faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../contexts/AuthContext";
+import { useMemo } from "react";
 
 const Sidebar = () => {
     const location = useLocation();
     const { user } = useAuth();
 
-    const navItems = [
-        { path: "/products", label: "Manajemen Produk", icon: faBox },
-        { path: "/customers", label: "Pelanggan", icon: faUsers },
-        { path: "/transactions", label: "Transaksi", icon: faReceipt },
-        { path: "/expenses", label: "Pengeluaran", icon: faWallet },
-        { path: "/report", label: "Laporan", icon: faChartSimple },
-    ];
+    const navItems = useMemo(() => {
+        const items = [
+            { path: "/dashboard", label: "Dasbor", icon: faHome },
+            { path: "/customers", label: "Pelanggan", icon: faUsers },
+            { path: "/transactions", label: "Transaksi", icon: faReceipt },
+            { path: "/report", label: "Laporan", icon: faChartSimple },
+        ];
 
-    if (user?.role === "admin") {
-        navItems.unshift(
-            {
-                path: "/users",
-                label: "Karyawan",
-                icon: faUserShield,
-            },
-            // { path: "/branches", label: "Cabang", icon: faShop },
-        );
-    }
+        if (user?.role === "admin") {
+            const dashboardIndex = items.findIndex(
+                (item) => item.path === "/dashboard",
+            );
+            if (dashboardIndex !== -1) {
+                items.splice(
+                    dashboardIndex + 1,
+                    0,
+                    {
+                        path: "/users",
+                        label: "Karyawan",
+                        icon: faUserShield,
+                    },
+                    { path: "/products", label: "Produk", icon: faBox },
+                );
+            }
+        }
+
+        return items;
+    }, [user?.role]);
 
     const activeColor = "#441fee";
     const defaultColor = "#4d4d4d";
@@ -48,10 +60,12 @@ const Sidebar = () => {
     return (
         <>
             <div
-                className="sticky top-[4.167rem] z-5 flex w-[17.5rem] shadow-xl"
-                style={{ height: "calc(100vh - 4.167rem)" }}
+                className="fixed top-[4.167rem] z-5 flex w-[14.5rem] bg-white shadow-xl"
+                style={{
+                    height: "calc(100vh - 4.167rem)",
+                }}
             >
-                <div className="flex flex-col items-center bg-white py-[2.5rem] pr-[2.083rem] pl-[1.04167rem]">
+                <div className="flex w-full flex-col items-center py-[2.5rem] pr-[1.04167rem] pl-[1.04167rem]">
                     <Box
                         sx={{
                             width: "100%",
@@ -107,6 +121,7 @@ const Sidebar = () => {
                         </List>
                     </Box>
                 </div>
+                <Divider orientation="vertical" flexItem />
             </div>
         </>
     );

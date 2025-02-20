@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
     }
 
     if (requiredRole && user?.role !== requiredRole) {
-        return <Navigate to="/transactions" replace />;
+        return <Navigate to="/dashboard" replace />;
     }
 
     return children;

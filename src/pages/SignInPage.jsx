@@ -9,7 +9,7 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
-import logo_black from "../assets/logo_el.png";
+import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/AuthContext";
 import { signInSchema } from "../zod/signInSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
@@ -27,21 +27,16 @@ const SignInPage = () => {
     const navigate = useNavigate();
 
     const handleSignIn = async () => {
-        const finalData = form.getValues();
-        const dummyToken = "abc";
-        const success = await signIn(
-            finalData.username,
-            finalData.password,
-            dummyToken,
-        );
+        const signInData = form.getValues();
+        const success = await signIn(signInData);
         if (success) {
-            navigate("/transactions");
+            navigate("/dashboard");
         }
     };
 
     useEffect(() => {
         if (token) {
-            const from = location.state?.from?.pathname || "/transactions";
+            const from = location.state?.from?.pathname || "/dashboard";
             navigate(from, { replace: true });
         }
     }, [token, navigate]);
@@ -66,10 +61,9 @@ const SignInPage = () => {
                         }}
                     >
                         <CardContent className="flex flex-col gap-4">
-                            <img
-                                className="h-[2.5rem] w-[7.625rem]"
-                                src={logo_black}
-                            />
+                            <div>
+                                <img className="h-[2.5rem]" src={logo_black} />
+                            </div>
                             <Controller
                                 name="username"
                                 control={form.control}
@@ -119,9 +113,8 @@ const SignInPage = () => {
                             <div className="flex justify-end gap-4">
                                 <Button
                                     variant="contained"
-                                    className="w-[6.25rem]"
-                                    color="hanPurple"
                                     type="submit"
+                                    sx={{ width: "100%" }}
                                 >
                                     Masuk
                                 </Button>

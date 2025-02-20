@@ -4,9 +4,9 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sidebar from "./Sidebar";
-import logo_black from "../assets/logo_el.png";
+import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/AuthContext";
-import default_profile_pic from "../assets/default_profile_pic.webp";
+import default_profile_pic from "../assets/default-profile-pic.webp";
 
 const TopBar = () => {
     const { signOut } = useAuth();
@@ -37,7 +37,7 @@ const TopBar = () => {
 
     return (
         <>
-            <div className="sticky top-0 z-15 flex flex-col bg-white">
+            <div className="fixed top-0 z-10 flex w-full flex-col bg-white">
                 <div className="relative flex h-[4.167rem] flex-row items-center justify-end px-[2.083rem] shadow-xl">
                     <div className="absolute top-[0.83rem] left-[2.083rem] z-20 flex max-lg:left-1/2 max-lg:-translate-x-1/2">
                         <img
@@ -92,7 +92,7 @@ const TopBar = () => {
             {isMobile && (
                 <>
                     <div
-                        className={`fixed top-0 left-0 z-25 h-full w-[17.5rem] bg-white shadow-xl transition-transform duration-300 ${
+                        className={`fixed top-0 left-0 z-25 h-full w-[14.5rem] bg-white shadow-xl transition-transform duration-300 ${
                             showSidebar ? "translate-x-0" : "-translate-x-full"
                         }`}
                     >
@@ -107,9 +107,6 @@ const TopBar = () => {
                                     icon={faBars}
                                 ></FontAwesomeIcon>
                             </Avatar>
-                            <div className="absolute top-0 left-[3.5rem] flex h-[2.5rem] w-[9.83rem] items-center justify-center rounded-full">
-                                <img className="h-[2.5rem]" src={logo_black} />
-                            </div>
                         </div>
                         <Sidebar />
                     </div>

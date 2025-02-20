@@ -1,7 +1,7 @@
 {
-    "name": "enigma-laundry",
+    "name": "al-amin-laundry-pos-frontend",
     "private": true,
-    "version": "0.0.0",
+    "version": "1.0.0",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -9,6 +9,16 @@
         "lint": "eslint .",
         "preview": "vite preview"
     },
+    "keywords": [
+        "laundry",
+        "pos",
+        "pos-system",
+        "laundry-management",
+        "laundry-system"
+    ],
+    "author": "Imam Tashbir Arrahman",
+    "license": "ISC",
+    "description": "Al-Amin Laundry POS is a web-based application designed to streamline transaction management for laundry businesses. It offers comprehensive features for managing products, customers, and transactions, aiming to enhance operational efficiency.",
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
@@ -17,13 +27,17 @@
         "@fortawesome/react-fontawesome": "^0.2.2",
         "@hookform/resolvers": "^3.10.0",
         "@mui/material": "^6.4.1",
+        "@mui/x-date-pickers": "^7.26.0",
         "@tailwindcss/vite": "^4.0.0",
         "axios": "^1.7.9",
+        "chart.js": "^4.4.7",
+        "dayjs": "^1.11.13",
         "dotenv": "^16.4.7",
         "jwt-decode": "^4.0.0",
         "motion": "^12.4.1",
         "prop-types": "^15.8.1",
         "react": "^18.3.1",
+        "react-custom-scroll": "^7.0.0",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.54.2",
         "react-responsive": "^10.0.0",

@@ -1,7 +1,10 @@
 import { useContext, useEffect } from "react";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import {
     Button,
     Card,
@@ -9,45 +12,48 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
-import { productSchema } from "../zod/productSchema";
-import { ProductContext } from "../contexts/ProductContext";
+import { expenseSchema } from "../zod/expenseSchema";
+import { ExpenseContext } from "../contexts/ExpenseContext";
 
-const ProductModal = ({ onClose, product }) => {
+const ExpenseModal = ({ onClose, expense }) => {
     const form = useForm({
         defaultValues: {
             name: "",
             price: "",
-            type: "",
+            expenseDate: new Date().toISOString(),
         },
-        resolver: zodResolver(productSchema),
+        resolver: zodResolver(expenseSchema),
     });
 
-    const { addProduct, updateProduct } = useContext(ProductContext);
+    const { addExpense, updateExpense } = useContext(ExpenseContext);
 
     useEffect(() => {
-        if (product) {
+        if (expense) {
             form.reset({
-                name: product?.name || "",
-                price: String(product?.price) || "",
-                type: product?.type || "",
+                name: expense?.name || "",
+                price: String(expense?.price) || "",
+                expenseDate: expense?.expenseDate || new Date().toISOString(),
             });
         }
-    }, [product, form]);
+    }, [expense, form]);
 
-    const handleProductSubmit = () => {
+    useEffect(() => {
+        console.log(expense);
+    }, [expense]);
+
+    const handleExpenseSubmit = () => {
         const finalData = form.getValues();
 
-        finalData.price = parseInt(finalData.price, 10);
-        if (product && product.id) {
+        if (expense && expense.id) {
             const requestData = {
-                id: product.id,
+                id: expense.id,
                 name: finalData.name,
                 price: finalData.price,
-                type: finalData.type,
+                expenseDate: finalData.expenseDate,
             };
-            updateProduct(requestData);
+            updateExpense(requestData);
         } else {
-            addProduct(finalData);
+            addExpense(finalData);
         }
         onClose();
     };
@@ -67,7 +73,7 @@ const ProductModal = ({ onClose, product }) => {
                 >
                     <CardContent>
                         <form
-                            onSubmit={form.handleSubmit(handleProductSubmit)}
+                            onSubmit={form.handleSubmit(handleExpenseSubmit)}
                             className="flex flex-col gap-4"
                         >
                             <Controller
@@ -76,13 +82,13 @@ const ProductModal = ({ onClose, product }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-product">
-                                                Nama Produk
+                                            <InputLabel id="text-expense">
+                                                Nama Pengeluaran
                                             </InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
-                                                placeholder="Nama Produk"
+                                                placeholder="Nama Pengeluaran"
                                                 error={fieldState.invalid}
                                                 helperText={
                                                     fieldState.error?.message
@@ -99,13 +105,12 @@ const ProductModal = ({ onClose, product }) => {
                                     return (
                                         <>
                                             <InputLabel id="text-price">
-                                                Harga Produk Per Unit
+                                                Harga Pengeluaran
                                             </InputLabel>
                                             <TextField
                                                 {...field}
-                                                type="number"
                                                 size="small"
-                                                placeholder="Harga Produk Per Unit"
+                                                placeholder="Harga Pengeluaran"
                                                 error={fieldState.invalid}
                                                 helperText={
                                                     fieldState.error?.message
@@ -116,23 +121,43 @@ const ProductModal = ({ onClose, product }) => {
                                 }}
                             ></Controller>
                             <Controller
-                                name="type"
+                                name="expenseDate"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-unit">
-                                                Unit
+                                            <InputLabel id="text-expense-date-label">
+                                                Tanggal Pengeluaran
                                             </InputLabel>
-                                            <TextField
-                                                {...field}
-                                                size="small"
-                                                placeholder="Unit"
-                                                error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
-                                            />
+                                            <LocalizationProvider
+                                                dateAdapter={AdapterDayjs}
+                                                adapterLocale="en-gb"
+                                            >
+                                                <DatePicker
+                                                    value={
+                                                        field.value
+                                                            ? dayjs(field.value)
+                                                            : null
+                                                    }
+                                                    onChange={(newValue) =>
+                                                        field.onChange(
+                                                            newValue
+                                                                ? newValue.toISOString()
+                                                                : null,
+                                                        )
+                                                    }
+                                                    disablePast
+                                                    slotProps={{
+                                                        textField: {
+                                                            size: "small",
+                                                            error: fieldState.invalid,
+                                                            helperText:
+                                                                fieldState.error
+                                                                    ?.message,
+                                                        },
+                                                    }}
+                                                />
+                                            </LocalizationProvider>
                                         </>
                                     );
                                 }}
@@ -161,9 +186,9 @@ const ProductModal = ({ onClose, product }) => {
     );
 };
 
-export default ProductModal;
+export default ExpenseModal;
 
-ProductModal.propTypes = {
+ExpenseModal.propTypes = {
     onClose: PropTypes.func.isRequired,
-    product: PropTypes.object,
+    expense: PropTypes.object,
 };

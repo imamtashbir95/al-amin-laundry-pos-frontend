@@ -1,66 +1,50 @@
 import { useContext, useEffect, useMemo, useState } from "react";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileImport } from "@fortawesome/free-solid-svg-icons";
+import {
+    faFileImport,
+    faMoneyBill1Wave,
+    faMoneyBillWave,
+    faReceipt,
+    faWallet,
+} from "@fortawesome/free-solid-svg-icons";
 import {
     Button,
     Card,
     CardActions,
     CardContent,
-    Chip,
     Pagination,
     Typography,
 } from "@mui/material";
-import SortBy from "./SortyBy";
-import SearchField from "./SearchField";
-import { ProductContext } from "../contexts/ProductContext";
+import { ExpenseContext } from "../contexts/ExpenseContext";
 
-const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
-    const { products } = useContext(ProductContext);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState("Terlama");
+const DataTableExpense = ({
+    onAddExpense,
+    onDeleteExpense,
+    setTotalExpense,
+}) => {
+    const { expenses } = useContext(ExpenseContext);
 
     const [page, setPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 25;
 
-    const filteredProducts = useMemo(() => {
-        let filtered = Array.isArray(products) ? products : [];
-
-        if (searchTerm) {
-            filtered = filtered.filter((product) =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()),
-            );
-        }
-
-        if (sortBy === "Nama") {
-            filtered = [...filtered].sort((a, b) =>
-                a.name.localeCompare(b.name),
-            );
-        } else if (sortBy === "Terbaru") {
-            filtered = [...filtered].sort(
-                (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-            );
-        } else if (sortBy === "Terlama") {
-            filtered = [...filtered].sort(
-                (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-            );
-        }
-
-        return filtered;
-    }, [products, searchTerm, sortBy]);
-
-    const pageCount = useMemo(
-        () => Math.ceil(filteredProducts.length / itemsPerPage),
-        [filteredProducts, itemsPerPage],
+    const expenseData = useMemo(
+        () => (Array.isArray(expenses) ? expenses : []),
+        [expenses],
     );
 
-    const paginatedProducts = useMemo(
-        () =>
-            filteredProducts.slice(
-                (page - 1) * itemsPerPage,
-                page * itemsPerPage,
-            ),
-        [filteredProducts, page, itemsPerPage],
+    // useEffect(() => {
+    //     setPage(1);
+    // }, [selectedDate]);
+
+    const pageCount = useMemo(() => {
+        return Math.ceil(expenseData.length / itemsPerPage);
+    }, [expenseData, itemsPerPage]);
+
+    const paginatedExpenses = useMemo(
+        () => expenseData.slice((page - 1) * itemsPerPage, page * itemsPerPage),
+        [expenseData, page, itemsPerPage],
     );
 
     const handlePageChange = (event, value) => {
@@ -68,8 +52,12 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
     };
 
     useEffect(() => {
-        setPage(1);
-    }, [searchTerm, sortBy]);
+        const total = expenseData.reduce(
+            (acc, detail) => acc + detail.price,
+            0,
+        );
+        setTotalExpense(total);
+    }, [expenseData, setTotalExpense]);
 
     return (
         <>
@@ -84,35 +72,37 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                     >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
-                                <CardContent>
+                                <CardContent className="flex flex-row gap-[1rem]">
+                                    <div className="flex h-[2.25rem] w-[2.25rem] items-center justify-center">
+                                        <FontAwesomeIcon
+                                            icon={faWallet}
+                                            size="xl"
+                                        />
+                                    </div>
                                     <Typography variant="h5" gutterBottom>
-                                        Daftar Produk
+                                        Daftar Pengeluaran
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
                                     <Button
                                         variant="contained"
                                         size="small"
-                                        onClick={() => onAddProduct(null)}
+                                        onClick={() => onAddExpense(null)}
                                     >
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon
                                                 icon={faFileImport}
                                             />
-                                            Tambah Produk
+                                            Tambah Pengeluaran
                                         </div>
                                     </Button>
                                 </CardActions>
                             </div>
-                            <div className="relative h-[4.167rem] p-[2.583rem]">
-                                <SearchField setSearchTerm={setSearchTerm} />
-                                <SortBy sortBy={sortBy} setSortBy={setSortBy} />
-                            </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
                                 {[
-                                    "Nama Produk",
-                                    "Harga Produk Per Unit",
-                                    "Unit",
+                                    "Nama",
+                                    "Harga",
+                                    "Tanggal Pengeluaran",
                                     "Ubah/Hapus",
                                 ].map((title) => (
                                     <div className="w-[25%]" key={title}>
@@ -129,17 +119,18 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                                 ))}
                             </div>
                         </div>
-                        {paginatedProducts.length > 0 ? (
-                            paginatedProducts.map((product) => (
+                        {paginatedExpenses.length > 0 ? (
+                            paginatedExpenses.map((expense) => (
                                 <div
+                                    key={expense.id}
                                     className="flex px-[0.83rem]"
-                                    key={product.id}
                                 >
-                                    <div className="flex w-[25%] items-center justify-center">
-                                        <Chip
-                                            label={product.name}
-                                            size="small"
-                                        />
+                                    <div className="flex w-[25%] items-center">
+                                        <CardContent>
+                                            <Typography variant="body2">
+                                                {expense.name}
+                                            </Typography>
+                                        </CardContent>
                                     </div>
                                     <div className="flex w-[25%] items-center">
                                         <CardContent>
@@ -151,14 +142,18 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                                                         currency: "IDR",
                                                         minimumFractionDigits: 0,
                                                     },
-                                                ).format(product.price)}
+                                                ).format(expense.price)}
                                             </Typography>
                                         </CardContent>
                                     </div>
-                                    <div className="flex w-[20%] items-center">
+                                    <div className="flex w-[25%] items-center">
                                         <CardContent>
                                             <Typography variant="body2">
-                                                {product.type}
+                                                {dayjs(
+                                                    new Date(
+                                                        expense.expenseDate,
+                                                    ),
+                                                ).format("DD-MM-YYYY")}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -167,7 +162,7 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                                             variant="contained"
                                             size="small"
                                             onClick={() =>
-                                                onAddProduct(product)
+                                                onAddExpense(expense)
                                             }
                                         >
                                             Ubah
@@ -176,7 +171,7 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                                             variant="outlined"
                                             size="small"
                                             onClick={() =>
-                                                onDeleteProduct(product.id)
+                                                onDeleteExpense(expense.id)
                                             }
                                         >
                                             Hapus
@@ -186,13 +181,13 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                             ))
                         ) : (
                             <Typography className="p-4 text-center">
-                                Belum ada produk.
+                                Belum ada pengeluaran.
                             </Typography>
                         )}
                     </Card>
                 </div>
             </div>
-            {filteredProducts.length > itemsPerPage && (
+            {expenseData.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}
                     page={page}
@@ -204,9 +199,10 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
     );
 };
 
-DataTableProducts.propTypes = {
-    onAddProduct: PropTypes.func.isRequired,
-    onDeleteProduct: PropTypes.func.isRequired,
-};
+export default DataTableExpense;
 
-export default DataTableProducts;
+DataTableExpense.propTypes = {
+    onAddExpense: PropTypes.func.isRequired,
+    onDeleteExpense: PropTypes.func.isRequired,
+    setTotalExpense: PropTypes.func.isRequired,
+};

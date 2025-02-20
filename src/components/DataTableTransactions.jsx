@@ -67,7 +67,13 @@ const DataTableTransactions = ({ onAddTransaction }) => {
         <>
             <div className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
-                    <Card sx={{ backgroundColor: "#f5f5f5" }}>
+                    <Card
+                        sx={{
+                            backgroundColor: "#ffffff",
+                            padding: "0.625rem",
+                            borderRadius: "1.375rem",
+                        }}
+                    >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
@@ -79,7 +85,6 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                     <Button
                                         variant="contained"
                                         size="small"
-                                        color="hanPurple"
                                         onClick={onAddTransaction}
                                     >
                                         <div className="flex items-center gap-[0.5rem]">
@@ -91,7 +96,7 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                     </Button>
                                 </CardActions>
                             </div>
-                            <div className="flex px-[0.83rem]">
+                            <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
                                 {[
                                     "Kode Pelanggan",
                                     "Nama Pelanggan",
@@ -118,15 +123,11 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                         <Chip
                                             label={item.customer.id
                                                 .toUpperCase()
-                                                .substring(0, 10)}
+                                                .substring(0, 8)}
                                             size="small"
-                                            style={{
-                                                backgroundColor: "#13deb9",
-                                                color: "white",
-                                            }}
                                         />
                                     </div>
-                                    <div className="w-[33.3333%]">
+                                    <div className="flex w-[33.3333%] items-center">
                                         <CardContent>
                                             <Typography variant="body1">
                                                 {item.customer.name}
@@ -144,7 +145,6 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                         <Button
                                             variant="outlined"
                                             size="small"
-                                            color="hanPurple"
                                             onClick={() =>
                                                 navigate(
                                                     `/transactions/${item.customer.id}`,

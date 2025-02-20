@@ -38,7 +38,6 @@ const DeleteConfirmationModal = ({
                             <Button
                                 variant="contained"
                                 className="w-[6.25rem]"
-                                color="hanPurple"
                                 onClick={() => {
                                     onConfirm();
                                     onClose();
@@ -49,7 +48,6 @@ const DeleteConfirmationModal = ({
                             <Button
                                 variant="outlined"
                                 className="w-[6.25rem]"
-                                color="hanPurple"
                                 onClick={onClose}
                             >
                                 Batal

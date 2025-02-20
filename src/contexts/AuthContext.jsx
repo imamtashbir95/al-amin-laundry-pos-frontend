@@ -25,15 +25,15 @@ export const AuthProvider = ({ children }) => {
         }
     }, [token]);
 
-    const signIn = async (username, password, newToken) => {
+    const signIn = async (signInData) => {
         try {
-            const response = await axiosInstance.post("/auth/login", {
-                username,
-                password,
-            });
+            const response = await axiosInstance.post(
+                "/auth/login",
+                signInData,
+            );
 
             if (response.data?.data.token) {
-                setToken(response.data.data.token || newToken);
+                setToken(response.data.data.token);
                 return true;
             }
         } catch (error) {
@@ -48,15 +48,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const signUp = async (name, email, username, password, role) => {
+    const signUp = async (signUpData) => {
         try {
-            const response = await axiosInstance.post("/auth/register", {
-                name,
-                email,
-                username,
-                password,
-                role,
-            });
+            const response = await axiosInstance.post(
+                "/auth/register",
+                signUpData,
+            );
 
             if (response.data?.status.code === 201) {
                 toast.success("Pengguna berhasil didaftarkan!");

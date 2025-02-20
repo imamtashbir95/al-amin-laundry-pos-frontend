@@ -31,9 +31,8 @@ const NotFoundPage = () => {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[250%]">
                     <Button
                         variant="contained"
-                        color="hanPurple"
                         sx={{ height: "3.125rem", width: "13.125rem" }}
-                        onClick={() => navigate(`/transactions`)}
+                        onClick={() => navigate(`/dashboard`)}
                     >
                         Kembali
                     </Button>

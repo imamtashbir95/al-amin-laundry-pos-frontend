@@ -4,7 +4,6 @@ import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
 import { ProductContext } from "../contexts/ProductContext";
-import SidebarExtender from "../components/SidebarExtender";
 import DataTableProducts from "../components/DataTableProducts";
 import PageContentWrapper from "../components/PageContentWrapper";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
@@ -54,15 +53,7 @@ const ProductsPage = () => {
 
     return (
         <>
-            <div
-                className="relative flex flex-col"
-                style={{
-                    filter:
-                        modalState.show || confirmationModalState.show
-                            ? "blur(5px)"
-                            : "none",
-                }}
-            >
+            <div className="relative flex flex-col bg-[#fafafa]">
                 <TopBar />
                 {isDesktop && <Sidebar />}
                 <PageContentWrapper>
@@ -71,7 +62,6 @@ const ProductsPage = () => {
                         onDeleteProduct={handleOpenConfirmationModal}
                     />
                 </PageContentWrapper>
-                <SidebarExtender />
                 <FootBar />
             </div>
             <AnimatePresence>

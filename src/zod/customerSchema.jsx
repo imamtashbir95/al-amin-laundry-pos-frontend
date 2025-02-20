@@ -3,8 +3,8 @@ import { z } from "zod";
 export const customerSchema = z.object({
     name: z
         .string()
-        .min(1, "Nama Konsumen harus diisi")
-        .max(100, "Nama Konsumen maksimal 100 karakter"),
+        .min(1, "Nama Pelanggan harus diisi")
+        .max(100, "Nama Pelanggan maksimal 100 karakter"),
     phoneNumber: z
         .string()
         .regex(

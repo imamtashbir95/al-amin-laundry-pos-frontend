@@ -7,7 +7,7 @@ const SearchField = ({ setSearchTerm }) => {
 
     return (
         <div
-            className={`absolute top-1/2 right-[15.583rem] flex -translate-y-1/2 transition-all duration-300 ${isFocused ? "w-[calc(100%-18.166rem)]" : "w-[12-rem]"} flex-col gap-[0.5rem]`}
+            className={`absolute top-1/2 right-[15.583rem] flex -translate-y-1/2 transition-all duration-10000 ${isFocused ? "w-[calc(100%-18.166rem)]" : "w-[12-rem]"} flex-col gap-[0.5rem]`}
         >
             Cari
             <TextField
@@ -26,7 +26,7 @@ const SearchField = ({ setSearchTerm }) => {
 };
 
 SearchField.propTypes = {
-    setSearchTerm: PropTypes.func,
+    setSearchTerm: PropTypes.func.isRequired,
 };
 
 export default SearchField;

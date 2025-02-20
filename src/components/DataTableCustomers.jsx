@@ -7,13 +7,12 @@ import {
     Card,
     CardActions,
     CardContent,
-    MenuItem,
     Pagination,
-    Select,
     Typography,
 } from "@mui/material";
-import { CustomerContext } from "../contexts/CustomerContext";
+import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
+import { CustomerContext } from "../contexts/CustomerContext";
 
 const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
     const { customers } = useContext(CustomerContext);
@@ -51,7 +50,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
 
     const pageCount = useMemo(
         () => Math.ceil(filteredCustomers.length / itemsPerPage),
-        [filteredCustomers.length, itemsPerPage],
+        [filteredCustomers, itemsPerPage],
     );
 
     const paginatedCustomers = useMemo(
@@ -75,7 +74,13 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
         <>
             <div className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
-                    <Card sx={{ backgroundColor: "#f5f5f5" }}>
+                    <Card
+                        sx={{
+                            backgroundColor: "#ffffff",
+                            padding: "0.625rem",
+                            borderRadius: "1.375rem",
+                        }}
+                    >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
@@ -87,7 +92,6 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                     <Button
                                         variant="contained"
                                         size="small"
-                                        color="hanPurple"
                                         onClick={onAddCustomer}
                                     >
                                         <div className="flex items-center gap-[0.5rem]">
@@ -101,32 +105,9 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                             </div>
                             <div className="relative h-[4.167rem] p-[2.583rem]">
                                 <SearchField setSearchTerm={setSearchTerm} />
-                                <div className="absolute top-1/2 right-[2.583rem] flex w-[12rem] -translate-y-1/2 flex-col gap-[0.5rem]">
-                                    Urutkan Berdasarkan
-                                    <Select
-                                        labelId="sort-by-label"
-                                        id="sort-by"
-                                        onChange={(e) =>
-                                            setSortBy(e.target.value)
-                                        }
-                                        value={sortBy}
-                                        size="small"
-                                        sx={{
-                                            width: "100%",
-                                            backgroundColor: "white",
-                                        }}
-                                    >
-                                        <MenuItem value="Terbaru">
-                                            Terbaru
-                                        </MenuItem>
-                                        <MenuItem value="Terlama">
-                                            Terlama
-                                        </MenuItem>
-                                        <MenuItem value="Nama">Nama</MenuItem>
-                                    </Select>
-                                </div>
+                                <SortBy sortBy={sortBy} setSortBy={setSortBy} />
                             </div>
-                            <div className="flex px-[0.83rem]">
+                            <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
                                 {[
                                     "Nama Pelanggan",
                                     "No. Telepon",
@@ -154,23 +135,23 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                         className="flex px-[0.83rem]"
                                         key={customer.id}
                                     >
-                                        <div className="w-[25%]">
+                                        <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {customer.name}
                                                 </Typography>
                                             </CardContent>
                                         </div>
-                                        <div className="w-[25%]">
+                                        <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {customer.phoneNumber}
                                                 </Typography>
                                             </CardContent>
                                         </div>
-                                        <div className="w-[25%]">
+                                        <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     {customer.address}
                                                 </Typography>
                                             </CardContent>
@@ -179,7 +160,6 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                             <Button
                                                 variant="contained"
                                                 size="small"
-                                                color="hanPurple"
                                                 onClick={() =>
                                                     onAddCustomer(customer)
                                                 }
@@ -189,7 +169,6 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                             <Button
                                                 variant="outlined"
                                                 size="small"
-                                                color="hanPurple"
                                                 onClick={() =>
                                                     onDeleteCustomer(
                                                         customer.id,
@@ -223,7 +202,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
 };
 
 DataTableCustomers.propTypes = {
-    onAddCustomer: PropTypes.func,
+    onAddCustomer: PropTypes.func.isRequired,
     onDeleteCustomer: PropTypes.func.isRequired,
 };
 

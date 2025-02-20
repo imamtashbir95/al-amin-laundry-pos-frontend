@@ -7,6 +7,8 @@ import { ProductProvider } from "./contexts/ProductContext";
 import { CustomerProvider } from "./contexts/CustomerContext";
 import { UserProvider } from "./contexts/UserContext";
 import ScrollToTop from "./components/ScrollToTop";
+import { TransactionProvider } from "./contexts/TransactionContext";
+import { ExpenseProvider } from "./contexts/ExpenseContext";
 
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
@@ -19,6 +21,8 @@ const TransactionDetailsPage = lazy(
 const SkeletonPage = lazy(() => import("./pages/SkeletonPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const UsersPage = lazy(() => import("./pages/UsersPage"));
+const ReportPage = lazy(() => import("./pages/ReportPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 
 const App = () => {
     return (
@@ -45,6 +49,16 @@ const App = () => {
                         }
                     />
                     <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Suspense fallback={<SkeletonPage />}>
+                                    <DashboardPage />
+                                </Suspense>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
                         path="/users"
                         element={
                             <UserProvider>
@@ -60,7 +74,7 @@ const App = () => {
                         path="/products"
                         element={
                             <ProductProvider>
-                                <ProtectedRoute>
+                                <ProtectedRoute requiredRole="admin">
                                     <Suspense fallback={<SkeletonPage />}>
                                         <ProductsPage />
                                     </Suspense>
@@ -93,11 +107,27 @@ const App = () => {
                     <Route
                         path="/transactions/:customerId"
                         element={
-                            <ProtectedRoute>
-                                <Suspense fallback={<SkeletonPage />}>
-                                    <TransactionDetailsPage />
-                                </Suspense>
-                            </ProtectedRoute>
+                            <TransactionProvider>
+                                <ProtectedRoute>
+                                    <Suspense fallback={<SkeletonPage />}>
+                                        <TransactionDetailsPage />
+                                    </Suspense>
+                                </ProtectedRoute>
+                            </TransactionProvider>
+                        }
+                    />
+                    <Route
+                        path="/report"
+                        element={
+                            <TransactionProvider>
+                                <ExpenseProvider>
+                                    <ProtectedRoute>
+                                        <Suspense fallback={<SkeletonPage />}>
+                                            <ReportPage />
+                                        </Suspense>
+                                    </ProtectedRoute>
+                                </ExpenseProvider>
+                            </TransactionProvider>
                         }
                     />
                 </Routes>

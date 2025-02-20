@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     Button,
@@ -10,13 +10,19 @@ import {
     Typography,
 } from "@mui/material";
 import { TransactionContext } from "../contexts/TransactionContext";
+import PropTypes from "prop-types";
+import dayjs from "dayjs";
 
-const DataTableDetailsTransaction = () => {
+const DataTableDetailsTransaction = ({
+    onAddTransaction,
+    onDeleteTransaction,
+}) => {
     const { transactions } = useContext(TransactionContext);
     const { customerId } = useParams();
     const navigate = useNavigate();
 
     const [page, setPage] = useState(1);
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
     const itemsPerPage = 5;
 
     const filteredTransactions = useMemo(() =>
@@ -50,127 +56,245 @@ const DataTableDetailsTransaction = () => {
         setPage(value);
     };
 
+    const handleSelectTransaction = (detail) => {
+        setSelectedTransaction(
+            selectedTransaction?.id === detail.id ? null : detail,
+        );
+    };
+
+    useEffect(() => {
+        if (selectedTransaction) {
+            const updatedDetail = details.find(
+                (detail) => detail.id === selectedTransaction.id,
+            );
+            if (updatedDetail) {
+                setSelectedTransaction(updatedDetail);
+            } else {
+                setSelectedTransaction(null);
+            }
+        }
+    }, [details]);
+
     return (
         <>
             <div className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
-                    <Card sx={{ backgroundColor: "#f5f5f5" }}>
-                        <div className="">
-                            <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
-                                <CardContent>
-                                    <Typography variant="h5" gutterBottom>
-                                        {filteredTransactions[0]?.customer?.name
-                                            ? `Transaksi a.n. ${filteredTransactions[0].customer.name}`
-                                            : "Pelanggan Tidak Ditemukan"}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions className="absolute right-[2.083rem]">
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        color="hanPurple"
-                                        onClick={() =>
-                                            navigate(`/transactions`)
-                                        }
-                                    >
-                                        Kembali
-                                    </Button>
-                                </CardActions>
-                            </div>
-                            <div className="flex px-[0.83rem]">
-                                {[
-                                    "Kode Transaksi",
-                                    "Tanggal Transaksi",
-                                    "Paket Laundry",
-                                    "Qty.",
-                                    "Total Bayar",
-                                ].map((title) => (
-                                    <div className="w-[20%]" key={title}>
-                                        <CardContent>
-                                            <Typography
-                                                variant="body1"
-                                                gutterBottom
-                                                fontWeight={500}
-                                            >
-                                                {title}
-                                            </Typography>
-                                        </CardContent>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        {filteredTransactions.length > 0 ? (
-                            paginatedDetails.map((detail) => (
-                                <div
-                                    className="flex px-[0.83rem]"
-                                    key={detail.id}
-                                >
-                                    <div className="flex w-[20%] items-center justify-center">
-                                        <Chip
-                                            label={detail.id
-                                                .toUpperCase()
-                                                .substring(0, 10)}
+                    <Card
+                        sx={{
+                            backgroundColor: "#ffffff",
+                            padding: "0.625rem",
+                            borderRadius: "1.375rem",
+                        }}
+                    >
+                        <div className="overflow-auto rounded-[0.75rem]">
+                            <div className="">
+                                <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
+                                    <CardContent>
+                                        <Typography variant="h5" gutterBottom>
+                                            {filteredTransactions[0]?.customer
+                                                ?.name
+                                                ? `Transaksi a.n. ${filteredTransactions[0].customer.name}`
+                                                : "Pelanggan Tidak Ditemukan"}
+                                        </Typography>
+                                    </CardContent>
+                                    {selectedTransaction && (
+                                        <>
+                                            <CardActions className="absolute right-[7.63rem]">
+                                                <Button
+                                                    variant="contained"
+                                                    size="small"
+                                                    onClick={() =>
+                                                        onDeleteTransaction(
+                                                            selectedTransaction.billId,
+                                                        )
+                                                    }
+                                                >
+                                                    Hapus
+                                                </Button>
+                                            </CardActions>
+                                            <CardActions className="absolute right-[12.63rem]">
+                                                <Button
+                                                    variant="contained"
+                                                    size="small"
+                                                    onClick={() =>
+                                                        onAddTransaction(
+                                                            selectedTransaction,
+                                                        )
+                                                    }
+                                                >
+                                                    Ubah
+                                                </Button>
+                                            </CardActions>
+                                        </>
+                                    )}
+
+                                    <CardActions className="absolute right-[2.083rem]">
+                                        <Button
+                                            variant="outlined"
                                             size="small"
-                                            style={{
-                                                backgroundColor: "#13deb9",
-                                                color: "white",
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="w-[20%]">
-                                        <CardContent>
-                                            <Typography variant="body1">
-                                                {`${String(new Date(detail.createdAt).getDate()).padStart(2, "0")}-${String(new Date(detail.createdAt).getMonth() + 1).padStart(2, "0")}-${new Date(detail.createdAt).getFullYear()}`}
-                                            </Typography>
-                                        </CardContent>
-                                    </div>
-                                    <div className="flex w-[20%] items-center">
-                                        <CardContent>
-                                            <div className="flex items-center">
-                                                <div className="mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[#13deb9]"></div>
+                                            onClick={() =>
+                                                navigate(`/transactions`)
+                                            }
+                                        >
+                                            Kembali
+                                        </Button>
+                                    </CardActions>
+                                </div>
+                                <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
+                                    {[
+                                        "No. Nota",
+                                        "Tanggal Transaksi",
+                                        "Tanggal Selesai",
+                                        "Paket Laundry",
+                                        "Qty.",
+                                        "Total Bayar",
+                                        "Dibayar",
+                                        "Status",
+                                    ].map((title) => (
+                                        <div className="w-[12.5%]" key={title}>
+                                            <CardContent>
                                                 <Typography
                                                     variant="body1"
-                                                    sx={{
-                                                        fontSize: "0.85rem",
-                                                        color: "gray",
-                                                    }}
+                                                    gutterBottom
+                                                    fontWeight={500}
                                                 >
-                                                    {detail.product.name}
+                                                    {title}
                                                 </Typography>
-                                            </div>
-                                        </CardContent>
-                                    </div>
-                                    <div className="w-[20%]">
-                                        <CardContent>
-                                            <Typography variant="body1">
-                                                {`${detail.qty} kg`}
-                                            </Typography>
-                                        </CardContent>
-                                    </div>
-                                    <div className="w-[20%]">
-                                        <CardContent>
-                                            <Typography variant="body1">
-                                                {new Intl.NumberFormat(
-                                                    "id-ID",
-                                                    {
-                                                        style: "currency",
-                                                        currency: "IDR",
-                                                        minimumFractionDigits: 0,
-                                                    },
-                                                ).format(
-                                                    detail.price *
-                                                        Math.ceil(detail.qty),
-                                                )}
-                                            </Typography>
-                                        </CardContent>
-                                    </div>
+                                            </CardContent>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))
-                        ) : (
-                            <Typography className="p-4 text-center">
-                                Tidak ada transaksi untuk pelanggan ini.
-                            </Typography>
-                        )}
+                            </div>
+                            {filteredTransactions.length > 0 ? (
+                                paginatedDetails.map((detail) => (
+                                    <div
+                                        className={`flex cursor-pointer px-[0.83rem] ${
+                                            selectedTransaction?.id ===
+                                            detail.id
+                                                ? "bg-[#d6d6d6]"
+                                                : ""
+                                        }`}
+                                        onClick={() =>
+                                            handleSelectTransaction(detail)
+                                        }
+                                        key={detail.id}
+                                    >
+                                        <div className="flex w-[12.5%] items-center justify-center">
+                                            <Chip
+                                                label={detail.invoiceId.toUpperCase()}
+                                                size="small"
+                                            />
+                                        </div>
+                                        <div className="flex w-[12.5%] items-center">
+                                            <CardContent>
+                                                <Typography variant="body2">
+                                                    {dayjs(
+                                                        new Date(
+                                                            detail.createdAt,
+                                                        ),
+                                                    ).format("DD-MM-YYYY")}
+                                                </Typography>
+                                            </CardContent>
+                                        </div>
+                                        <div className="flex w-[12.5%] items-center">
+                                            <CardContent>
+                                                <Typography variant="body2">
+                                                    {dayjs(
+                                                        new Date(
+                                                            detail.finishDate,
+                                                        ),
+                                                    ).format("DD-MM-YYYY")}
+                                                </Typography>
+                                            </CardContent>
+                                        </div>
+                                        <div className="relative flex w-[12.5%] items-center">
+                                            <CardContent>
+                                                <div className="flex items-center">
+                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[#13deb9]"></div>
+                                                    <div className="absolute left-[2.25rem]">
+                                                        <Typography
+                                                            variant="body2"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "0.85rem",
+                                                                color: "gray",
+                                                            }}
+                                                        >
+                                                            {
+                                                                detail.product
+                                                                    .name
+                                                            }
+                                                        </Typography>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        </div>
+                                        <div className="flex w-[12.5%] items-center">
+                                            <CardContent>
+                                                <Typography variant="body2">
+                                                    {`${detail.qty} ${detail.product.type}`}
+                                                </Typography>
+                                            </CardContent>
+                                        </div>
+                                        <div className="flex w-[12.5%] items-center">
+                                            <CardContent>
+                                                <Typography variant="body2">
+                                                    {new Intl.NumberFormat(
+                                                        "id-ID",
+                                                        {
+                                                            style: "currency",
+                                                            currency: "IDR",
+                                                            minimumFractionDigits: 0,
+                                                        },
+                                                    ).format(detail.price)}
+                                                </Typography>
+                                            </CardContent>
+                                        </div>
+                                        <div className="flex w-[12.5%] items-center justify-center">
+                                            <Chip
+                                                label={detail.paymentStatus
+                                                    .toUpperCase()
+                                                    .replace("-", " ")}
+                                                size="small"
+                                                style={{
+                                                    backgroundColor:
+                                                        detail.paymentStatus ===
+                                                        "belum-dibayar"
+                                                            ? "#ff6b81"
+                                                            : "#1abc9c",
+                                                    color: "white",
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="flex w-[12.5%] items-center justify-center">
+                                            <Chip
+                                                label={detail.status
+                                                    .toUpperCase()
+                                                    .replace("-", " ")}
+                                                size="small"
+                                                style={{
+                                                    backgroundColor:
+                                                        detail.status === "baru"
+                                                            ? "#6A5ACD"
+                                                            : detail.status ===
+                                                                "proses"
+                                                              ? "#f39c12"
+                                                              : detail.status ===
+                                                                  "selesai"
+                                                                ? "#2ecc71"
+                                                                : "#1abc9c",
+                                                    color: "white",
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <Typography className="p-4 text-center">
+                                    Tidak ada transaksi untuk pelanggan ini.
+                                </Typography>
+                            )}
+                        </div>
                     </Card>
                 </div>
             </div>
@@ -184,6 +308,11 @@ const DataTableDetailsTransaction = () => {
             )}
         </>
     );
+};
+
+DataTableDetailsTransaction.propTypes = {
+    onAddTransaction: PropTypes.func.isRequired,
+    onDeleteTransaction: PropTypes.func.isRequired,
 };
 
 export default DataTableDetailsTransaction;

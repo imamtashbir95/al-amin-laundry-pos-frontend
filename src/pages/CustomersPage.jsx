@@ -3,7 +3,6 @@ import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
-import SidebarExtender from "../components/SidebarExtender";
 import { CustomerContext } from "../contexts/CustomerContext";
 import DataTableCustomers from "../components/DataTableCustomers";
 import PageContentWrapper from "../components/PageContentWrapper";
@@ -20,7 +19,7 @@ const CustomersPage = () => {
 
     const [modalState, setModalState] = useState({
         show: false,
-        product: null,
+        customer: null,
     });
     const [confirmationModalState, setConfirmationModalState] = useState({
         show: false,
@@ -54,15 +53,7 @@ const CustomersPage = () => {
 
     return (
         <>
-            <div
-                className="relative flex flex-col"
-                style={{
-                    filter:
-                        modalState.show || confirmationModalState.show
-                            ? "blur(5px)"
-                            : "none",
-                }}
-            >
+            <div className="relative flex flex-col bg-[#fafafa]">
                 <TopBar />
                 {isDesktop && <Sidebar />}
                 <PageContentWrapper>
@@ -71,7 +62,6 @@ const CustomersPage = () => {
                         onDeleteCustomer={handleOpenConfirmationModal}
                     />
                 </PageContentWrapper>
-                <SidebarExtender />
                 <FootBar />
             </div>
             <AnimatePresence>
