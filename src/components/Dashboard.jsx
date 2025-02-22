@@ -209,7 +209,7 @@ const Dashboard = () => {
                                 variant="h2"
                                 sx={{ fontWeight: "bold" }}
                             >
-                                {newItems}
+                                {newItems >= 100 ? "99+" : newItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
@@ -243,7 +243,7 @@ const Dashboard = () => {
                                 variant="h2"
                                 sx={{ fontWeight: "bold" }}
                             >
-                                {processItems}
+                                {processItems >= 100 ? "99+" : processItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
@@ -277,7 +277,7 @@ const Dashboard = () => {
                                 variant="h2"
                                 sx={{ fontWeight: "bold" }}
                             >
-                                {doneItems}
+                                {doneItems >= 100 ? "99+" : doneItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
@@ -311,7 +311,7 @@ const Dashboard = () => {
                                 variant="h2"
                                 sx={{ fontWeight: "bold" }}
                             >
-                                {takenItems}
+                                {takenItems >= 100 ? "99+" : takenItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
