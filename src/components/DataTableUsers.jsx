@@ -177,7 +177,7 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                 ))
                             ) : (
                                 <Typography className="p-4 text-center">
-                                    Belum ada pelanggan.
+                                    Belum ada karyawan.
                                 </Typography>
                             )}
                         </div>

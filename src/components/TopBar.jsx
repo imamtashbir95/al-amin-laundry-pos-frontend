@@ -35,6 +35,14 @@ const TopBar = () => {
         }
     }, [isMobile]);
 
+    useEffect(() => {
+        document.body.style.overflow = showSidebar ? "hidden" : "auto";
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [showSidebar]);
+
     return (
         <>
             <div className="fixed top-0 z-10 flex w-full flex-col bg-white">
