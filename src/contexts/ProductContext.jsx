@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
 
-export const ProductContext = createContext();
+const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
@@ -73,3 +73,5 @@ export const ProductProvider = ({ children }) => {
 ProductProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export { ProductContext };

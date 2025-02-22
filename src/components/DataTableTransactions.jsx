@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,12 +10,12 @@ import {
     Pagination,
     Typography,
 } from "@mui/material";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 
 const DataTableTransactions = ({ onAddTransaction }) => {
-    const { transactions } = useContext(TransactionContext);
+    const { transactions } = useTransaction();
     const navigate = useNavigate();
 
     const [page, setPage] = useState(1);

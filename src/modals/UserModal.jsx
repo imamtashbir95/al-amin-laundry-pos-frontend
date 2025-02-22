@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@mui/material";
 import { signUpSchema } from "../zod/signUpSchema";
-import { UserContext } from "../contexts/UserContext";
+import { useUser } from "../contexts/useUser";
 
 const UserModal = ({ onClose, user }) => {
     const form = useForm({
@@ -24,7 +24,7 @@ const UserModal = ({ onClose, user }) => {
         resolver: zodResolver(signUpSchema),
     });
 
-    const { registerUser, updateUser } = useContext(UserContext);
+    const { registerUser, updateUser } = useUser();
 
     useEffect(() => {
         if (user) {

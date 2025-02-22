@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@mui/material";
 import { productSchema } from "../zod/productSchema";
-import { ProductContext } from "../contexts/ProductContext";
+import { useProduct } from "../contexts/useProduct";
 
 const ProductModal = ({ onClose, product }) => {
     const form = useForm({
@@ -22,7 +22,7 @@ const ProductModal = ({ onClose, product }) => {
         resolver: zodResolver(productSchema),
     });
 
-    const { addProduct, updateProduct } = useContext(ProductContext);
+    const { addProduct, updateProduct } = useProduct();
 
     useEffect(() => {
         if (product) {

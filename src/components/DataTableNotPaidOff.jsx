@@ -1,18 +1,16 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import dayjs from "dayjs";
-import PropTypes from "prop-types";
 import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faExclamationCircle,
     faUserClock,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Cari Belum Dibayar (Terkait "Pilih Tanggal" tidak Transaksi Masuk)
 // - Jika finishDate <= nowDate && paymentStatus === "belum-dibayar"
 const DataTableNotPaidOff = () => {
-    const { transactionsNotPaidOff } = useContext(TransactionContext);
+    const { transactionsNotPaidOff } = useTransaction();
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 2;

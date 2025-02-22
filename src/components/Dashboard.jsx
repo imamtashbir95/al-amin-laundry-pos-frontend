@@ -3,20 +3,18 @@ import {
     faClipboardList,
     faHourglassHalf,
     faHouseUser,
-    faSoap,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, Typography } from "@mui/material";
-import { useContext, useEffect, useMemo, useRef } from "react";
-import { TransactionContext } from "../contexts/TransactionContext";
-import { ExpenseContext } from "../contexts/ExpenseContext";
+import { useEffect, useMemo, useRef } from "react";
+import { useTransaction } from "../contexts/useTransaction";
 import Chart from "chart.js/auto";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/useAuth";
 
 const Dashboard = () => {
     const { user } = useAuth();
-    const { transactions } = useContext(TransactionContext);
+    const { transactions } = useTransaction();
     // const { expenses } = useContext(ExpenseContext);
 
     const chartRef = useRef(null);

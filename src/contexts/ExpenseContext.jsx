@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
 
-export const ExpenseContext = createContext();
+const ExpenseContext = createContext();
 
 export const ExpenseProvider = ({ children }) => {
     const [expenses, setExpenses] = useState([]);
@@ -81,3 +81,5 @@ export const ExpenseProvider = ({ children }) => {
 ExpenseProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export { ExpenseContext };

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
-import { useAuth } from "../contexts/AuthContext";
 
 const PageContentWrapper = ({ children }) => {
     const [greeting, setGreeting] = useState("");

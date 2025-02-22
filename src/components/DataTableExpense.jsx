@@ -1,12 +1,9 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faFileImport,
-    faMoneyBill1Wave,
-    faMoneyBillWave,
-    faReceipt,
     faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -17,14 +14,14 @@ import {
     Pagination,
     Typography,
 } from "@mui/material";
-import { ExpenseContext } from "../contexts/ExpenseContext";
+import { useExpense } from "../contexts/useExpense";
 
 const DataTableExpense = ({
     onAddExpense,
     onDeleteExpense,
     setTotalExpense,
 }) => {
-    const { expenses } = useContext(ExpenseContext);
+    const { expenses } = useExpense();
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 25;

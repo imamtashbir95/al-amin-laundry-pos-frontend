@@ -1,4 +1,4 @@
-import { lazy, useContext, useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { AnimatePresence } from "motion/react";
 import TopBar from "../components/TopBar";
@@ -7,7 +7,7 @@ import FootBar from "../components/FootBar";
 import { ProductProvider } from "../contexts/ProductContext";
 import { CustomerProvider } from "../contexts/CustomerContext";
 import PageContentWrapper from "../components/PageContentWrapper";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import DataTableDetailsTransaction from "../components/DataTableDetailsTransaction";
 
@@ -17,7 +17,7 @@ const DeleteConfirmationModal = lazy(
 );
 
 const TransactionDetailsPage = () => {
-    const { deleteTransaction } = useContext(TransactionContext);
+    const { deleteTransaction } = useTransaction();
 
     const [modalState, setModalState] = useState({
         show: false,

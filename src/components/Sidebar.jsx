@@ -14,11 +14,10 @@ import {
     faChartSimple,
     faHome,
     faReceipt,
-    faShop,
     faUsers,
     faUserShield,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/useAuth";
 import { useMemo } from "react";
 
 const Sidebar = () => {

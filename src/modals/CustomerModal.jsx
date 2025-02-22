@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@mui/material";
 import { customerSchema } from "../zod/customerSchema";
-import { CustomerContext } from "../contexts/CustomerContext";
+import { useCustomer } from "../contexts/useCustomer";
 
 const CustomerModal = ({ onClose, customer }) => {
     const form = useForm({
@@ -22,7 +22,7 @@ const CustomerModal = ({ onClose, customer }) => {
         resolver: zodResolver(customerSchema),
     });
 
-    const { addCustomer, updateCustomer } = useContext(CustomerContext);
+    const { addCustomer, updateCustomer } = useCustomer();
 
     useEffect(() => {
         if (customer) {

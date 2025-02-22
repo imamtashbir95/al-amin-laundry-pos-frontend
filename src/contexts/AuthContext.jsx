@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
@@ -91,8 +91,8 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
-
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export { AuthContext };
