@@ -48,7 +48,7 @@ const SignUpPage = () => {
         <>
             <form onSubmit={form.handleSubmit(handleSignUp)}>
                 <div
-                    className="flex h-[60.875rem] items-center justify-center bg-cover bg-center"
+                    className="flex h-screen items-center justify-center bg-cover bg-center"
                     style={{
                         backgroundImage: `url(${background})`,
                     }}

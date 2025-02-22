@@ -33,7 +33,7 @@ const SkeletonPage = () => {
             <div className="relative flex flex-col bg-[#fafafa]">
                 <TopBar />
                 {isDesktop && <Sidebar />}
-                <div className="z-10 ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
+                <div className="mt-[4.167rem] ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
                     <div className="flex flex-col items-center gap-[1rem]">
                         <div className="h-full w-full max-lg:overflow-x-scroll">
                             <div className="h-full max-lg:w-[58.33rem]">
