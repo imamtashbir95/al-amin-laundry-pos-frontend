@@ -5,7 +5,7 @@ import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sidebar from "./Sidebar";
 import logo_black from "../assets/logo-el.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/useAuth";
 import default_profile_pic from "../assets/default-profile-pic.webp";
 
 const TopBar = () => {

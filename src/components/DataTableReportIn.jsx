@@ -1,19 +1,15 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import dayjs from "dayjs";
-import PropTypes from "prop-types";
 import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faArrowUp,
     faCartArrowDown,
-    faFileInvoiceDollar,
-    faMoneyCheckAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 // - Jika createdAt === nowDate
 const DataTableReportIn = () => {
-    const { transactionsIn } = useContext(TransactionContext);
+    const { transactionsIn } = useTransaction();
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 25;

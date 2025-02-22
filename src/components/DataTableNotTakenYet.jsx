@@ -1,15 +1,14 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import dayjs from "dayjs";
-import PropTypes from "prop-types";
 import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 
 // Cari Belum Diambil (Terkait "Pilih Tanggal" tidak Transaksi Masuk)
 // - Jika finishDate <= nowDate && paymentStatus = "sudah-dibayar" && status === "selesai"
 const DataTableNotTakenYet = () => {
-    const { transactionsNotTakenYet } = useContext(TransactionContext);
+    const { transactionsNotTakenYet } = useTransaction();
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 2;

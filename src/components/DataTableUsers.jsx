@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
-import { UserContext } from "../contexts/UserContext";
+import { useUser } from "../contexts/useUser";
 
 const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
-    const { users } = useContext(UserContext);
+    const { users } = useUser();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("Terlama");
 

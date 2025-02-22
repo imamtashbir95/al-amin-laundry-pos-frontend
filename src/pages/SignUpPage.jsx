@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@mui/material";
 import logo_black from "../assets/logo-el.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/useAuth";
 import { signUpSchema } from "../zod/signUpSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 

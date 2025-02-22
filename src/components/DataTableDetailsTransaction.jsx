@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     Button,
@@ -9,7 +9,7 @@ import {
     Pagination,
     Typography,
 } from "@mui/material";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
@@ -17,7 +17,7 @@ const DataTableDetailsTransaction = ({
     onAddTransaction,
     onDeleteTransaction,
 }) => {
-    const { transactions } = useContext(TransactionContext);
+    const { transactions } = useTransaction();
     const { customerId } = useParams();
     const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ const DataTableDetailsTransaction = ({
                 transaction.customer?.id?.toLowerCase() ===
                 customerId?.toLowerCase(),
             [transactions, customerId],
-        ),
+        ), [transactions, customerId],
     );
 
     const details = useMemo(
@@ -73,7 +73,7 @@ const DataTableDetailsTransaction = ({
                 setSelectedTransaction(null);
             }
         }
-    }, [details]);
+    }, [details, selectedTransaction]);
 
     return (
         <>

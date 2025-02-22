@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
 
-export const UserContext = createContext();
+const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
@@ -78,3 +78,5 @@ export const UserProvider = ({ children }) => {
 UserProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export { UserContext };

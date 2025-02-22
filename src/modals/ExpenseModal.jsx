@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ import {
     TextField,
 } from "@mui/material";
 import { expenseSchema } from "../zod/expenseSchema";
-import { ExpenseContext } from "../contexts/ExpenseContext";
+import { useExpense } from "../contexts/useExpense";
 
 const ExpenseModal = ({ onClose, expense }) => {
     const form = useForm({
@@ -25,7 +25,7 @@ const ExpenseModal = ({ onClose, expense }) => {
         resolver: zodResolver(expenseSchema),
     });
 
-    const { addExpense, updateExpense } = useContext(ExpenseContext);
+    const { addExpense, updateExpense } = useExpense();
 
     useEffect(() => {
         if (expense) {

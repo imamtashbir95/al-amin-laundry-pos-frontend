@@ -1,9 +1,9 @@
-import { lazy, useContext, useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
-import { CustomerContext } from "../contexts/CustomerContext";
+import { useCustomer } from "../contexts/useCustomer";
 import DataTableCustomers from "../components/DataTableCustomers";
 import PageContentWrapper from "../components/PageContentWrapper";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
@@ -15,7 +15,7 @@ const DeleteConfirmationModal = lazy(
 );
 
 const CustomersPage = () => {
-    const { deleteCustomer } = useContext(CustomerContext);
+    const { deleteCustomer } = useCustomer();
 
     const [modalState, setModalState] = useState({
         show: false,

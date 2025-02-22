@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import dayjs from "dayjs";
-import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -18,10 +17,10 @@ import {
     Select,
     TextField,
 } from "@mui/material";
-import { ProductContext } from "../contexts/ProductContext";
+import { useProduct } from "../contexts/useProduct";
 import { transactionSchema } from "../zod/transactionSchema";
-import { CustomerContext } from "../contexts/CustomerContext";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useCustomer } from "../contexts/useCustomer";
+import { useTransaction } from "../contexts/useTransaction";
 import "dayjs/locale/en-gb";
 
 const TransactionModal = ({ onClose, transaction }) => {
@@ -47,10 +46,9 @@ const TransactionModal = ({ onClose, transaction }) => {
         resolver: zodResolver(transactionSchema),
     });
 
-    const { addTransaction, updateTransaction } =
-        useContext(TransactionContext);
-    const { products } = useContext(ProductContext);
-    const { customers } = useContext(CustomerContext);
+    const { addTransaction, updateTransaction } = useTransaction();
+    const { products } = useProduct();
+    const { customers } = useCustomer();
     const { customerId } = useParams();
 
     const selectedCustomer = customers.find(
@@ -80,15 +78,15 @@ const TransactionModal = ({ onClose, transaction }) => {
         }
     }, [transaction, selectedCustomer, form]);
 
-    useEffect(() => {
-        const product = form.watch("product");
-        const qty = form.watch("qty");
+    const product = useWatch({ control: form.control, name: "product" });
+    const qty = useWatch({ control: form.control, name: "qty" });
 
+    useEffect(() => {
         const total = product?.price * (Math.ceil(qty) || 0);
         if (!isNaN(total)) {
             form.setValue("price", total.toString());
         }
-    }, [form.watch("product"), form.watch("qty")]);
+    }, [product, qty, form]);
 
     useEffect(() => {
         console.log(transaction);

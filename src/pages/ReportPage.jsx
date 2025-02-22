@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useMediaQuery } from "react-responsive";
 import { AnimatePresence } from "motion/react";
@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
 import BillPicker from "../components/BillPicker";
 import ExpenseModal from "../modals/ExpenseModal";
-import { ExpenseContext } from "../contexts/ExpenseContext";
+import { useExpense } from "../contexts/useExpense";
 import { ProductProvider } from "../contexts/ProductContext";
 import DataTableExpense from "../components/DataTableExpense";
 import { CustomerProvider } from "../contexts/CustomerContext";
@@ -19,7 +19,7 @@ import DataTableNotTakenYet from "../components/DataTableNotTakenYet";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
 import { useSearchParams } from "react-router-dom";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useTransaction } from "../contexts/useTransaction";
 
 const ReportPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -28,9 +28,8 @@ const ReportPage = () => {
         fetchTransactionsOut,
         fetchTransactionsNotPaidOff,
         fetchTransactionsNotTakenYet,
-    } = useContext(TransactionContext);
-    const { fetchExpenses } = useContext(ExpenseContext);
-    const { deleteExpense } = useContext(ExpenseContext);
+    } = useTransaction();
+    const { fetchExpenses, deleteExpense } = useExpense();
 
     const [modalState, setModalState] = useState({
         show: false,
@@ -62,7 +61,14 @@ const ReportPage = () => {
         fetchExpenses(formattedDate);
         fetchTransactionsNotPaidOff(formattedDate);
         fetchTransactionsNotTakenYet(formattedDate);
-    }, [selectedDate]);
+    }, [
+        selectedDate,
+        fetchTransactionsIn,
+        fetchTransactionsOut,
+        fetchExpenses,
+        fetchTransactionsNotPaidOff,
+        fetchTransactionsNotTakenYet,
+    ]);
 
     useEffect(() => {
         const dateParam = searchParams.get("date");

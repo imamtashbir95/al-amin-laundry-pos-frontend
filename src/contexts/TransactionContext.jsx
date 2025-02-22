@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
 
-export const TransactionContext = createContext();
+const TransactionContext = createContext();
 
 export const TransactionProvider = ({ children }) => {
     const [transactions, setTransactions] = useState([]);
@@ -145,3 +145,5 @@ export const TransactionProvider = ({ children }) => {
 TransactionProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export { TransactionContext };
