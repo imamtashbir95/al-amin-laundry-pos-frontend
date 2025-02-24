@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,8 +13,10 @@ import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/useAuth";
 import { signInSchema } from "../zod/signInSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
+import { waveform } from "ldrs";
 
 const SignInPage = () => {
+    waveform.register();
     const form = useForm({
         defaultValues: {
             username: "",
@@ -25,14 +27,21 @@ const SignInPage = () => {
 
     const { token, signIn } = useAuth();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSignIn = async () => {
+        setIsLoading(true);
         const signInData = form.getValues();
         const success = await signIn(signInData);
+        setIsLoading(false);
         if (success) {
             navigate("/dashboard");
         }
     };
+
+    useEffect(() => {
+        console.log(isLoading);
+    }, [isLoading]);
 
     useEffect(() => {
         if (token) {
@@ -115,8 +124,18 @@ const SignInPage = () => {
                                     variant="contained"
                                     type="submit"
                                     sx={{ width: "100%" }}
+                                    disabled={isLoading}
                                 >
-                                    Masuk
+                                    {isLoading ? (
+                                        <l-waveform
+                                            size="27"
+                                            stroke="3.5"
+                                            speed="1"
+                                            color="white"
+                                        ></l-waveform>
+                                    ) : (
+                                        "Masuk"
+                                    )}
                                 </Button>
                             </div>
                             <div className="flex items-center justify-center">
