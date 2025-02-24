@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,8 +13,10 @@ import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/useAuth";
 import { signUpSchema } from "../zod/signUpSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
+import { waveform } from "ldrs";
 
 const SignUpPage = () => {
+    waveform.register();
     const form = useForm({
         defaultValues: {
             name: "",
@@ -28,10 +30,13 @@ const SignUpPage = () => {
 
     const { token, signUp } = useAuth();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSignUp = async () => {
+        setIsLoading(true);
         const signUpData = form.getValues();
         const success = await signUp(signUpData);
+        setIsLoading(false);
         if (success) {
             navigate("/signin");
         }
@@ -163,7 +168,16 @@ const SignUpPage = () => {
                                     type="submit"
                                     sx={{ width: "100%" }}
                                 >
-                                    Daftarkan Saya
+                                    {isLoading ? (
+                                        <l-waveform
+                                            size="27"
+                                            stroke="3.5"
+                                            speed="1"
+                                            color="white"
+                                        ></l-waveform>
+                                    ) : (
+                                        "Daftarkan Saya"
+                                    )}
                                 </Button>
                             </div>
                             <div className="flex items-center justify-center">

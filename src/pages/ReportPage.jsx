@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useMediaQuery } from "react-responsive";
 import { AnimatePresence } from "motion/react";
@@ -54,20 +54,40 @@ const ReportPage = () => {
         setSelectedDate(newDate);
     };
 
+    const fetchTransactionsInMemoized = useCallback((date) => {
+        fetchTransactionsIn(date);
+    }, []);
+
+    const fetchTransactionsOutMemoized = useCallback((date) => {
+        fetchTransactionsOut(date);
+    }, []);
+
+    const fetchExpensesMemoized = useCallback((date) => {
+        fetchExpenses(date);
+    }, []);
+
+    const fetchTransactionsNotPaidOffMemoized = useCallback((date) => {
+        fetchTransactionsNotPaidOff(date);
+    }, []);
+
+    const fetchTransactionsNotTakenYetMemoized = useCallback((date) => {
+        fetchTransactionsNotTakenYet(date);
+    }, []);
+
     useEffect(() => {
         const formattedDate = selectedDate.format("YYYY-MM-DD");
-        fetchTransactionsIn(formattedDate);
-        fetchTransactionsOut(formattedDate);
-        fetchExpenses(formattedDate);
-        fetchTransactionsNotPaidOff(formattedDate);
-        fetchTransactionsNotTakenYet(formattedDate);
+        fetchTransactionsInMemoized(formattedDate);
+        fetchTransactionsOutMemoized(formattedDate);
+        fetchExpensesMemoized(formattedDate);
+        fetchTransactionsNotPaidOffMemoized(formattedDate);
+        fetchTransactionsNotTakenYetMemoized(formattedDate);
     }, [
         selectedDate,
-        fetchTransactionsIn,
-        fetchTransactionsOut,
-        fetchExpenses,
-        fetchTransactionsNotPaidOff,
-        fetchTransactionsNotTakenYet,
+        fetchTransactionsInMemoized,
+        fetchTransactionsOutMemoized,
+        fetchExpensesMemoized,
+        fetchTransactionsNotPaidOffMemoized,
+        fetchTransactionsNotTakenYetMemoized,
     ]);
 
     useEffect(() => {
