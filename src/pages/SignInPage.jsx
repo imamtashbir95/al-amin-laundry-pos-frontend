@@ -15,7 +15,6 @@ import { useAuth } from "../contexts/useAuth";
 import { signInSchema } from "../zod/signInSchema";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 import { waveform } from "ldrs";
-import { time } from "motion";
 
 const SignInPage = () => {
     const [timeoutError, setTimeoutError] = useState(false);
