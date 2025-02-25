@@ -8,6 +8,7 @@ import {
     CardContent,
     InputLabel,
     TextField,
+    Typography,
 } from "@mui/material";
 import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/useAuth";
@@ -16,6 +17,7 @@ import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 import { waveform } from "ldrs";
 
 const SignInPage = () => {
+    const [timeoutError, setTimeoutError] = useState(false);
     waveform.register();
     const form = useForm({
         defaultValues: {
@@ -31,17 +33,20 @@ const SignInPage = () => {
 
     const handleSignIn = async () => {
         setIsLoading(true);
+        setTimeoutError(false);
         const signInData = form.getValues();
-        const success = await signIn(signInData);
+        const result = await signIn(signInData);
         setIsLoading(false);
-        if (success) {
+        if (result.success) {
             navigate("/dashboard");
+        } else if (result.timeout) {
+            setTimeoutError(true);
         }
     };
 
     useEffect(() => {
-        console.log(isLoading);
-    }, [isLoading]);
+        console.log(timeoutError);
+    }, [timeoutError]);
 
     useEffect(() => {
         if (token) {
@@ -73,6 +78,14 @@ const SignInPage = () => {
                             <div>
                                 <img className="h-[2.5rem]" src={logo_black} />
                             </div>
+                            {timeoutError && (
+                                <div className="rounded-[0.5rem] border border-[#ff0000] bg-[#ff6666]/[.2] p-[0.875rem]">
+                                    <Typography color="#ff0000">
+                                        Anda butuh waktu terlalu lama untuk
+                                        masuk. Silakan coba lagi sekarang.
+                                    </Typography>
+                                </div>
+                            )}
                             <Controller
                                 name="username"
                                 control={form.control}

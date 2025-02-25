@@ -26,25 +26,33 @@ export const AuthProvider = ({ children }) => {
     }, [token]);
 
     const signIn = async (signInData) => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 300000);
+
         try {
             const response = await axiosInstance.post(
                 "/auth/login",
                 signInData,
+                { signal: controller.signal },
             );
 
+            clearTimeout(timeout);
             if (response.data?.data.token) {
                 setToken(response.data.data.token);
-                return true;
+                return { success: true, timeout: false };
             }
         } catch (error) {
-            if (error.response) {
+            if (error.name === "CanceledError") {
+                return { success: false, timeout: true };
+            } else if (error.response) {
                 // toast.error(error.response.data.error);
                 toast.error("Username atau kata sandi salah.");
-                return false;
+                console.log(error);
             } else {
                 toast.error("Gagal terhubung ke server!");
-                return false;
+                console.log(error);
             }
+            return { success: false, timeout: false };
         }
     };
 
