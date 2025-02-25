@@ -30,6 +30,12 @@ const theme = createTheme({
         },
     },
     palette: {
+        red: {
+            main: "#ff0000",
+            light: "#ff6666",
+            dark: "#cc0000",
+            contrastText: "#ffffff",
+        },
         hanPurple: {
             main: "#441fee",
             light: "#775ef4",
