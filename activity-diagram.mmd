@@ -1,0 +1,56 @@
+graph TB
+    A[Customer] -->|Place Laundry Item| B[Laundry Item Received]
+    B --> C[Weigh the Laundry]
+    C --> D[Input Transaction]
+    D --> E[Issue Transction Invoice]
+    E --> F[Status = New Item]
+    F --> G[Receive Transaction Invoice]
+    G --> H[Process Laundry Item]
+    H --> I[Status = Process Item]
+    I --> J[Packaging]
+    J --> K{Done?}
+    K --> L[Status = Done Item]
+    K --> H[Process Laundry Item]
+    L --> M[Confirm to Customer]
+    M --> N[Receive Laundry Item]
+    N --> O[Payment]
+    O --> P[Receive Payment]
+    P --> Q[Payment Status = Paid]
+
+    subgraph Operational
+        H
+    end
+
+    subgraph Transaction Management
+        B
+        C
+        D
+        E
+        F
+        I
+        J
+        K
+        L
+        M
+        P
+        Q
+    end
+
+    subgraph Customer Interaction
+        A
+        G
+        N
+        O
+    end
+
+    classDef operational fill:#fbb,stroke:#333,stroke-width:2px;
+    class H operational;
+
+    classDef process fill:#f9f,stroke:#333,stroke-width:2px;
+    class B,C,D,E,F,I,J,K,L,M,P,Q process;
+
+    classDef interaction fill:#bbf,stroke:#333,stroke-width:2px;
+    class A,G,N,O interaction;
+    
+    style A fill:#ffdfdf,stroke:#333,stroke-width:2px
+    style Q fill:#dfffd6,stroke:#333,stroke-width:2px

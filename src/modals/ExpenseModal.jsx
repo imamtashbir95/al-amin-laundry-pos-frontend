@@ -37,10 +37,6 @@ const ExpenseModal = ({ onClose, expense }) => {
         }
     }, [expense, form]);
 
-    useEffect(() => {
-        console.log(expense);
-    }, [expense]);
-
     const handleExpenseSubmit = () => {
         const finalData = form.getValues();
 
