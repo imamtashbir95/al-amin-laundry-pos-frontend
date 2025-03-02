@@ -70,6 +70,7 @@ const Sidebar = () => {
                             width: "100%",
                             maxWidth: 360,
                             bgcolor: "",
+                            overflowX: "scroll",
                         }}
                     >
                         <List>

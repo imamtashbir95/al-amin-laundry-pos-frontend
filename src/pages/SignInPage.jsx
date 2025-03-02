@@ -45,10 +45,6 @@ const SignInPage = () => {
     };
 
     useEffect(() => {
-        console.log(timeoutError);
-    }, [timeoutError]);
-
-    useEffect(() => {
         if (token) {
             const from = location.state?.from?.pathname || "/dashboard";
             navigate(from, { replace: true });

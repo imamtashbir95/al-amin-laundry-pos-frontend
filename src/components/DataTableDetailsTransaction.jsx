@@ -25,13 +25,15 @@ const DataTableDetailsTransaction = ({
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const itemsPerPage = 5;
 
-    const filteredTransactions = useMemo(() =>
-        transactions.filter(
-            (transaction) =>
-                transaction.customer?.id?.toLowerCase() ===
-                customerId?.toLowerCase(),
-            [transactions, customerId],
-        ), [transactions, customerId],
+    const filteredTransactions = useMemo(
+        () =>
+            transactions.filter(
+                (transaction) =>
+                    transaction.customer?.id?.toLowerCase() ===
+                    customerId?.toLowerCase(),
+                [transactions, customerId],
+            ),
+        [transactions, customerId],
     );
 
     const details = useMemo(
@@ -101,7 +103,7 @@ const DataTableDetailsTransaction = ({
                                         <>
                                             <CardActions className="absolute right-[7.63rem]">
                                                 <Button
-                                                    variant="contained"
+                                                    variant="outlined"
                                                     size="small"
                                                     onClick={() =>
                                                         onDeleteTransaction(

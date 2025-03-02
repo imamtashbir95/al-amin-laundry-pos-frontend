@@ -22,6 +22,8 @@ import { transactionSchema } from "../zod/transactionSchema";
 import { useCustomer } from "../contexts/useCustomer";
 import { useTransaction } from "../contexts/useTransaction";
 import "dayjs/locale/en-gb";
+import { axiosInstance } from "../lib/axios";
+import { toast } from "sonner";
 
 const TransactionModal = ({ onClose, transaction }) => {
     const form = useForm({
@@ -92,7 +94,7 @@ const TransactionModal = ({ onClose, transaction }) => {
         console.log(transaction);
     }, [transaction]);
 
-    const handleTransactionSubmit = () => {
+    const handleTransactionSubmit = async () => {
         const finalData = form.getValues();
 
         const selectedCustomer = customers.find(
@@ -122,7 +124,6 @@ const TransactionModal = ({ onClose, transaction }) => {
                 ],
             };
             updateTransaction(requestData);
-            console.log(requestData);
         } else {
             const requestData = {
                 customerId: selectedCustomer.id,
@@ -141,6 +142,71 @@ const TransactionModal = ({ onClose, transaction }) => {
             };
             addTransaction(requestData);
         }
+        const message = `
+--------------------------------------------
+As-salāmu ʿalaikum wa-raḥmatu -llāhi wa-barakātuhᵘ̄
+
+Ummi Laundry
+Perum. Vila Rizki Ilhami, Kel. Bojong Nangka, Kec. Kelapa Dua, Kab. Tangerang, Banten 15810
+Depan Masjid Khoirurroziqin
+
+Buka setiap hari, 
+Jam 8 pagi s.d. 8 malam
+--------------------------------------------
+${dayjs(new Date()).format("DD-MM-YYYY")}
+Jam: ${dayjs(new Date()).format("HH:mm:ss")}
+
+No. Nota: ${finalData.invoiceId}
+A.n. Nama: ${finalData.customer.name}
+No. WA: ${finalData.customer.phoneNumber}
+Alamat: ${finalData.customer.address}
+--------------------------------------------
+Layanan: ${finalData.product.name}
+Qty.: ${finalData.qty} ${finalData.product.type}
+Harga: ${Number(finalData.product.price).toLocaleString("id-ID")}
+Total: ${Number(
+            finalData.product.price * (Math.ceil(finalData.qty) || 0),
+        ).toLocaleString("id-ID")}
+--------------------------------------------
+Pembayaran rek. BCA
+567 603 5296
+a.n. Imam Tashbir Arrahman
+--------------------------------------------
+Perkiraan Selesai:
+${dayjs(new Date(finalData.finishDate)).format("DD-MM-YYYY")}
+Jam: ${dayjs(new Date(finalData.finishDate)).format("HH:mm:ss")}
+--------------------------------------------
+Status: ${finalData.paymentStatus
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ")}
+--------------------------------------------
+Antar jemput gratiss..
+WA: 085283267928
+--------------------------------------------
+${finalData.paymentStatus === "belum-dibayar" ? "Silakan selesaikan pembayaran tagihan. " : ""}Kami akan antar langsung bila sudah selesai. Terima kasih
+Salam
+--------------------------------------------
+            `;
+
+        try {
+            await axiosInstance.post("/send-whatsapp", {
+                phoneNumber: finalData.customer.phoneNumber,
+                message: message,
+            });
+        } catch (error) {
+            if (error.response) {
+                // Server merespons dengan status code di luar 2xx
+                toast.error("Gagal mengirim pesan WhatsApp");
+            } else if (error.request) {
+                // Permintaan dikirim tetapi tidak ada respons
+                toast.error("Tidak ada respons dari server");
+            } else {
+                // Kesalahan lainnya
+                toast.error("Terjadi kesalahan");
+            }
+        }
+
         onClose();
     };
 

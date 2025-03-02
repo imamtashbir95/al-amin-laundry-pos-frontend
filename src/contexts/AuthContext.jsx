@@ -47,10 +47,8 @@ export const AuthProvider = ({ children }) => {
             } else if (error.response) {
                 // toast.error(error.response.data.error);
                 toast.error("Username atau kata sandi salah.");
-                console.log(error);
             } else {
                 toast.error("Gagal terhubung ke server!");
-                console.log(error);
             }
             return { success: false, timeout: false };
         }
