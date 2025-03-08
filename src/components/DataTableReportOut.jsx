@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faFileInvoice,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileInvoice } from "@fortawesome/free-solid-svg-icons";
 
 // - Jika finishDate === nowDate && paymentStatus === "sudah-dibayar" && status === "selesai"
 const DataTableReportOut = ({ setTotalRevenue }) => {
@@ -19,10 +17,6 @@ const DataTableReportOut = ({ setTotalRevenue }) => {
         () => (Array.isArray(transactionsOut) ? transactionsOut : []),
         [transactionsOut],
     );
-
-    // useEffect(() => {
-    //     setPage(1);
-    // }, [selectedDate]);
 
     const pageCount = useMemo(() => {
         return Math.ceil(transactionData.length / itemsPerPage);
@@ -128,7 +122,7 @@ const DataTableReportOut = ({ setTotalRevenue }) => {
                                         <div className="relative flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <div className="flex items-center">
-                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[#13deb9]"></div>
+                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[var(--brand-2)]"></div>
                                                     <div className="absolute left-[2.25rem]">
                                                         <Typography
                                                             variant="body2"

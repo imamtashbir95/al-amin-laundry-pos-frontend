@@ -3,9 +3,7 @@ import dayjs from "dayjs";
 import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faCartArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 // - Jika createdAt === nowDate
 const DataTableReportIn = () => {
@@ -18,10 +16,6 @@ const DataTableReportIn = () => {
         () => (Array.isArray(transactionsIn) ? transactionsIn : []),
         [transactionsIn],
     );
-
-    // useEffect(() => {
-    //     setPage(1);
-    // }, [selectedDate]);
 
     const pageCount = useMemo(() => {
         return Math.ceil(transactionData.length / itemsPerPage);
@@ -113,7 +107,7 @@ const DataTableReportIn = () => {
                                         <div className="relative flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <div className="flex items-center">
-                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[#13deb9]"></div>
+                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[var(--brand-2)]"></div>
                                                     <div className="absolute left-[2.25rem]">
                                                         <Typography
                                                             variant="body2"

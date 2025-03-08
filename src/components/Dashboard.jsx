@@ -15,7 +15,6 @@ import { useAuth } from "../contexts/useAuth";
 const Dashboard = () => {
     const { user } = useAuth();
     const { transactions } = useTransaction();
-    // const { expenses } = useContext(ExpenseContext);
 
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
@@ -337,7 +336,7 @@ const Dashboard = () => {
                                 content: '""',
                                 position: "absolute",
                                 inset: 0,
-                                backgroundColor: "rgba(0, 0, 0, 0.3)", // Overlay hitam transparan
+                                backgroundColor: "rgba(0, 0, 0, 0.3)",
                             },
                             "@media (max-width: 1024px)": {
                                 width: "100%",

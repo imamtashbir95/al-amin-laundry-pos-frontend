@@ -90,10 +90,6 @@ const TransactionModal = ({ onClose, transaction }) => {
         }
     }, [product, qty, form]);
 
-    useEffect(() => {
-        console.log(transaction);
-    }, [transaction]);
-
     const handleTransactionSubmit = async () => {
         const finalData = form.getValues();
 
@@ -146,7 +142,7 @@ const TransactionModal = ({ onClose, transaction }) => {
 --------------------------------------------
 As-salāmu ʿalaikum wa-raḥmatu -llāhi wa-barakātuhᵘ̄
 
-Ummi Laundry
+Umi Laundry
 Perum. Vila Rizki Ilhami, Kel. Bojong Nangka, Kec. Kelapa Dua, Kab. Tangerang, Banten 15810
 Depan Masjid Khoirurroziqin
 
@@ -196,14 +192,11 @@ Salam
             });
         } catch (error) {
             if (error.response) {
-                // Server merespons dengan status code di luar 2xx
-                toast.error("Gagal mengirim pesan WhatsApp");
+                toast.error("Failed to send WhatsApp message");
             } else if (error.request) {
-                // Permintaan dikirim tetapi tidak ada respons
-                toast.error("Tidak ada respons dari server");
+                toast.error("No response from server");
             } else {
-                // Kesalahan lainnya
-                toast.error("Terjadi kesalahan");
+                toast.error("There is an error");
             }
         }
 
@@ -324,7 +317,7 @@ Salam
                                                                                 item.name
                                                                             }
                                                                         >
-                                                                            {`${item.phoneNumber} ${item.name}`}
+                                                                            {`${item.phoneNumber} – ${item.name}`}
                                                                         </MenuItem>
                                                                     ),
                                                                 )}

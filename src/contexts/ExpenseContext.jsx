@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
@@ -18,10 +18,6 @@ export const ExpenseProvider = ({ children }) => {
             toast.error("Gagal mengambil data pengeluaran.");
         }
     };
-
-    useEffect(() => {
-        fetchExpenses();
-    }, []);
 
     const addExpense = async (newExpense) => {
         try {

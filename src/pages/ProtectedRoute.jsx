@@ -7,7 +7,7 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
     const location = useLocation();
 
     if (token && user === null) {
-        return null; // Bisa diganti dengan loading spinner
+        return null; // Can be replaced with a loading spinner
     }
 
     if (!token) {
