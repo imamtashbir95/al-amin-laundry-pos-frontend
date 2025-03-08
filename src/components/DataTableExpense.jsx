@@ -31,10 +31,6 @@ const DataTableExpense = ({
         [expenses],
     );
 
-    // useEffect(() => {
-    //     setPage(1);
-    // }, [selectedDate]);
-
     const pageCount = useMemo(() => {
         return Math.ceil(expenseData.length / itemsPerPage);
     }, [expenseData, itemsPerPage]);

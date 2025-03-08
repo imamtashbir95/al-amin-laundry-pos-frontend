@@ -5,6 +5,11 @@ import App from "./App.jsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 
+const getCSSVariable = (variable) =>
+    getComputedStyle(document.documentElement)
+        .getPropertyValue(variable)
+        .trim();
+
 const theme = createTheme({
     typography: {
         fontFamily: [
@@ -30,12 +35,6 @@ const theme = createTheme({
         },
     },
     palette: {
-        red: {
-            main: "#ff0000",
-            light: "#ff6666",
-            dark: "#cc0000",
-            contrastText: "#ffffff",
-        },
         hanPurple: {
             main: "#441fee",
             light: "#775ef4",
@@ -60,29 +59,23 @@ const theme = createTheme({
             styleOverrides: {
                 root: {},
                 containedPrimary: {
-                    backgroundColor: "#441fee",
+                    backgroundColor: getCSSVariable("--brand-1"),
                     "&:hover": {
-                        backgroundColor: "#2f12aa",
-                    },
-                },
-                containedSecondary: {
-                    backgroundColor: "#8c8c8c",
-                    "&:hover": {
-                        backgroundColor: "#4d4d4d",
+                        backgroundColor: getCSSVariable("--brand-1-dark"),
                     },
                 },
                 outlinedPrimary: {
-                    borderColor: "#441fee",
-                    color: "#441fee",
+                    borderColor: getCSSVariable("--brand-1"),
+                    color: getCSSVariable("--brand-1"),
                     "&:hover": {
-                        borderColor: "#2f12aa",
-                        backgroundColor: "rgba(68, 31, 238, 0.1)",
+                        borderColor: getCSSVariable("--brand-1-dark"),
+                        backgroundColor: getCSSVariable("--brand-1-opaque"),
                     },
                 },
                 textPrimary: {
-                    color: "#441fee",
+                    color: getCSSVariable("--brand-1"),
                     "&:hover": {
-                        backgroundColor: "rgba(68, 31, 238, 0.1)",
+                        backgroundColor: getCSSVariable("--brand-1-opaque"),
                     },
                 },
             },
@@ -97,8 +90,8 @@ const theme = createTheme({
         MuiChip: {
             styleOverrides: {
                 root: {
-                    backgroundColor: "#13deb9",
-                    color: "#ffffff",
+                    backgroundColor: getCSSVariable("--brand-2"),
+                    color: getCSSVariable("--background"),
                 },
             },
         },
@@ -106,9 +99,9 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     "&.Mui-selected": {
-                        backgroundColor: "#441fee",
+                        backgroundColor: getCSSVariable("--brand-1"),
                         "&:hover": {
-                            backgroundColor: "#441fee",
+                            backgroundColor: getCSSVariable("--brand-1"),
                         },
                     },
                 },

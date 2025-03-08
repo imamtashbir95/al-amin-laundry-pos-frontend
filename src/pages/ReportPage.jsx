@@ -127,12 +127,6 @@ const ReportPage = () => {
             <ProductProvider>
                 <div
                     className="relative flex flex-col bg-[#fafafa]"
-                    // style={{
-                    //     filter:
-                    //         modalState.show || confirmationModalState.show
-                    //             ? "blur(5px)"
-                    //             : "none",
-                    // }}
                 >
                     <TopBar />
                     {isDesktop && <Sidebar />}

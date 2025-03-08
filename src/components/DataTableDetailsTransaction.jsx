@@ -212,7 +212,7 @@ const DataTableDetailsTransaction = ({
                                         <div className="relative flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <div className="flex items-center">
-                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[#13deb9]"></div>
+                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[var(--brand-2)]"></div>
                                                     <div className="absolute left-[2.25rem]">
                                                         <Typography
                                                             variant="body2"
