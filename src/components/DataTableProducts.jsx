@@ -18,7 +18,7 @@ import { useProduct } from "../contexts/useProduct";
 const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
     const { products } = useProduct();
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState("Terlama");
+    const [sortBy, setSortBy] = useState("created-at-asc");
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 5;
@@ -32,15 +32,15 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
             );
         }
 
-        if (sortBy === "Nama") {
+        if (sortBy === "name-asc") {
             filtered = [...filtered].sort((a, b) =>
                 a.name.localeCompare(b.name),
             );
-        } else if (sortBy === "Terbaru") {
+        } else if (sortBy === "created-at-asc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
             );
-        } else if (sortBy === "Terlama") {
+        } else if (sortBy === "created-at-desc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
             );

@@ -88,6 +88,9 @@ const TransactionModal = ({ onClose, transaction }) => {
         if (!isNaN(total)) {
             form.setValue("price", total.toString());
         }
+        console.log("Harga produk:", product?.price);
+        console.log("Qty.:", qty);
+        console.log("Total bayar:", total);
     }, [product, qty, form]);
 
     const handleTransactionSubmit = async () => {

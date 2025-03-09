@@ -27,7 +27,7 @@ const SignInPage = () => {
         resolver: zodResolver(signInSchema),
     });
 
-    const { token, signIn } = useAuth();
+    const {token, signIn } = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 

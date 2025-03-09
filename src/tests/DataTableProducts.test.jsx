@@ -1,7 +1,7 @@
 import { describe, expect, it, vitest } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { axiosInstance } from "../lib/axios";
-import DataTableProducts from "./DataTableProducts";
+import DataTableProducts from "../components/DataTableProducts";
 import { ProductProvider } from "../contexts/ProductContext";
 
 vitest.mock("../lib/axios");

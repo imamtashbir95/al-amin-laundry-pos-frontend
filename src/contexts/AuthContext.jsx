@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "../lib/axios";
+import { Navigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -18,6 +19,7 @@ export const AuthProvider = ({ children }) => {
             } catch {
                 setUser(null);
                 toast.error("Token tidak valid.");
+                localStorage.removeItem("token");
             }
         } else {
             setUser(null);

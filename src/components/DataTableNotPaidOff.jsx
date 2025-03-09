@@ -4,6 +4,7 @@ import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserClock } from "@fortawesome/free-solid-svg-icons";
+import { getCSSVariable } from "../utils/getCSSVariable";
 
 // Cari Belum Dibayar (Terkait "Pilih Tanggal" tidak Transaksi Masuk)
 // - Jika finishDate <= nowDate && paymentStatus === "belum-dibayar"
@@ -170,8 +171,12 @@ const DataTableNotPaidOff = () => {
                                                     backgroundColor:
                                                         detail.paymentStatus ===
                                                         "belum-dibayar"
-                                                            ? "#ff6b81"
-                                                            : "#1abc9c",
+                                                            ? getCSSVariable(
+                                                                  "--theme-color-1",
+                                                              )
+                                                            : getCSSVariable(
+                                                                  "--theme-color-2",
+                                                              ),
                                                     color: "white",
                                                 }}
                                             />
@@ -185,14 +190,22 @@ const DataTableNotPaidOff = () => {
                                                 style={{
                                                     backgroundColor:
                                                         detail.status === "baru"
-                                                            ? "#6A5ACD"
+                                                            ? getCSSVariable(
+                                                                  "--theme-color-3",
+                                                              )
                                                             : detail.status ===
                                                                 "proses"
-                                                              ? "#f39c12"
+                                                              ? getCSSVariable(
+                                                                    "--theme-color-4",
+                                                                )
                                                               : detail.status ===
                                                                   "selesai"
-                                                                ? "#2ecc71"
-                                                                : "#1abc9c",
+                                                                ? getCSSVariable(
+                                                                      "--theme-color-5",
+                                                                  )
+                                                                : getCSSVariable(
+                                                                      "--theme-color-6",
+                                                                  ),
                                                     color: "white",
                                                 }}
                                             />
