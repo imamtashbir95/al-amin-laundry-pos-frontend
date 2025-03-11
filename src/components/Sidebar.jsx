@@ -19,6 +19,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../contexts/useAuth";
 import { useMemo } from "react";
+import { motion } from "motion/react";
 
 const Sidebar = () => {
     const location = useLocation();
@@ -64,7 +65,7 @@ const Sidebar = () => {
                     height: "calc(100vh - 4.167rem)",
                 }}
             >
-                <div className="flex w-full flex-col items-center py-[2.5rem] px-[1.042rem]">
+                <div className="flex w-full flex-col items-center px-[1.042rem] py-[2.5rem]">
                     <Box
                         sx={{
                             width: "100%",
@@ -80,7 +81,15 @@ const Sidebar = () => {
                                 return (
                                     <ListItem disablePadding key={path}>
                                         {isActive && (
-                                            <div className="absolute top-1/2 left-0 h-[80%] w-[0.25rem] -translate-y-1/2 bg-[#441fee]"></div>
+                                            <motion.div
+                                                layoutId="activeSidebarIndicator"
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 200,
+                                                    damping: 20,
+                                                }}
+                                                className="absolute top-1/2 left-0 h-[100%] w-[0.25rem] -translate-y-1/2 bg-[#441fee]"
+                                            ></motion.div>
                                         )}
                                         <ListItemButton
                                             component={Link}
