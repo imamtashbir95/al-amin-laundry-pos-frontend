@@ -16,9 +16,9 @@ const SortBy = ({ sortBy, setSortBy }) => {
                     backgroundColor: "white",
                 }}
             >
-                <MenuItem value="Terbaru">Terbaru</MenuItem>
-                <MenuItem value="Terlama">Terlama</MenuItem>
-                <MenuItem value="Nama">Nama</MenuItem>
+                <MenuItem value="created-at-desc">Terbaru</MenuItem>
+                <MenuItem value="created-at-asc">Terlama</MenuItem>
+                <MenuItem value="name-asc">Nama (A–Z)</MenuItem>
             </Select>
         </div>
     );

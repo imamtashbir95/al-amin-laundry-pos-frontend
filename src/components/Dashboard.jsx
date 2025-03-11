@@ -181,7 +181,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <div className="flex h-full w-full flex-col gap-[1.75rem]">
+            <section className="flex h-full w-full flex-col gap-[1.75rem]">
                 <div className="flex h-full gap-[1.75rem] max-lg:flex-col">
                     <Card
                         sx={{
@@ -398,7 +398,7 @@ const Dashboard = () => {
                         </div>
                     </Card>
                 </div>
-            </div>
+            </section>
         </>
     );
 };

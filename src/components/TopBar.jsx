@@ -45,14 +45,16 @@ const TopBar = () => {
 
     return (
         <>
-            <div className="fixed top-0 z-10 flex w-full flex-col bg-white">
+            <header className="fixed top-0 z-10 flex w-full flex-col bg-white">
                 <div className="relative flex h-[4.167rem] flex-row items-center justify-end px-[2.083rem] shadow-xl">
                     <div className="absolute top-[0.83rem] left-[2.083rem] z-20 flex max-lg:left-1/2 max-lg:-translate-x-1/2">
-                        <img
-                            className="h-[2.5rem]"
-                            alt="logo"
-                            src={logo_black}
-                        />
+                        <a href="/">
+                            <img
+                                className="pointer-events-none h-[2.5rem]"
+                                alt="logo"
+                                src={logo_black}
+                            />
+                        </a>
                     </div>
                     <div className="absolute top-[0.83rem] left-[2.083rem] lg:hidden">
                         <Avatar
@@ -95,7 +97,7 @@ const TopBar = () => {
                     </Menu>
                 </div>
                 <Divider flexItem />
-            </div>
+            </header>
 
             {isMobile && (
                 <>

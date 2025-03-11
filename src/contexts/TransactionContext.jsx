@@ -98,7 +98,7 @@ export const TransactionProvider = ({ children }) => {
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Pelanggan atau karyawan tidak ditemukan.");
+                toast.error("Transaksi tidak ditemukan.");
             } else {
                 toast.error("Gagal menambah data transaksi.");
             }

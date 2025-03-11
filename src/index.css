@@ -14,6 +14,12 @@ html {
     --brand-1-opaque: rgba(68, 31, 238, 0.1);
     --brand-1-dark: "#2f12aa";
     --brand-2: #13ddb8;
+    --theme-color-1: #ff6b81;
+    --theme-color-2: #1abc9c;
+    --theme-color-3: #6a5acd;
+    --theme-color-4: #f39c12;
+    --theme-color-5: #2ecc71;
+    --theme-color-6: #1abc9c;
 }
 
 ::selection {

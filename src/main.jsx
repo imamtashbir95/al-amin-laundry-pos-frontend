@@ -4,11 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-
-const getCSSVariable = (variable) =>
-    getComputedStyle(document.documentElement)
-        .getPropertyValue(variable)
-        .trim();
+import { getCSSVariable } from "./utils/getCSSVariable";
 
 const theme = createTheme({
     typography: {

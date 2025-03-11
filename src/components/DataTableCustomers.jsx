@@ -17,7 +17,7 @@ import { useCustomer } from "../contexts/useCustomer";
 const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
     const { customers } = useCustomer();
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState("Terlama");
+    const [sortBy, setSortBy] = useState("created-at-asc");
 
     const [page, setPage] = useState(1);
     const itemsPerPage = 5;
@@ -31,15 +31,15 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
             );
         }
 
-        if (sortBy === "Nama") {
+        if (sortBy === "name-asc") {
             filtered = [...filtered].sort((a, b) =>
                 a.name.localeCompare(b.name),
             );
-        } else if (sortBy === "Terbaru") {
+        } else if (sortBy === "created-at-desc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
             );
-        } else if (sortBy === "Terlama") {
+        } else if (sortBy === "created-at-asc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
             );
@@ -72,7 +72,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
 
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -188,7 +188,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                         </div>
                     </Card>
                 </div>
-            </div>
+            </section>
             {filteredCustomers.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}

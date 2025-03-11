@@ -3,17 +3,17 @@ import { z } from "zod";
 export const expenseSchema = z.object({
     name: z
         .string()
-        .min(1, "Nama Pengeluaran harus diisi")
-        .max(100, "Maksimal 100 karakter"),
+        .min(1, "Nama pengeluaran harus diisi")
+        .max(100, "Nama pengeluaran maksimal 100 karakter"),
     price: z
         .string()
-        .min(1, "Harga Pengeluaran harus diisi")
+        .min(1, "Harga pengeluaran harus diisi")
         .refine(
             (val) => {
                 const parsed = parseFloat(val);
                 return !Number.isNaN(parsed) && parsed > 0;
             },
-            { message: "Harga Pengeluaran harus berupa angka positif" },
+            { message: "Harga pengeluaran harus berupa angka positif" },
         )
         .refine(
             (val) => {
@@ -21,7 +21,7 @@ export const expenseSchema = z.object({
                 return parsed >= 1000;
             },
             {
-                message: "Harga Pengeluaran tidak boleh kurang dari 1.000",
+                message: "Harga pengeluaran tidak boleh kurang dari 1.000",
             },
         )
         .refine(
@@ -32,7 +32,7 @@ export const expenseSchema = z.object({
             },
             {
                 message:
-                    "Harga Pengeluaran tidak boleh lebih dari 9.007.199.254.740.992",
+                    "Harga pengeluaran tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
     expenseDate: z.any(),

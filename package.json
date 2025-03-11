@@ -1,7 +1,7 @@
 {
     "name": "al-amin-laundry-pos-frontend",
     "private": true,
-    "version": "1.0.0",
+    "version": "1.0.19",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -18,7 +18,7 @@
         "laundry-system"
     ],
     "author": "Imam Tashbir Arrahman",
-    "license": "ISC",
+    "license": "MIT",
     "description": "Al-Amin Laundry POS is a web-based application designed to streamline transaction management for laundry businesses. It offers comprehensive features for managing products, customers, and transactions, aiming to enhance operational efficiency.",
     "dependencies": {
         "@emotion/react": "^11.14.0",

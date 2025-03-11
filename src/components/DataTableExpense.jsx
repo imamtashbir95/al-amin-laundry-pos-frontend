@@ -54,7 +54,7 @@ const DataTableExpense = ({
 
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -179,7 +179,7 @@ const DataTableExpense = ({
                         )}
                     </Card>
                 </div>
-            </div>
+            </section>
             {expenseData.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}

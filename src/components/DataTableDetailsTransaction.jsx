@@ -12,6 +12,7 @@ import {
 import { useTransaction } from "../contexts/useTransaction";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import { getCSSVariable } from "../utils/getCSSVariable";
 
 const DataTableDetailsTransaction = ({
     onAddTransaction,
@@ -23,6 +24,10 @@ const DataTableDetailsTransaction = ({
 
     const [page, setPage] = useState(1);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [selectedFullTransaction, setSelectedFullTransaction] =
+        useState(null);
+    const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
+
     const itemsPerPage = 5;
 
     const filteredTransactions = useMemo(
@@ -64,6 +69,23 @@ const DataTableDetailsTransaction = ({
         );
     };
 
+    const handleHoverTransaction = (event, detail) => {
+        setSelectedFullTransaction(
+            filteredTransactions.find(
+                (transaction) => transaction.id === detail.billId,
+            ),
+        );
+        setPopoverPosition({
+            top: event.clientY + 10,
+            left: event.clientX + 10,
+        });
+        console.log("selectedFullTransaction: ", selectedFullTransaction);
+    };
+
+    const handleLeaveTransaction = () => {
+        setSelectedFullTransaction(null);
+    };
+
     useEffect(() => {
         if (selectedTransaction) {
             const updatedDetail = details.find(
@@ -79,7 +101,7 @@ const DataTableDetailsTransaction = ({
 
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -179,6 +201,10 @@ const DataTableDetailsTransaction = ({
                                         onClick={() =>
                                             handleSelectTransaction(detail)
                                         }
+                                        onMouseEnter={(e) =>
+                                            handleHoverTransaction(e, detail)
+                                        }
+                                        onMouseLeave={handleLeaveTransaction}
                                         key={detail.id}
                                     >
                                         <div className="flex w-[12.5%] items-center justify-center">
@@ -262,8 +288,12 @@ const DataTableDetailsTransaction = ({
                                                     backgroundColor:
                                                         detail.paymentStatus ===
                                                         "belum-dibayar"
-                                                            ? "#ff6b81"
-                                                            : "#1abc9c",
+                                                            ? getCSSVariable(
+                                                                  "--theme-color-1",
+                                                              )
+                                                            : getCSSVariable(
+                                                                  "--theme-color-2",
+                                                              ),
                                                     color: "white",
                                                 }}
                                             />
@@ -277,14 +307,22 @@ const DataTableDetailsTransaction = ({
                                                 style={{
                                                     backgroundColor:
                                                         detail.status === "baru"
-                                                            ? "#6A5ACD"
+                                                            ? getCSSVariable(
+                                                                  "--theme-color-3",
+                                                              )
                                                             : detail.status ===
                                                                 "proses"
-                                                              ? "#f39c12"
+                                                              ? getCSSVariable(
+                                                                    "--theme-color-4",
+                                                                )
                                                               : detail.status ===
                                                                   "selesai"
-                                                                ? "#2ecc71"
-                                                                : "#1abc9c",
+                                                                ? getCSSVariable(
+                                                                      "--theme-color-5",
+                                                                  )
+                                                                : getCSSVariable(
+                                                                      "--theme-color-6",
+                                                                  ),
                                                     color: "white",
                                                 }}
                                             />
@@ -299,7 +337,7 @@ const DataTableDetailsTransaction = ({
                         </div>
                     </Card>
                 </div>
-            </div>
+            </section>
             {details.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}
@@ -307,6 +345,34 @@ const DataTableDetailsTransaction = ({
                     onChange={handlePageChange}
                     color="hanPurple"
                 />
+            )}
+
+            {/* Popover */}
+            {selectedFullTransaction && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: `${popoverPosition.top}px`,
+                        left: `${popoverPosition.left}px`,
+                        backgroundColor: "white",
+                        padding: "10px",
+                        boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+                        borderRadius: "5px",
+                        zIndex: 1000,
+                        pointerEvents: "none",
+                    }}
+                >
+                    <Typography variant="body2">
+                        <strong>Terakhir diperbarui oleh:</strong>{" "}
+                        {selectedFullTransaction.user?.name || "Unknown"}
+                    </Typography>
+                    <Typography variant="body2">
+                        <strong>Tanggal:</strong>{" "}
+                        {dayjs(selectedFullTransaction.updatedAt).format(
+                            "DD-MM-YYYY HH:mm:ss",
+                        )}
+                    </Typography>
+                </div>
             )}
         </>
     );

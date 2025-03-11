@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
             } catch {
                 setUser(null);
                 toast.error("Token tidak valid.");
+                localStorage.removeItem("token");
             }
         } else {
             setUser(null);

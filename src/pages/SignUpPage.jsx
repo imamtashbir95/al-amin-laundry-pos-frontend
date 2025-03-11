@@ -101,11 +101,11 @@ const SignUpPage = () => {
                                     return (
                                         <>
                                             <InputLabel id="text-email">
-                                                Email
+                                                E-mail
                                             </InputLabel>
                                             <TextField
                                                 {...field}
-                                                placeholder="Email"
+                                                placeholder="E-mail"
                                                 size="small"
                                                 error={fieldState.invalid}
                                                 helperText={
