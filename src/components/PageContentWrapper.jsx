@@ -23,7 +23,7 @@ const PageContentWrapper = ({ children }) => {
     }, []);
 
     return (
-        <div className="mt-[4.167rem] ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
+        <main className="mt-[4.167rem] ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
             <div className="flex flex-col items-center gap-[1rem]">
                 <div className="w-full">
                     <Typography
@@ -36,7 +36,7 @@ const PageContentWrapper = ({ children }) => {
                 </div>
                 {children}
             </div>
-        </div>
+        </main>
     );
 };
 

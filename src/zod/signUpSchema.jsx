@@ -7,9 +7,9 @@ export const signUpSchema = z.object({
         .max(100, "Nama maksimal 100 karakter"),
     email: z
         .string()
-        .email("Format Email tidak valid")
-        .min(5, "Email minimal 5 karakter")
-        .max(50, "Email maksimal 50 karakter"),
+        .email("Format e-mail tidak valid")
+        .min(5, "E-mail minimal 5 karakter")
+        .max(50, "E-mail maksimal 50 karakter"),
     username: z
         .string()
         .min(3, "Username minimal 3 karakter")
@@ -20,11 +20,11 @@ export const signUpSchema = z.object({
         ),
     password: z
         .string()
-        .min(8, "Kata Sandi minimal 8 karakter")
-        .max(255, "Kata Sandi maksimal 255 karakter")
+        .min(8, "Kata sandi minimal 8 karakter")
+        .max(255, "Kata sandi maksimal 255 karakter")
         .regex(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()]).*$/,
-            "Kata Sandi harus terdiri dari satu huruf kapital, satu angka, dan satu karakter khusus (!@#$%^&*()).",
+            "Kata sandi harus terdiri dari satu huruf kapital, satu angka, dan satu karakter khusus (!@#$%^&*()).",
         ),
     role: z.string(),
 });

@@ -119,15 +119,16 @@ const ReportPage = () => {
         setConfirmationModalState({ show: false, expenseId: null });
 
     const handleDeleteConfirm = () => {
-        deleteExpense(confirmationModalState.expenseId);
+        deleteExpense(
+            confirmationModalState.expenseId,
+            selectedDate.format("YYYY-MM-DD"),
+        );
     };
 
     return (
         <CustomerProvider>
             <ProductProvider>
-                <div
-                    className="relative flex flex-col bg-[#fafafa]"
-                >
+                <div className="relative flex flex-col bg-[#fafafa]">
                     <TopBar />
                     {isDesktop && <Sidebar />}
                     <PageContentWrapper>

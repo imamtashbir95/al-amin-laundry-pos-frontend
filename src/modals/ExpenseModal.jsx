@@ -40,6 +40,7 @@ const ExpenseModal = ({ onClose, expense }) => {
     const handleExpenseSubmit = () => {
         const finalData = form.getValues();
 
+        finalData.price = parseInt(finalData.price, 10);
         if (expense && expense.id) {
             const requestData = {
                 id: expense.id,
@@ -105,6 +106,7 @@ const ExpenseModal = ({ onClose, expense }) => {
                                             </InputLabel>
                                             <TextField
                                                 {...field}
+                                                type="number"
                                                 size="small"
                                                 placeholder="Harga Pengeluaran"
                                                 error={fieldState.invalid}

@@ -52,7 +52,7 @@ const DataTableReportOut = ({ setTotalRevenue }) => {
 
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -233,7 +233,7 @@ const DataTableReportOut = ({ setTotalRevenue }) => {
                         )}
                     </Card>
                 </div>
-            </div>
+            </section>
             {transactionData.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}

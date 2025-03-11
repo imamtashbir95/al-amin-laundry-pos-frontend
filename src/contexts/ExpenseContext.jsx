@@ -1,7 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { axiosInstance } from "../lib/axios";
+import dayjs from "dayjs";
 
 const ExpenseContext = createContext();
 
@@ -19,21 +20,31 @@ export const ExpenseProvider = ({ children }) => {
         }
     };
 
+    // useEffect(() => {
+    //     fetchExpenses(date);
+    // }, [date]);
+
     const addExpense = async (newExpense) => {
+        const newDate = dayjs(newExpense.expenseDate);
+        const formattedDate = newDate.format("YYYY-MM-DD");
+
         try {
             await axiosInstance.post("/expenses", newExpense);
             toast.success("Berhasil menambah data pengeluaran.");
-            fetchExpenses();
+            fetchExpenses(formattedDate);
         } catch {
             toast.error("Gagal menambah data pengeluaran.");
         }
     };
 
     const updateExpense = async (updatedExpense) => {
+        const newDate = dayjs(updatedExpense.expenseDate);
+        const formattedDate = newDate.format("YYYY-MM-DD");
+
         try {
             await axiosInstance.put(`/expenses`, updatedExpense);
             toast.success("Berhasil memperbarui data pengeluaran.");
-            fetchExpenses();
+            fetchExpenses(formattedDate);
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
@@ -44,11 +55,11 @@ export const ExpenseProvider = ({ children }) => {
         }
     };
 
-    const deleteExpense = async (id) => {
+    const deleteExpense = async (id, date) => {
         try {
             await axiosInstance.delete(`/expenses/${id}`);
             toast.success("Berhasil menghapus data pengeluaran.");
-            fetchExpenses();
+            fetchExpenses(date);
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);

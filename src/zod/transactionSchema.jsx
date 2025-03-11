@@ -3,8 +3,8 @@ import { z } from "zod";
 export const transactionSchema = z.object({
     invoiceId: z
         .string()
-        .min(1, "No. Nota harus diisi")
-        .max(100, "No. Nota maksimal 50 karakter"),
+        .min(1, "No. nota harus diisi")
+        .max(100, "No. nota maksimal 50 karakter"),
     customer: z.object({
         name: z.string().min(1, "Pelanggan harus diisi"),
     }),
@@ -34,6 +34,6 @@ export const transactionSchema = z.object({
         ),
     price: z.string(),
     finishDate: z.any(),
-    paymentStatus: z.string().min(1, "Status Pembayaran harus diisi"),
+    paymentStatus: z.string().min(1, "Status pembayaran harus diisi"),
     status: z.string().min(1, "Status harus diisi"),
 });

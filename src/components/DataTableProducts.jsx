@@ -36,11 +36,11 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
             filtered = [...filtered].sort((a, b) =>
                 a.name.localeCompare(b.name),
             );
-        } else if (sortBy === "created-at-asc") {
+        } else if (sortBy === "created-at-desc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
             );
-        } else if (sortBy === "created-at-desc") {
+        } else if (sortBy === "created-at-asc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
             );
@@ -73,7 +73,7 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
 
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -191,7 +191,7 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                         )}
                     </Card>
                 </div>
-            </div>
+            </section>
             {filteredProducts.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}

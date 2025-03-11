@@ -58,13 +58,13 @@ const Sidebar = () => {
 
     return (
         <>
-            <div
+            <nav
                 className="fixed top-[4.167rem] z-5 flex w-[14.5rem] bg-white shadow-xl"
                 style={{
                     height: "calc(100vh - 4.167rem)",
                 }}
             >
-                <div className="flex w-full flex-col items-center py-[2.5rem] pr-[1.04167rem] pl-[1.04167rem]">
+                <div className="flex w-full flex-col items-center py-[2.5rem] px-[1.042rem]">
                     <Box
                         sx={{
                             width: "100%",
@@ -122,7 +122,7 @@ const Sidebar = () => {
                     </Box>
                 </div>
                 <Divider orientation="vertical" flexItem />
-            </div>
+            </nav>
         </>
     );
 };

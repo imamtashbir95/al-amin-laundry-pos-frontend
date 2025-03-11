@@ -24,6 +24,7 @@ import { useTransaction } from "../contexts/useTransaction";
 import "dayjs/locale/en-gb";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "sonner";
+import { generateWhatsAppMessage } from "../templates/invoiceMessage";
 
 const TransactionModal = ({ onClose, transaction }) => {
     const form = useForm({
@@ -80,8 +81,20 @@ const TransactionModal = ({ onClose, transaction }) => {
         }
     }, [transaction, selectedCustomer, form]);
 
-    const product = useWatch({ control: form.control, name: "product" });
-    const qty = useWatch({ control: form.control, name: "qty" });
+    useEffect(() => {
+        console.log(transaction);
+    }, [transaction]);
+
+    const product = useWatch({
+        control: form.control,
+        name: "product",
+        defaultValue: transaction?.product || {},
+    });
+    const qty = useWatch({
+        control: form.control,
+        name: "qty",
+        defaultValue: transaction?.qty || 1,
+    });
 
     useEffect(() => {
         const total = product?.price * (Math.ceil(qty) || 0);
@@ -141,52 +154,10 @@ const TransactionModal = ({ onClose, transaction }) => {
             };
             addTransaction(requestData);
         }
-        const message = `
---------------------------------------------
-As-salāmu ʿalaikum wa-raḥmatu -llāhi wa-barakātuhᵘ̄
-
-Umi Laundry
-Perum. Vila Rizki Ilhami, Kel. Bojong Nangka, Kec. Kelapa Dua, Kab. Tangerang, Banten 15810
-Depan Masjid Khoirurroziqin
-
-Buka setiap hari, 
-Jam 8 pagi s.d. 8 malam
---------------------------------------------
-${dayjs(new Date()).format("DD-MM-YYYY")}
-Jam: ${dayjs(new Date()).format("HH:mm:ss")}
-
-No. Nota: ${finalData.invoiceId}
-A.n. Nama: ${finalData.customer.name}
-No. WA: ${finalData.customer.phoneNumber}
-Alamat: ${finalData.customer.address}
---------------------------------------------
-Layanan: ${finalData.product.name}
-Qty.: ${finalData.qty} ${finalData.product.type}
-Harga: ${Number(finalData.product.price).toLocaleString("id-ID")}
-Total: ${Number(
-            finalData.product.price * (Math.ceil(finalData.qty) || 0),
-        ).toLocaleString("id-ID")}
---------------------------------------------
-Pembayaran rek. BCA
-567 603 5296
-a.n. Imam Tashbir Arrahman
---------------------------------------------
-Perkiraan Selesai:
-${dayjs(new Date(finalData.finishDate)).format("DD-MM-YYYY")}
-Jam: ${dayjs(new Date(finalData.finishDate)).format("HH:mm:ss")}
---------------------------------------------
-Status: ${finalData.paymentStatus
-            .split("-")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ")}
---------------------------------------------
-Antar jemput gratiss..
-WA: 085283267928
---------------------------------------------
-${finalData.paymentStatus === "belum-dibayar" ? "Silakan selesaikan pembayaran tagihan. " : ""}Kami akan antar langsung bila sudah selesai. Terima kasih
-Salam
---------------------------------------------
-            `;
+        const message = generateWhatsAppMessage({
+            ...finalData,
+            qty: Math.ceil(finalData.qty) || 0,
+        });
 
         try {
             await axiosInstance.post("/send-whatsapp", {
@@ -302,10 +273,8 @@ Salam
                                                                     disabled
                                                                     value=""
                                                                 >
-                                                                    <em>
-                                                                        Pilih
-                                                                        Pelanggan
-                                                                    </em>
+                                                                    Pilih
+                                                                    Pelanggan
                                                                 </MenuItem>
                                                                 {customers.map(
                                                                     (
@@ -387,11 +356,8 @@ Salam
                                                                     disabled
                                                                     value=""
                                                                 >
-                                                                    <em>
-                                                                        Pilih
-                                                                        Paket
-                                                                        Laundry
-                                                                    </em>
+                                                                    Pilih Paket
+                                                                    Laundry
                                                                 </MenuItem>
                                                                 {products.map(
                                                                     (
@@ -406,9 +372,17 @@ Salam
                                                                                 item.name
                                                                             }
                                                                         >
-                                                                            {
-                                                                                item.name
-                                                                            }
+                                                                            {`${item.name} – ${new Intl.NumberFormat(
+                                                                                "id-ID",
+                                                                                {
+                                                                                    style: "currency",
+                                                                                    currency:
+                                                                                        "IDR",
+                                                                                    minimumFractionDigits: 0,
+                                                                                },
+                                                                            ).format(
+                                                                                item.price,
+                                                                            )}`}
                                                                         </MenuItem>
                                                                     ),
                                                                 )}
@@ -517,11 +491,8 @@ Salam
                                                                     disabled
                                                                     value=""
                                                                 >
-                                                                    <em>
-                                                                        Pilih
-                                                                        Status
-                                                                        Pembayaran
-                                                                    </em>
+                                                                    Pilih Status
+                                                                    Pembayaran
                                                                 </MenuItem>
                                                                 {[
                                                                     {
@@ -609,10 +580,8 @@ Salam
                                                                             disabled
                                                                             value=""
                                                                         >
-                                                                            <em>
-                                                                                Pilih
-                                                                                Status
-                                                                            </em>
+                                                                            Pilih
+                                                                            Status
                                                                         </MenuItem>
                                                                         {[
                                                                             {

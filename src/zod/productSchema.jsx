@@ -3,17 +3,17 @@ import { z } from "zod";
 export const productSchema = z.object({
     name: z
         .string()
-        .min(1, "Nama Produk harus diisi")
-        .max(100, "Maksimal 100 karakter"),
+        .min(1, "Nama produk harus diisi")
+        .max(100, "Nama produk maksimal 100 karakter"),
     price: z
         .string()
-        .min(1, "Harga Produk harus diisi")
+        .min(1, "Harga produk harus diisi")
         .refine(
             (val) => {
                 const parsed = parseFloat(val);
                 return !Number.isNaN(parsed) && parsed > 0;
             },
-            { message: "Harga Produk harus berupa angka positif" },
+            { message: "Harga produk harus berupa angka positif" },
         )
         .refine(
             (val) => {
@@ -21,7 +21,7 @@ export const productSchema = z.object({
                 return parsed >= 1000;
             },
             {
-                message: "Harga Produk tidak boleh kurang dari 1.000",
+                message: "Harga produk tidak boleh kurang dari 1.000",
             },
         )
         .refine(
@@ -32,11 +32,11 @@ export const productSchema = z.object({
             },
             {
                 message:
-                    "Harga Produk tidak boleh lebih dari 9.007.199.254.740.992",
+                    "Harga produk tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
     type: z
         .string()
-        .min(1, "Satuan Produk harus diisi")
-        .max(100, "Maksimal 100 karakter"),
+        .min(1, "Satuan produk harus diisi")
+        .max(100, "Satuan produk maksimal 100 karakter"),
 });

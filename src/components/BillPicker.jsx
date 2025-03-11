@@ -7,7 +7,7 @@ import "dayjs/locale/en-gb";
 const BillPicker = ({ onDateChange, value, totalRevenue, totalExpense }) => {
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -18,7 +18,7 @@ const BillPicker = ({ onDateChange, value, totalRevenue, totalExpense }) => {
                     >
                         <div className="">
                             <div className="relative h-[4.167rem] p-[2.583rem]">
-                                <div className="absolute top-1/2 left-[2.083rem] flex w-[12rem] -translate-y-1/2 flex-col">
+                                <div className="absolute top-1/2 left-[2.083rem] flex w-[24rem] -translate-y-1/2 flex-col">
                                     <Typography variant="body1">
                                         Omzet Bersih
                                     </Typography>
@@ -58,7 +58,7 @@ const BillPicker = ({ onDateChange, value, totalRevenue, totalExpense }) => {
                         </div>
                     </Card>
                 </div>
-            </div>
+            </section>
         </>
     );
 };

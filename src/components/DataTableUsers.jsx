@@ -35,11 +35,11 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
             filtered = [...filtered].sort((a, b) =>
                 a.name.localeCompare(b.name),
             );
-        } else if (sortBy === "created-at-asc") {
+        } else if (sortBy === "created-at-desc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
             );
-        } else if (sortBy === "created-at-desc") {
+        } else if (sortBy === "created-at-asc") {
             filtered = [...filtered].sort(
                 (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
             );
@@ -69,7 +69,7 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
 
     return (
         <>
-            <div className="h-full w-full max-lg:overflow-x-scroll">
+            <section className="h-full w-full max-lg:overflow-x-scroll">
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
@@ -183,7 +183,7 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                         </div>
                     </Card>
                 </div>
-            </div>
+            </section>
             {filteredUsers.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}
