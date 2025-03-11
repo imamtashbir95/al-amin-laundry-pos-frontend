@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "../lib/axios";
-import { Navigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
