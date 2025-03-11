@@ -1,13 +1,16 @@
 import { TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { motion } from "motion/react";
 
 const SearchField = ({ setSearchTerm }) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-        <div
-            className={`absolute top-1/2 right-[15.583rem] flex -translate-y-1/2 transition-all duration-10000 ${isFocused ? "w-[calc(100%-18.166rem)]" : "w-[12-rem]"} flex-col gap-[0.5rem]`}
+        <motion.div
+            className="absolute top-1/2 right-[15.583rem] flex -translate-y-1/2 flex-col gap-[0.5rem]"
+            animate={{ width: isFocused ? "calc(100% - 18.166rem)" : "12rem" }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
         >
             Cari
             <TextField
@@ -21,7 +24,7 @@ const SearchField = ({ setSearchTerm }) => {
                     backgroundColor: "white",
                 }}
             />
-        </div>
+        </motion.div>
     );
 };
 

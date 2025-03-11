@@ -1,34 +1,96 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Chip,
+    Pagination,
+    Typography,
+} from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faCartArrowDown, faMagic } from "@fortawesome/free-solid-svg-icons";
 import { getCSSVariable } from "../utils/getCSSVariable";
 
 // - Jika createdAt === nowDate
 const DataTableReportIn = () => {
     const { transactionsIn } = useTransaction();
-
     const [page, setPage] = useState(1);
+    const [sortByAI, setSortByAI] = useState(false);
     const itemsPerPage = 25;
 
-    const transactionData = useMemo(
-        () => (Array.isArray(transactionsIn) ? transactionsIn : []),
-        [transactionsIn],
+    // Flatten transactions and apply sorting
+    const flattenedBillDetails = useMemo(() => {
+        const transactions = Array.isArray(transactionsIn)
+            ? transactionsIn
+            : [];
+        let details = transactions.flatMap((transaction) =>
+            transaction.billDetails.map((detail) => ({
+                ...detail,
+                customer: transaction.customer,
+            })),
+        );
+
+        if (sortByAI) {
+            details.sort((a, b) => {
+                // Urutan prioritas 1: Tanggal selesai terdekat
+                const aDate = new Date(a.finishDate);
+                const bDate = new Date(b.finishDate);
+                if (aDate < bDate) return -1;
+                if (aDate > bDate) return 1;
+
+                // Urutan prioritas 2: Jenis paket prioritas
+                const aPriority = getPackagePriority(a.product.name);
+                const bPriority = getPackagePriority(b.product.name);
+                if (aPriority > bPriority) return -1;
+                if (aPriority < bPriority) return 1;
+
+                // Urutan prioritas 3: Status pembayaran
+                if (
+                    a.paymentStatus === "sudah-dibayar" &&
+                    b.paymentStatus !== "sudah-dibayar"
+                )
+                    return -1;
+                if (
+                    b.paymentStatus === "sudah-dibayar" &&
+                    a.paymentStatus !== "sudah-dibayar"
+                )
+                    return 1;
+
+                // Urutan prioritas 4: Jumlah barang (ascending)
+                return a.qty - b.qty;
+            });
+        }
+
+        return details;
+    }, [transactionsIn, sortByAI]);
+
+    const getPackagePriority = (productName) => {
+        const lowerName = productName.toLowerCase();
+        return lowerName.includes("express") || lowerName.includes("1 hari")
+            ? 1
+            : 0;
+    };
+
+    // Reset page ketika sorting berubah
+    useEffect(() => {
+        setPage(1);
+    }, [sortByAI]);
+
+    const pageCount = useMemo(
+        () => Math.ceil(flattenedBillDetails.length / itemsPerPage),
+        [flattenedBillDetails, itemsPerPage],
     );
 
-    const pageCount = useMemo(() => {
-        return Math.ceil(transactionData.length / itemsPerPage);
-    }, [transactionData, itemsPerPage]);
-
-    const paginatedTransactions = useMemo(
+    const paginatedBillDetails = useMemo(
         () =>
-            transactionData.slice(
+            flattenedBillDetails.slice(
                 (page - 1) * itemsPerPage,
                 page * itemsPerPage,
             ),
-        [transactionData, page, itemsPerPage],
+        [flattenedBillDetails, page, itemsPerPage],
     );
 
     const handlePageChange = (event, value) => {
@@ -59,6 +121,20 @@ const DataTableReportIn = () => {
                                         Daftar Transaksi Masuk
                                     </Typography>
                                 </CardContent>
+                                <CardActions className="absolute right-[2.083rem]">
+                                    <Button
+                                        variant="outlined"
+                                        size="small"
+                                        onClick={() =>
+                                            setSortByAI((prev) => !prev)
+                                        }
+                                    >
+                                        <div className="flex items-center gap-[0.5rem]">
+                                            <FontAwesomeIcon icon={faMagic} />
+                                            Urutkan dengan AI
+                                        </div>
+                                    </Button>
+                                </CardActions>
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
                                 {[
@@ -85,132 +161,132 @@ const DataTableReportIn = () => {
                                 ))}
                             </div>
                         </div>
-                        {paginatedTransactions.length > 0 ? (
-                            paginatedTransactions.map((transaction) =>
-                                transaction.billDetails.map((detail) => (
-                                    <div
-                                        key={detail.id}
-                                        className="flex px-[0.83rem]"
-                                    >
-                                        <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.invoiceId.toUpperCase()}
-                                                size="small"
-                                            />
-                                        </div>
-                                        <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {transaction.customer.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </div>
-                                        <div className="relative flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <div className="flex items-center">
-                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[var(--brand-2)]"></div>
-                                                    <div className="absolute left-[2.25rem]">
-                                                        <Typography
-                                                            variant="body2"
-                                                            sx={{
-                                                                fontSize:
-                                                                    "0.85rem",
-                                                                color: "gray",
-                                                            }}
-                                                        >
-                                                            {
-                                                                detail.product
-                                                                    .name
-                                                            }
-                                                        </Typography>
-                                                    </div>
+                        {paginatedBillDetails.length > 0 ? (
+                            paginatedBillDetails.map((detail) => (
+                                <div
+                                    key={detail.id}
+                                    className="flex px-[0.83rem]"
+                                >
+                                    {/* No. Nota */}
+                                    <div className="flex w-[12.5%] items-center justify-center">
+                                        <Chip
+                                            label={detail.invoiceId.toUpperCase()}
+                                            size="small"
+                                        />
+                                    </div>
+                                    {/* Nama Pelanggan */}
+                                    <div className="flex w-[12.5%] items-center">
+                                        <CardContent>
+                                            <Typography variant="body2">
+                                                {detail.customer.name}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    {/* Paket Laundry */}
+                                    <div className="relative flex w-[12.5%] items-center">
+                                        <CardContent>
+                                            <div className="flex items-center">
+                                                <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[var(--brand-2)]"></div>
+                                                <div className="absolute left-[2.25rem]">
+                                                    <Typography
+                                                        variant="body2"
+                                                        sx={{
+                                                            fontSize: "0.85rem",
+                                                            color: "gray",
+                                                        }}
+                                                    >
+                                                        {detail.product.name}
+                                                    </Typography>
                                                 </div>
-                                            </CardContent>
-                                        </div>
-                                        <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {`${detail.qty} ${detail.product.type}`}
-                                                </Typography>
-                                            </CardContent>
-                                        </div>
-                                        <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {new Intl.NumberFormat(
-                                                        "id-ID",
-                                                        {
-                                                            style: "currency",
-                                                            currency: "IDR",
-                                                            minimumFractionDigits: 0,
-                                                        },
-                                                    ).format(detail.price)}
-                                                </Typography>
-                                            </CardContent>
-                                        </div>
-                                        <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {dayjs(
-                                                        new Date(
-                                                            detail.finishDate,
-                                                        ),
-                                                    ).format("DD-MM-YYYY")}
-                                                </Typography>
-                                            </CardContent>
-                                        </div>
-                                        <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.paymentStatus
-                                                    .toUpperCase()
-                                                    .replace("-", " ")}
-                                                size="small"
-                                                style={{
-                                                    backgroundColor:
-                                                        detail.paymentStatus ===
-                                                        "belum-dibayar"
+                                            </div>
+                                        </CardContent>
+                                    </div>
+                                    {/* Qty. */}
+                                    <div className="flex w-[12.5%] items-center">
+                                        <CardContent>
+                                            <Typography variant="body2">
+                                                {`${detail.qty} ${detail.product.type}`}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    {/* Total Bayar */}
+                                    <div className="flex w-[12.5%] items-center">
+                                        <CardContent>
+                                            <Typography variant="body2">
+                                                {new Intl.NumberFormat(
+                                                    "id-ID",
+                                                    {
+                                                        style: "currency",
+                                                        currency: "IDR",
+                                                        minimumFractionDigits: 0,
+                                                    },
+                                                ).format(detail.price)}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    {/* Tanggal Selesai */}
+                                    <div className="flex w-[12.5%] items-center">
+                                        <CardContent>
+                                            <Typography variant="body2">
+                                                {dayjs(
+                                                    new Date(detail.finishDate),
+                                                ).format("DD-MM-YYYY")}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
+                                    {/* Dibayar */}
+                                    <div className="flex w-[12.5%] items-center justify-center">
+                                        <Chip
+                                            label={detail.paymentStatus
+                                                .toUpperCase()
+                                                .replace("-", " ")}
+                                            size="small"
+                                            style={{
+                                                backgroundColor:
+                                                    detail.paymentStatus ===
+                                                    "belum-dibayar"
+                                                        ? getCSSVariable(
+                                                              "--theme-color-1",
+                                                          )
+                                                        : getCSSVariable(
+                                                              "--theme-color-2",
+                                                          ),
+                                                color: "white",
+                                            }}
+                                        />
+                                    </div>
+                                    {/* Status */}
+                                    <div className="flex w-[12.5%] items-center justify-center">
+                                        <Chip
+                                            label={detail.status
+                                                .toUpperCase()
+                                                .replace("-", " ")}
+                                            size="small"
+                                            style={{
+                                                backgroundColor:
+                                                    detail.status === "baru"
+                                                        ? getCSSVariable(
+                                                              "--theme-color-3",
+                                                          )
+                                                        : detail.status ===
+                                                            "proses"
+                                                          ? getCSSVariable(
+                                                                "--theme-color-4",
+                                                            )
+                                                          : detail.status ===
+                                                              "selesai"
                                                             ? getCSSVariable(
-                                                                  "--theme-color-1",
+                                                                  "--theme-color-5",
                                                               )
                                                             : getCSSVariable(
-                                                                  "--theme-color-2",
+                                                                  "--theme-color-6",
                                                               ),
-                                                    color: "white",
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.status
-                                                    .toUpperCase()
-                                                    .replace("-", " ")}
-                                                size="small"
-                                                style={{
-                                                    backgroundColor:
-                                                        detail.status === "baru"
-                                                            ? getCSSVariable(
-                                                                  "--theme-color-3",
-                                                              )
-                                                            : detail.status ===
-                                                                "proses"
-                                                              ? getCSSVariable(
-                                                                    "--theme-color-4",
-                                                                )
-                                                              : detail.status ===
-                                                                  "selesai"
-                                                                ? getCSSVariable(
-                                                                      "--theme-color-5",
-                                                                  )
-                                                                : getCSSVariable(
-                                                                      "--theme-color-6",
-                                                                  ),
-                                                    color: "white",
-                                                }}
-                                            />
-                                        </div>
+                                                color: "white",
+                                            }}
+                                        />
                                     </div>
-                                )),
-                            )
+                                </div>
+                            ))
                         ) : (
                             <Typography className="p-4 text-center">
                                 Belum ada transaksi masuk.
@@ -219,7 +295,7 @@ const DataTableReportIn = () => {
                     </Card>
                 </div>
             </section>
-            {transactionData.length > itemsPerPage && (
+            {flattenedBillDetails.length > itemsPerPage && (
                 <Pagination
                     count={pageCount}
                     page={page}
