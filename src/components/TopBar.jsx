@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faBell, faMessage, faPersonDotsFromLine } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sidebar from "./Sidebar";
@@ -46,25 +46,21 @@ const TopBar = () => {
     return (
         <>
             <header className="fixed top-0 z-10 flex w-full flex-col bg-white">
-                <div className="relative flex h-[4.167rem] flex-row items-center justify-end px-[2.083rem] shadow-xl">
-                    <div className="absolute top-[0.83rem] left-[2.083rem] z-20 flex max-lg:left-1/2 max-lg:-translate-x-1/2">
-                        <a href="/">
-                            <img
-                                className="pointer-events-none h-[2.5rem]"
-                                alt="logo"
-                                src={logo_black}
-                            />
-                        </a>
-                    </div>
+                <div className="relative flex h-[4.167rem] flex-row items-center justify-end gap-[1rem] px-[2.083rem] shadow-xl">
                     <div className="absolute top-[0.83rem] left-[2.083rem] lg:hidden">
                         <Avatar
                             id="profile"
                             alt="sidebar_button"
-                            sx={{ bgcolor: "#441fee", cursor: "pointer" }}
+                            sx={{ bgcolor: "var(--brand-1)", cursor: "pointer" }}
                             onClick={toggleSidebar}
                         >
                             <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
                         </Avatar>
+                    </div>
+                    <div className="absolute top-[0.83rem] left-[2.083rem] z-20 flex max-lg:left-1/2 max-lg:-translate-x-1/2">
+                        <a href="/">
+                            <img className="pointer-events-none h-[2.5rem]" alt="logo" src={logo_black} />
+                        </a>
                     </div>
                     <Avatar
                         id="profile"
@@ -110,22 +106,15 @@ const TopBar = () => {
                             <Avatar
                                 id="profile"
                                 alt="sidebar_button"
-                                sx={{ bgcolor: "#441fee", cursor: "pointer" }}
+                                sx={{ bgcolor: "var(--brand-1)", cursor: "pointer" }}
                                 onClick={toggleSidebar}
                             >
-                                <FontAwesomeIcon
-                                    icon={faBars}
-                                ></FontAwesomeIcon>
+                                <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
                             </Avatar>
                         </div>
                         <Sidebar />
                     </div>
-                    {showSidebar && (
-                        <div
-                            className="fixed inset-0 z-20 bg-black opacity-50"
-                            onClick={toggleSidebar}
-                        />
-                    )}
+                    {showSidebar && <div className="fixed inset-0 z-20 bg-black opacity-50" onClick={toggleSidebar} />}
                 </>
             )}
         </>

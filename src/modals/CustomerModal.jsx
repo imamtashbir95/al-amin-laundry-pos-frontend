@@ -2,13 +2,7 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Button,
-    Card,
-    CardContent,
-    InputLabel,
-    TextField,
-} from "@mui/material";
+import { Button, Card, CardContent, InputLabel, TextField } from "@mui/material";
 import { customerSchema } from "../zod/customerSchema";
 import { useCustomer } from "../contexts/useCustomer";
 
@@ -65,27 +59,20 @@ const CustomerModal = ({ onClose, customer }) => {
                     }}
                 >
                     <CardContent>
-                        <form
-                            onSubmit={form.handleSubmit(handleCustomerSubmit)}
-                            className="flex flex-col gap-4"
-                        >
+                        <form onSubmit={form.handleSubmit(handleCustomerSubmit)} className="flex flex-col gap-4">
                             <Controller
                                 name="name"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-customer">
-                                                Nama Pelanggan
-                                            </InputLabel>
+                                            <InputLabel id="text-customer">Nama Pelanggan</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Nama Pelanggan"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -97,17 +84,13 @@ const CustomerModal = ({ onClose, customer }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-phone-number">
-                                                No. Telepon
-                                            </InputLabel>
+                                            <InputLabel id="text-phone-number">No. Telepon</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="No. Telepon"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -119,35 +102,23 @@ const CustomerModal = ({ onClose, customer }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-address">
-                                                Alamat
-                                            </InputLabel>
+                                            <InputLabel id="text-address">Alamat</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Alamat"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
                                 }}
                             ></Controller>
                             <div className="flex justify-end gap-4">
-                                <Button
-                                    variant="contained"
-                                    className="w-[6.25rem]"
-                                    type="submit"
-                                >
+                                <Button variant="contained" className="w-[6.25rem]" type="submit">
                                     Simpan
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    className="w-[6.25rem]"
-                                    onClick={onClose}
-                                >
+                                <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
                                     Tutup
                                 </Button>
                             </div>

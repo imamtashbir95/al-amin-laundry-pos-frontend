@@ -1,11 +1,7 @@
 import PropTypes from "prop-types";
 import { Button, Card, CardContent, Divider, Typography } from "@mui/material";
 
-const DeleteConfirmationModal = ({
-    onClose,
-    onConfirm,
-    entityName = "data",
-}) => {
+const DeleteConfirmationModal = ({ onClose, onConfirm, entityName = "data" }) => {
     return (
         <>
             <div className="fixed top-1/2 left-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
@@ -45,11 +41,7 @@ const DeleteConfirmationModal = ({
                             >
                                 Hapus
                             </Button>
-                            <Button
-                                variant="outlined"
-                                className="w-[6.25rem]"
-                                onClick={onClose}
-                            >
+                            <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
                                 Batal
                             </Button>
                         </div>

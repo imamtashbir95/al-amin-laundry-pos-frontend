@@ -27,9 +27,7 @@ const mockDeleteProduct = vitest.fn();
 describe("DataTableProducts", () => {
     const renderWithContext = (products) => {
         return render(
-            <ProductProvider
-                value={{ products, deleteProduct: mockDeleteProduct }}
-            >
+            <ProductProvider value={{ products, deleteProduct: mockDeleteProduct }}>
                 <DataTableProducts onAddProduct={mockAddProduct} />
             </ProductProvider>,
         );
@@ -145,9 +143,7 @@ describe("DataTableProducts", () => {
 
         await waitFor(() => {
             const pagination = screen.getByRole("navigation");
-            const nextPageButton = pagination.querySelector(
-                "[aria-label='Go to next page']",
-            );
+            const nextPageButton = pagination.querySelector("[aria-label='Go to next page']");
             fireEvent.click(nextPageButton);
             expect(screen.getByText("Cuci Kering 2")).toBeInTheDocument();
         });

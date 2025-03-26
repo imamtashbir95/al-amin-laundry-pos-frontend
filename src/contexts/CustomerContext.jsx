@@ -62,9 +62,7 @@ export const CustomerProvider = ({ children }) => {
     };
 
     return (
-        <CustomerContext.Provider
-            value={{ customers, addCustomer, updateCustomer, deleteCustomer }}
-        >
+        <CustomerContext.Provider value={{ customers, addCustomer, updateCustomer, deleteCustomer }}>
             {children}
         </CustomerContext.Provider>
     );

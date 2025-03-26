@@ -23,12 +23,8 @@ import { useTransaction } from "../contexts/useTransaction";
 
 const ReportPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const {
-        fetchTransactionsIn,
-        fetchTransactionsOut,
-        fetchTransactionsNotPaidOff,
-        fetchTransactionsNotTakenYet,
-    } = useTransaction();
+    const { fetchTransactionsIn, fetchTransactionsOut, fetchTransactionsNotPaidOff, fetchTransactionsNotTakenYet } =
+        useTransaction();
     const { fetchExpenses, deleteExpense } = useExpense();
 
     const [modalState, setModalState] = useState({
@@ -40,9 +36,7 @@ const ReportPage = () => {
         expenseId: null,
     });
     const isDesktop = useMediaQuery({ minWidth: 1024 });
-    const initialDate = searchParams.get("date")
-        ? dayjs(searchParams.get("date"))
-        : dayjs();
+    const initialDate = searchParams.get("date") ? dayjs(searchParams.get("date")) : dayjs();
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
@@ -107,22 +101,15 @@ const ReportPage = () => {
         };
     }, [modalState.show, confirmationModalState.show]);
 
-    const handleOpenModal = (expense = null) =>
-        setModalState({ show: true, expense });
-    const handleCloseModal = () =>
-        setModalState({ show: false, expense: null });
+    const handleOpenModal = (expense = null) => setModalState({ show: true, expense });
+    const handleCloseModal = () => setModalState({ show: false, expense: null });
 
-    const handleOpenConfirmationModal = (expenseId = null) =>
-        setConfirmationModalState({ show: true, expenseId });
+    const handleOpenConfirmationModal = (expenseId = null) => setConfirmationModalState({ show: true, expenseId });
 
-    const handleCloseConfirmationModal = () =>
-        setConfirmationModalState({ show: false, expenseId: null });
+    const handleCloseConfirmationModal = () => setConfirmationModalState({ show: false, expenseId: null });
 
     const handleDeleteConfirm = () => {
-        deleteExpense(
-            confirmationModalState.expenseId,
-            selectedDate.format("YYYY-MM-DD"),
-        );
+        deleteExpense(confirmationModalState.expenseId, selectedDate.format("YYYY-MM-DD"));
     };
 
     return (
@@ -153,15 +140,9 @@ const ReportPage = () => {
                 <AnimatePresence>
                     {modalState.show && (
                         <>
-                            <div
-                                className="fixed inset-0 z-10 bg-black opacity-50"
-                                onClick={handleCloseModal}
-                            ></div>
+                            <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={handleCloseModal}></div>
                             <ModalAnimationWrapper>
-                                <ExpenseModal
-                                    onClose={handleCloseModal}
-                                    expense={modalState.expense}
-                                />
+                                <ExpenseModal onClose={handleCloseModal} expense={modalState.expense} />
                             </ModalAnimationWrapper>
                         </>
                     )}

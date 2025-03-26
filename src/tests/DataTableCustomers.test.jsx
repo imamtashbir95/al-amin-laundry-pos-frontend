@@ -27,9 +27,7 @@ const mockDeleteCustomer = vitest.fn();
 describe("DataTableCustomers", () => {
     const renderWithContext = (customers) => {
         return render(
-            <CustomerProvider
-                value={{ customers, deleteCustomer: mockDeleteCustomer }}
-            >
+            <CustomerProvider value={{ customers, deleteCustomer: mockDeleteCustomer }}>
                 <DataTableCustomers onAddCustomer={mockAddCustomer} />
             </CustomerProvider>,
         );
@@ -145,9 +143,7 @@ describe("DataTableCustomers", () => {
 
         await waitFor(() => {
             const pagination = screen.getByRole("navigation");
-            const nextPageButton = pagination.querySelector(
-                "[aria-label='Go to next page']",
-            );
+            const nextPageButton = pagination.querySelector("[aria-label='Go to next page']");
             fireEvent.click(nextPageButton);
             expect(screen.getByText("Lucille Lopez")).toBeInTheDocument();
         });

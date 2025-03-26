@@ -10,9 +10,7 @@ import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import { AnimatePresence } from "motion/react";
 
 const CustomerModal = lazy(() => import("../modals/CustomerModal"));
-const DeleteConfirmationModal = lazy(
-    () => import("../modals/DeleteConfirmationModal"),
-);
+const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
 
 const CustomersPage = () => {
     const { deleteCustomer } = useCustomer();
@@ -36,16 +34,12 @@ const CustomersPage = () => {
         };
     }, [modalState.show, confirmationModalState.show]);
 
-    const handleOpenModal = (customer = null) =>
-        setModalState({ show: true, customer });
-    const handleCloseModal = () =>
-        setModalState({ show: false, customer: null });
+    const handleOpenModal = (customer = null) => setModalState({ show: true, customer });
+    const handleCloseModal = () => setModalState({ show: false, customer: null });
 
-    const handleOpenConfirmationModal = (customerId = null) =>
-        setConfirmationModalState({ show: true, customerId });
+    const handleOpenConfirmationModal = (customerId = null) => setConfirmationModalState({ show: true, customerId });
 
-    const handleCloseConfirmationModal = () =>
-        setConfirmationModalState({ show: false, customerId: null });
+    const handleCloseConfirmationModal = () => setConfirmationModalState({ show: false, customerId: null });
 
     const handleDeleteConfirm = () => {
         deleteCustomer(confirmationModalState.customerId);
@@ -67,15 +61,9 @@ const CustomersPage = () => {
             <AnimatePresence>
                 {modalState.show && (
                     <>
-                        <div
-                            className="fixed inset-0 z-10 bg-black opacity-50"
-                            onClick={handleCloseModal}
-                        ></div>
+                        <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={handleCloseModal}></div>
                         <ModalAnimationWrapper>
-                            <CustomerModal
-                                onClose={handleCloseModal}
-                                customer={modalState.customer}
-                            />
+                            <CustomerModal onClose={handleCloseModal} customer={modalState.customer} />
                         </ModalAnimationWrapper>
                     </>
                 )}

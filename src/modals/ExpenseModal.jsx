@@ -5,13 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import {
-    Button,
-    Card,
-    CardContent,
-    InputLabel,
-    TextField,
-} from "@mui/material";
+import { Button, Card, CardContent, InputLabel, TextField } from "@mui/material";
 import { expenseSchema } from "../zod/expenseSchema";
 import { useExpense } from "../contexts/useExpense";
 
@@ -69,27 +63,20 @@ const ExpenseModal = ({ onClose, expense }) => {
                     }}
                 >
                     <CardContent>
-                        <form
-                            onSubmit={form.handleSubmit(handleExpenseSubmit)}
-                            className="flex flex-col gap-4"
-                        >
+                        <form onSubmit={form.handleSubmit(handleExpenseSubmit)} className="flex flex-col gap-4">
                             <Controller
                                 name="name"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-expense">
-                                                Nama Pengeluaran
-                                            </InputLabel>
+                                            <InputLabel id="text-expense">Nama Pengeluaran</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Nama Pengeluaran"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -101,18 +88,14 @@ const ExpenseModal = ({ onClose, expense }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-price">
-                                                Harga Pengeluaran
-                                            </InputLabel>
+                                            <InputLabel id="text-price">Harga Pengeluaran</InputLabel>
                                             <TextField
                                                 {...field}
                                                 type="number"
                                                 size="small"
                                                 placeholder="Harga Pengeluaran"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -124,34 +107,19 @@ const ExpenseModal = ({ onClose, expense }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-expense-date-label">
-                                                Tanggal Pengeluaran
-                                            </InputLabel>
-                                            <LocalizationProvider
-                                                dateAdapter={AdapterDayjs}
-                                                adapterLocale="en-gb"
-                                            >
+                                            <InputLabel id="text-expense-date-label">Tanggal Pengeluaran</InputLabel>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
                                                 <DatePicker
-                                                    value={
-                                                        field.value
-                                                            ? dayjs(field.value)
-                                                            : null
-                                                    }
+                                                    value={field.value ? dayjs(field.value) : null}
                                                     onChange={(newValue) =>
-                                                        field.onChange(
-                                                            newValue
-                                                                ? newValue.toISOString()
-                                                                : null,
-                                                        )
+                                                        field.onChange(newValue ? newValue.toISOString() : null)
                                                     }
                                                     disablePast
                                                     slotProps={{
                                                         textField: {
                                                             size: "small",
                                                             error: fieldState.invalid,
-                                                            helperText:
-                                                                fieldState.error
-                                                                    ?.message,
+                                                            helperText: fieldState.error?.message,
                                                         },
                                                     }}
                                                 />
@@ -161,18 +129,10 @@ const ExpenseModal = ({ onClose, expense }) => {
                                 }}
                             ></Controller>
                             <div className="flex justify-end gap-4">
-                                <Button
-                                    variant="contained"
-                                    className="w-[6.25rem]"
-                                    type="submit"
-                                >
+                                <Button variant="contained" className="w-[6.25rem]" type="submit">
                                     Simpan
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    className="w-[6.25rem]"
-                                    onClick={onClose}
-                                >
+                                <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
                                     Tutup
                                 </Button>
                             </div>

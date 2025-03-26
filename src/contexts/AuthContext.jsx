@@ -3,27 +3,51 @@ import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "../lib/axios";
+// import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || null);
+    const [loading, setLoading] = useState(true);
+    // const location = useLocation();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         if (token) {
             localStorage.setItem("token", token);
             try {
-                setUser(jwtDecode(token));
-            } catch {
+                const decoded = jwtDecode(token);
+
+                // Check if the token has expired
+                if (decoded.exp * 1000 < Date.now()) {
+                    setUser(null);
+                    toast.error("Sesi Anda telah berakhir. Silakan login kembali.");
+                    localStorage.removeItem("token");
+                    setLoading(false);
+                    return;
+                }
+
+                setUser(decoded);
+            } catch (error) {
+                // Handle invalid token
                 setUser(null);
-                toast.error("Token tidak valid.");
                 localStorage.removeItem("token");
+
+                if (error.message.includes("invalid signature")) {
+                    toast.error("Token tidak valid. Silakan login kembali.");
+                } else if (error.message.includes("expired")) {
+                    toast.error("Token telah kedaluwarsa. Silakan login kembali.");
+                } else {
+                    toast.error("Token tidak valid.");
+                }
             }
         } else {
             setUser(null);
             localStorage.removeItem("token");
         }
+        setLoading(false);
     }, [token]);
 
     const signIn = async (signInData) => {
@@ -31,11 +55,7 @@ export const AuthProvider = ({ children }) => {
         const timeout = setTimeout(() => controller.abort(), 300000);
 
         try {
-            const response = await axiosInstance.post(
-                "/auth/login",
-                signInData,
-                { signal: controller.signal },
-            );
+            const response = await axiosInstance.post("/auth/login", signInData, { signal: controller.signal });
 
             clearTimeout(timeout);
             if (response.data?.data.token) {
@@ -57,10 +77,7 @@ export const AuthProvider = ({ children }) => {
 
     const signUp = async (signUpData) => {
         try {
-            const response = await axiosInstance.post(
-                "/auth/register",
-                signUpData,
-            );
+            const response = await axiosInstance.post("/auth/register", signUpData);
 
             if (response.data?.status.code === 201) {
                 toast.success("Pengguna berhasil didaftarkan!");
@@ -88,6 +105,7 @@ export const AuthProvider = ({ children }) => {
             value={{
                 user,
                 token,
+                loading,
                 signIn,
                 signUp,
                 signOut,

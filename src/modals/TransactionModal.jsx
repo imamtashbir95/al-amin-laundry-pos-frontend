@@ -54,9 +54,7 @@ const TransactionModal = ({ onClose, transaction }) => {
     const { customers } = useCustomer();
     const { customerId } = useParams();
 
-    const selectedCustomer = customers.find(
-        (customer) => customer.id === customerId,
-    );
+    const selectedCustomer = customers.find((customer) => customer.id === customerId);
 
     useEffect(() => {
         if (transaction) {
@@ -109,12 +107,8 @@ const TransactionModal = ({ onClose, transaction }) => {
     const handleTransactionSubmit = async () => {
         const finalData = form.getValues();
 
-        const selectedCustomer = customers.find(
-            (customer) => customer.name === finalData.customer.name,
-        );
-        const selectedProduct = products.find(
-            (product) => product.name === finalData.product.name,
-        );
+        const selectedCustomer = customers.find((customer) => customer.name === finalData.customer.name);
+        const selectedProduct = products.find((product) => product.name === finalData.product.name);
 
         finalData.qty = parseInt(finalData.qty, 10);
         if (transaction && transaction.id) {
@@ -191,12 +185,7 @@ const TransactionModal = ({ onClose, transaction }) => {
                     }}
                 >
                     <CardContent>
-                        <form
-                            onSubmit={form.handleSubmit(
-                                handleTransactionSubmit,
-                            )}
-                            className="flex flex-col gap-4"
-                        >
+                        <form onSubmit={form.handleSubmit(handleTransactionSubmit)} className="flex flex-col gap-4">
                             <div className="flex h-full w-full flex-col gap-4 max-lg:overflow-x-scroll">
                                 <div className="flex gap-4 max-lg:w-[40rem]">
                                     <div className="flex w-[20rem] flex-col gap-4">
@@ -206,21 +195,14 @@ const TransactionModal = ({ onClose, transaction }) => {
                                             render={({ field, fieldState }) => {
                                                 return (
                                                     <>
-                                                        <InputLabel id="text-invoice-id">
-                                                            No. Nota
-                                                        </InputLabel>
+                                                        <InputLabel id="text-invoice-id">No. Nota</InputLabel>
                                                         <TextField
                                                             {...field}
-                                                            size="small"
                                                             placeholder="No. Nota"
                                                             type="number"
-                                                            error={
-                                                                fieldState.invalid
-                                                            }
-                                                            helperText={
-                                                                fieldState.error
-                                                                    ?.message
-                                                            }
+                                                            size="small"
+                                                            error={fieldState.invalid}
+                                                            helperText={fieldState.error?.message}
                                                         />
                                                     </>
                                                 );
@@ -232,76 +214,34 @@ const TransactionModal = ({ onClose, transaction }) => {
                                             render={({ field, fieldState }) => {
                                                 return (
                                                     <>
-                                                        <InputLabel id="select-customer-label">
-                                                            Pelanggan
-                                                        </InputLabel>
-                                                        <FormControl
-                                                            error={
-                                                                fieldState.invalid
-                                                            }
-                                                        >
+                                                        <InputLabel id="select-customer-label">Pelanggan</InputLabel>
+                                                        <FormControl error={fieldState.invalid}>
                                                             <Select
                                                                 {...field}
                                                                 displayEmpty
                                                                 labelId="select-customer-label"
                                                                 id="select-customer"
-                                                                onChange={(
-                                                                    event,
-                                                                ) => {
-                                                                    const selectedCustomer =
-                                                                        customers.find(
-                                                                            (
-                                                                                item,
-                                                                            ) =>
-                                                                                item.name ===
-                                                                                event
-                                                                                    .target
-                                                                                    .value,
-                                                                        );
-                                                                    field.onChange(
-                                                                        selectedCustomer,
+                                                                onChange={(event) => {
+                                                                    const selectedCustomer = customers.find(
+                                                                        (item) => item.name === event.target.value,
                                                                     );
+                                                                    field.onChange(selectedCustomer);
                                                                 }}
-                                                                value={
-                                                                    field.value
-                                                                        ?.name ||
-                                                                    ""
-                                                                }
+                                                                value={field.value?.name || ""}
                                                                 size="small"
                                                             >
-                                                                <MenuItem
-                                                                    disabled
-                                                                    value=""
-                                                                >
-                                                                    Pilih
-                                                                    Pelanggan
+                                                                <MenuItem disabled value="">
+                                                                    Pilih Pelanggan
                                                                 </MenuItem>
-                                                                {customers.map(
-                                                                    (
-                                                                        item,
-                                                                        index,
-                                                                    ) => (
-                                                                        <MenuItem
-                                                                            key={
-                                                                                index
-                                                                            }
-                                                                            value={
-                                                                                item.name
-                                                                            }
-                                                                        >
-                                                                            {`${item.phoneNumber} – ${item.name}`}
-                                                                        </MenuItem>
-                                                                    ),
-                                                                )}
+                                                                {customers.map((item, index) => (
+                                                                    <MenuItem key={index} value={item.name}>
+                                                                        {`${item.phoneNumber} – ${item.name}`}
+                                                                    </MenuItem>
+                                                                ))}
                                                             </Select>
                                                             {fieldState.error && (
                                                                 <FormHelperText>
-                                                                    {
-                                                                        fieldState
-                                                                            .error
-                                                                            .name
-                                                                            .message
-                                                                    }
+                                                                    {fieldState.error.name.message}
                                                                 </FormHelperText>
                                                             )}
                                                         </FormControl>
@@ -318,83 +258,40 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                         <InputLabel id="select-laundry-package-label">
                                                             Paket Laundry
                                                         </InputLabel>
-                                                        <FormControl
-                                                            error={
-                                                                fieldState.invalid
-                                                            }
-                                                        >
+                                                        <FormControl error={fieldState.invalid}>
                                                             <Select
                                                                 {...field}
                                                                 displayEmpty
                                                                 labelId="select-laundry-package-label"
                                                                 id="select-laundry-package"
-                                                                onChange={(
-                                                                    event,
-                                                                ) => {
-                                                                    const selectedPackage =
-                                                                        products.find(
-                                                                            (
-                                                                                item,
-                                                                            ) =>
-                                                                                item.name ===
-                                                                                event
-                                                                                    .target
-                                                                                    .value,
-                                                                        );
-                                                                    field.onChange(
-                                                                        selectedPackage ||
-                                                                            "",
+                                                                onChange={(event) => {
+                                                                    const selectedPackage = products.find(
+                                                                        (item) => item.name === event.target.value,
                                                                     );
+                                                                    field.onChange(selectedPackage || "");
                                                                 }}
-                                                                value={
-                                                                    field.value
-                                                                        ?.name
-                                                                }
+                                                                value={field.value?.name}
                                                                 size="small"
                                                             >
-                                                                <MenuItem
-                                                                    disabled
-                                                                    value=""
-                                                                >
-                                                                    Pilih Paket
-                                                                    Laundry
+                                                                <MenuItem disabled value="">
+                                                                    Pilih Paket Laundry
                                                                 </MenuItem>
-                                                                {products.map(
-                                                                    (
-                                                                        item,
-                                                                        index,
-                                                                    ) => (
-                                                                        <MenuItem
-                                                                            key={
-                                                                                index
-                                                                            }
-                                                                            value={
-                                                                                item.name
-                                                                            }
-                                                                        >
-                                                                            {`${item.name} – ${new Intl.NumberFormat(
-                                                                                "id-ID",
-                                                                                {
-                                                                                    style: "currency",
-                                                                                    currency:
-                                                                                        "IDR",
-                                                                                    minimumFractionDigits: 0,
-                                                                                },
-                                                                            ).format(
-                                                                                item.price,
-                                                                            )}`}
-                                                                        </MenuItem>
-                                                                    ),
-                                                                )}
+                                                                {products.map((item, index) => (
+                                                                    <MenuItem key={index} value={item.name}>
+                                                                        {`${item.name} – ${new Intl.NumberFormat(
+                                                                            "id-ID",
+                                                                            {
+                                                                                style: "currency",
+                                                                                currency: "IDR",
+                                                                                minimumFractionDigits: 0,
+                                                                            },
+                                                                        ).format(item.price)}`}
+                                                                    </MenuItem>
+                                                                ))}
                                                             </Select>
                                                             {fieldState.error && (
                                                                 <FormHelperText>
-                                                                    {
-                                                                        fieldState
-                                                                            .error
-                                                                            .name
-                                                                            .message
-                                                                    }
+                                                                    {fieldState.error.name.message}
                                                                 </FormHelperText>
                                                             )}
                                                         </FormControl>
@@ -414,26 +311,14 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                             Tanggal Selesai
                                                         </InputLabel>
                                                         <LocalizationProvider
-                                                            dateAdapter={
-                                                                AdapterDayjs
-                                                            }
+                                                            dateAdapter={AdapterDayjs}
                                                             adapterLocale="en-gb"
                                                         >
                                                             <DatePicker
-                                                                value={
-                                                                    field.value
-                                                                        ? dayjs(
-                                                                              field.value,
-                                                                          )
-                                                                        : null
-                                                                }
-                                                                onChange={(
-                                                                    newValue,
-                                                                ) =>
+                                                                value={field.value ? dayjs(field.value) : null}
+                                                                onChange={(newValue) =>
                                                                     field.onChange(
-                                                                        newValue
-                                                                            ? newValue.toISOString()
-                                                                            : null,
+                                                                        newValue ? newValue.toISOString() : null,
                                                                     )
                                                                 }
                                                                 disablePast
@@ -441,10 +326,7 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                                     textField: {
                                                                         size: "small",
                                                                         error: fieldState.invalid,
-                                                                        helperText:
-                                                                            fieldState
-                                                                                .error
-                                                                                ?.message,
+                                                                        helperText: fieldState.error?.message,
                                                                     },
                                                                 }}
                                                             />
@@ -462,37 +344,20 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                         <InputLabel id="select-payment-status-label">
                                                             Dibayar
                                                         </InputLabel>
-                                                        <FormControl
-                                                            error={
-                                                                fieldState.invalid
-                                                            }
-                                                        >
+                                                        <FormControl error={fieldState.invalid}>
                                                             <Select
                                                                 {...field}
                                                                 displayEmpty
                                                                 labelId="select-payment-status-label"
                                                                 id="select-payment-status"
                                                                 size="small"
-                                                                onChange={(
-                                                                    event,
-                                                                ) => {
-                                                                    field.onChange(
-                                                                        event
-                                                                            .target
-                                                                            .value,
-                                                                    );
+                                                                onChange={(event) => {
+                                                                    field.onChange(event.target.value);
                                                                 }}
-                                                                value={
-                                                                    field.value ||
-                                                                    ""
-                                                                }
+                                                                value={field.value || ""}
                                                             >
-                                                                <MenuItem
-                                                                    disabled
-                                                                    value=""
-                                                                >
-                                                                    Pilih Status
-                                                                    Pembayaran
+                                                                <MenuItem disabled value="">
+                                                                    Pilih Status Pembayaran
                                                                 </MenuItem>
                                                                 {[
                                                                     {
@@ -503,33 +368,15 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                                         value: "sudah-dibayar",
                                                                         label: "Sudah Dibayar",
                                                                     },
-                                                                ].map(
-                                                                    (
-                                                                        paymentStatus,
-                                                                        index,
-                                                                    ) => (
-                                                                        <MenuItem
-                                                                            value={
-                                                                                paymentStatus.value
-                                                                            }
-                                                                            key={
-                                                                                index
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                paymentStatus.label
-                                                                            }
-                                                                        </MenuItem>
-                                                                    ),
-                                                                )}
+                                                                ].map((paymentStatus, index) => (
+                                                                    <MenuItem value={paymentStatus.value} key={index}>
+                                                                        {paymentStatus.label}
+                                                                    </MenuItem>
+                                                                ))}
                                                             </Select>
                                                             {fieldState.error && (
                                                                 <FormHelperText>
-                                                                    {
-                                                                        fieldState
-                                                                            .error
-                                                                            .message
-                                                                    }
+                                                                    {fieldState.error.message}
                                                                 </FormHelperText>
                                                             )}
                                                         </FormControl>
@@ -542,46 +389,24 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                 <Controller
                                                     name="status"
                                                     control={form.control}
-                                                    render={({
-                                                        field,
-                                                        fieldState,
-                                                    }) => {
+                                                    render={({ field, fieldState }) => {
                                                         return (
                                                             <>
-                                                                <InputLabel id="select-status-label">
-                                                                    Status
-                                                                </InputLabel>
-                                                                <FormControl
-                                                                    error={
-                                                                        fieldState.invalid
-                                                                    }
-                                                                >
+                                                                <InputLabel id="select-status-label">Status</InputLabel>
+                                                                <FormControl error={fieldState.invalid}>
                                                                     <Select
                                                                         {...field}
                                                                         displayEmpty
                                                                         labelId="select-status-label"
                                                                         id="select-status"
                                                                         size="small"
-                                                                        onChange={(
-                                                                            event,
-                                                                        ) => {
-                                                                            field.onChange(
-                                                                                event
-                                                                                    .target
-                                                                                    .value,
-                                                                            );
+                                                                        onChange={(event) => {
+                                                                            field.onChange(event.target.value);
                                                                         }}
-                                                                        value={
-                                                                            field.value ||
-                                                                            ""
-                                                                        }
+                                                                        value={field.value || ""}
                                                                     >
-                                                                        <MenuItem
-                                                                            disabled
-                                                                            value=""
-                                                                        >
-                                                                            Pilih
-                                                                            Status
+                                                                        <MenuItem disabled value="">
+                                                                            Pilih Status
                                                                         </MenuItem>
                                                                         {[
                                                                             {
@@ -600,33 +425,15 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                                                 value: "diambil",
                                                                                 label: "Diambil",
                                                                             },
-                                                                        ].map(
-                                                                            (
-                                                                                status,
-                                                                                index,
-                                                                            ) => (
-                                                                                <MenuItem
-                                                                                    value={
-                                                                                        status.value
-                                                                                    }
-                                                                                    key={
-                                                                                        index
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        status.label
-                                                                                    }
-                                                                                </MenuItem>
-                                                                            ),
-                                                                        )}
+                                                                        ].map((status, index) => (
+                                                                            <MenuItem value={status.value} key={index}>
+                                                                                {status.label}
+                                                                            </MenuItem>
+                                                                        ))}
                                                                     </Select>
                                                                     {fieldState.error && (
                                                                         <FormHelperText>
-                                                                            {
-                                                                                fieldState
-                                                                                    .error
-                                                                                    .message
-                                                                            }
+                                                                            {fieldState.error.message}
                                                                         </FormHelperText>
                                                                     )}
                                                                 </FormControl>
@@ -639,28 +446,17 @@ const TransactionModal = ({ onClose, transaction }) => {
                                                 <Controller
                                                     name="qty"
                                                     control={form.control}
-                                                    render={({
-                                                        field,
-                                                        fieldState,
-                                                    }) => {
+                                                    render={({ field, fieldState }) => {
                                                         return (
                                                             <>
-                                                                <InputLabel id="text-qty">
-                                                                    Qty.
-                                                                </InputLabel>
+                                                                <InputLabel id="text-qty">Qty.</InputLabel>
                                                                 <TextField
                                                                     {...field}
-                                                                    size="small"
                                                                     placeholder="Kuantitas"
                                                                     type="number"
-                                                                    error={
-                                                                        fieldState.invalid
-                                                                    }
-                                                                    helperText={
-                                                                        fieldState
-                                                                            .error
-                                                                            ?.message
-                                                                    }
+                                                                    error={fieldState.invalid}
+                                                                    helperText={fieldState.error?.message}
+                                                                    size="small"
                                                                 />
                                                             </>
                                                         );
@@ -677,19 +473,14 @@ const TransactionModal = ({ onClose, transaction }) => {
                                         render={({ field }) => {
                                             return (
                                                 <>
-                                                    <InputLabel id="text-total-charge">
-                                                        Total Bayar
-                                                    </InputLabel>
+                                                    <InputLabel id="text-total-charge">Total Bayar</InputLabel>
                                                     <TextField
                                                         {...field}
-                                                        value={new Intl.NumberFormat(
-                                                            "id-ID",
-                                                            {
-                                                                style: "currency",
-                                                                currency: "IDR",
-                                                                minimumFractionDigits: 0,
-                                                            },
-                                                        ).format(field.value)}
+                                                        value={new Intl.NumberFormat("id-ID", {
+                                                            style: "currency",
+                                                            currency: "IDR",
+                                                            minimumFractionDigits: 0,
+                                                        }).format(field.value)}
                                                         disabled
                                                         size="small"
                                                     />
@@ -700,18 +491,10 @@ const TransactionModal = ({ onClose, transaction }) => {
                                 </div>
                             </div>
                             <div className="flex justify-end gap-4">
-                                <Button
-                                    variant="contained"
-                                    className="w-[6.25rem]"
-                                    type="submit"
-                                >
+                                <Button variant="contained" className="w-[6.25rem]" type="submit">
                                     Simpan
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    className="w-[6.25rem]"
-                                    onClick={onClose}
-                                >
+                                <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
                                     Tutup
                                 </Button>
                             </div>

@@ -19,13 +19,8 @@ const BillPicker = ({ onDateChange, value, totalRevenue, totalExpense }) => {
                         <div className="">
                             <div className="relative h-[4.167rem] p-[2.583rem]">
                                 <div className="absolute top-1/2 left-[2.083rem] flex w-[24rem] -translate-y-1/2 flex-col">
-                                    <Typography variant="body1">
-                                        Omzet Bersih
-                                    </Typography>
-                                    <Typography
-                                        variant="h4"
-                                        sx={{ fontWeight: "bold" }}
-                                    >
+                                    <Typography variant="body1">Omzet Bersih</Typography>
+                                    <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                                         {new Intl.NumberFormat("id-ID", {
                                             style: "currency",
                                             currency: "IDR",
@@ -34,16 +29,11 @@ const BillPicker = ({ onDateChange, value, totalRevenue, totalExpense }) => {
                                     </Typography>
                                 </div>
                                 <div className="absolute top-1/2 right-[2.583rem] flex w-[12-rem] -translate-y-1/2 flex-col gap-[0.5rem]">
-                                    <LocalizationProvider
-                                        dateAdapter={AdapterDayjs}
-                                        adapterLocale="en-gb"
-                                    >
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
                                         Tanggal
                                         <DatePicker
                                             value={value}
-                                            onChange={(newValue) =>
-                                                onDateChange(newValue)
-                                            }
+                                            onChange={(newValue) => onDateChange(newValue)}
                                             disableFuture
                                             slotProps={{
                                                 textField: {

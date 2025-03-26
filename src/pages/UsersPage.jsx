@@ -10,9 +10,7 @@ import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import { AnimatePresence } from "motion/react";
 
 const UserModal = lazy(() => import("../modals/UserModal"));
-const DeleteConfirmationModal = lazy(
-    () => import("../modals/DeleteConfirmationModal"),
-);
+const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
 
 const UsersPage = () => {
     const { deleteUser } = useUser();
@@ -35,15 +33,12 @@ const UsersPage = () => {
             document.body.style.overflow = "auto";
         };
     }, [modalState.show, confirmationModalState.show]);
-    const handleOpenModal = (user = null) =>
-        setModalState({ show: true, user });
+    const handleOpenModal = (user = null) => setModalState({ show: true, user });
     const handleCloseModal = () => setModalState({ show: false, user: null });
 
-    const handleOpenConfirmationModal = (userId = null) =>
-        setConfirmationModalState({ show: true, userId });
+    const handleOpenConfirmationModal = (userId = null) => setConfirmationModalState({ show: true, userId });
 
-    const handleCloseConfirmationModal = () =>
-        setConfirmationModalState({ show: false, userId: null });
+    const handleCloseConfirmationModal = () => setConfirmationModalState({ show: false, userId: null });
 
     const handleDeleteConfirm = () => {
         deleteUser(confirmationModalState.userId);
@@ -55,25 +50,16 @@ const UsersPage = () => {
                 <TopBar />
                 {isDesktop && <Sidebar />}
                 <PageContentWrapper>
-                    <DataTableUsers
-                        onRegisterUser={handleOpenModal}
-                        onDeleteUser={handleOpenConfirmationModal}
-                    />
+                    <DataTableUsers onRegisterUser={handleOpenModal} onDeleteUser={handleOpenConfirmationModal} />
                 </PageContentWrapper>
                 <FootBar />
             </div>
             <AnimatePresence>
                 {modalState.show && (
                     <>
-                        <div
-                            className="fixed inset-0 z-10 bg-black opacity-50"
-                            onClick={handleCloseModal}
-                        ></div>
+                        <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={handleCloseModal}></div>
                         <ModalAnimationWrapper>
-                            <UserModal
-                                onClose={handleCloseModal}
-                                user={modalState.user}
-                            />
+                            <UserModal onClose={handleCloseModal} user={modalState.user} />
                         </ModalAnimationWrapper>
                     </>
                 )}

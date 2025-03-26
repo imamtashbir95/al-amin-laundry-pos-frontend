@@ -2,13 +2,7 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Button,
-    Card,
-    CardContent,
-    InputLabel,
-    TextField,
-} from "@mui/material";
+import { Button, Card, CardContent, InputLabel, TextField } from "@mui/material";
 import { productSchema } from "../zod/productSchema";
 import { useProduct } from "../contexts/useProduct";
 
@@ -66,27 +60,20 @@ const ProductModal = ({ onClose, product }) => {
                     }}
                 >
                     <CardContent>
-                        <form
-                            onSubmit={form.handleSubmit(handleProductSubmit)}
-                            className="flex flex-col gap-4"
-                        >
+                        <form onSubmit={form.handleSubmit(handleProductSubmit)} className="flex flex-col gap-4">
                             <Controller
                                 name="name"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-product">
-                                                Nama Produk
-                                            </InputLabel>
+                                            <InputLabel id="text-product">Nama Produk</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Nama Produk"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -98,18 +85,14 @@ const ProductModal = ({ onClose, product }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-price">
-                                                Harga Produk Per Unit
-                                            </InputLabel>
+                                            <InputLabel id="text-price">Harga Produk Per Unit</InputLabel>
                                             <TextField
                                                 {...field}
                                                 type="number"
                                                 size="small"
                                                 placeholder="Harga Produk Per Unit"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -121,35 +104,23 @@ const ProductModal = ({ onClose, product }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-unit">
-                                                Unit
-                                            </InputLabel>
+                                            <InputLabel id="text-unit">Unit</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Unit"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
                                 }}
                             ></Controller>
                             <div className="flex justify-end gap-4">
-                                <Button
-                                    variant="contained"
-                                    className="w-[6.25rem]"
-                                    type="submit"
-                                >
+                                <Button variant="contained" className="w-[6.25rem]" type="submit">
                                     Simpan
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    className="w-[6.25rem]"
-                                    onClick={onClose}
-                                >
+                                <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
                                     Tutup
                                 </Button>
                             </div>

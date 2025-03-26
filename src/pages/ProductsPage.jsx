@@ -10,9 +10,7 @@ import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import { AnimatePresence } from "motion/react";
 
 const ProductModal = lazy(() => import("../modals/ProductModal"));
-const DeleteConfirmationModal = lazy(
-    () => import("../modals/DeleteConfirmationModal"),
-);
+const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
 
 const ProductsPage = () => {
     const { deleteProduct } = useProduct();
@@ -36,16 +34,12 @@ const ProductsPage = () => {
         };
     }, [modalState.show, confirmationModalState.show]);
 
-    const handleOpenModal = (product = null) =>
-        setModalState({ show: true, product });
-    const handleCloseModal = () =>
-        setModalState({ show: false, product: null });
+    const handleOpenModal = (product = null) => setModalState({ show: true, product });
+    const handleCloseModal = () => setModalState({ show: false, product: null });
 
-    const handleOpenConfirmationModal = (productId = null) =>
-        setConfirmationModalState({ show: true, productId });
+    const handleOpenConfirmationModal = (productId = null) => setConfirmationModalState({ show: true, productId });
 
-    const handleCloseConfirmationModal = () =>
-        setConfirmationModalState({ show: false, productId: null });
+    const handleCloseConfirmationModal = () => setConfirmationModalState({ show: false, productId: null });
 
     const handleDeleteConfirm = () => {
         deleteProduct(confirmationModalState.productId);
@@ -57,25 +51,16 @@ const ProductsPage = () => {
                 <TopBar />
                 {isDesktop && <Sidebar />}
                 <PageContentWrapper>
-                    <DataTableProducts
-                        onAddProduct={handleOpenModal}
-                        onDeleteProduct={handleOpenConfirmationModal}
-                    />
+                    <DataTableProducts onAddProduct={handleOpenModal} onDeleteProduct={handleOpenConfirmationModal} />
                 </PageContentWrapper>
                 <FootBar />
             </div>
             <AnimatePresence>
                 {modalState.show && (
                     <>
-                        <div
-                            className="fixed inset-0 z-10 bg-black opacity-50"
-                            onClick={handleCloseModal}
-                        ></div>
+                        <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={handleCloseModal}></div>
                         <ModalAnimationWrapper>
-                            <ProductModal
-                                onClose={handleCloseModal}
-                                product={modalState.product}
-                            />
+                            <ProductModal onClose={handleCloseModal} product={modalState.product} />
                         </ModalAnimationWrapper>
                     </>
                 )}

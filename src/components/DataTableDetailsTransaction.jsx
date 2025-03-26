@@ -1,31 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Chip,
-    Pagination,
-    Typography,
-} from "@mui/material";
+import { Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
-import { getCSSVariable } from "../utils/getCSSVariable";
 
-const DataTableDetailsTransaction = ({
-    onAddTransaction,
-    onDeleteTransaction,
-}) => {
+const DataTableDetailsTransaction = ({ onAddTransaction, onDeleteTransaction }) => {
     const { transactions } = useTransaction();
     const { customerId } = useParams();
     const navigate = useNavigate();
 
     const [page, setPage] = useState(1);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
-    const [selectedFullTransaction, setSelectedFullTransaction] =
-        useState(null);
+    const [selectedFullTransaction, setSelectedFullTransaction] = useState(null);
     const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 });
 
     const itemsPerPage = 5;
@@ -33,26 +20,18 @@ const DataTableDetailsTransaction = ({
     const filteredTransactions = useMemo(
         () =>
             transactions.filter(
-                (transaction) =>
-                    transaction.customer?.id?.toLowerCase() ===
-                    customerId?.toLowerCase(),
+                (transaction) => transaction.customer?.id?.toLowerCase() === customerId?.toLowerCase(),
                 [transactions, customerId],
             ),
         [transactions, customerId],
     );
 
     const details = useMemo(
-        () =>
-            filteredTransactions.flatMap(
-                (transaction) => transaction.billDetails || [],
-            ),
+        () => filteredTransactions.flatMap((transaction) => transaction.billDetails || []),
         [filteredTransactions],
     );
 
-    const pageCount = useMemo(
-        () => Math.ceil(details.length / itemsPerPage),
-        [details, itemsPerPage],
-    );
+    const pageCount = useMemo(() => Math.ceil(details.length / itemsPerPage), [details, itemsPerPage]);
 
     const paginatedDetails = useMemo(
         () => details.slice((page - 1) * itemsPerPage, page * itemsPerPage),
@@ -64,17 +43,11 @@ const DataTableDetailsTransaction = ({
     };
 
     const handleSelectTransaction = (detail) => {
-        setSelectedTransaction(
-            selectedTransaction?.id === detail.id ? null : detail,
-        );
+        setSelectedTransaction(selectedTransaction?.id === detail.id ? null : detail);
     };
 
     const handleHoverTransaction = (event, detail) => {
-        setSelectedFullTransaction(
-            filteredTransactions.find(
-                (transaction) => transaction.id === detail.billId,
-            ),
-        );
+        setSelectedFullTransaction(filteredTransactions.find((transaction) => transaction.id === detail.billId));
         setPopoverPosition({
             top: event.clientY + 10,
             left: event.clientX + 10,
@@ -88,9 +61,7 @@ const DataTableDetailsTransaction = ({
 
     useEffect(() => {
         if (selectedTransaction) {
-            const updatedDetail = details.find(
-                (detail) => detail.id === selectedTransaction.id,
-            );
+            const updatedDetail = details.find((detail) => detail.id === selectedTransaction.id);
             if (updatedDetail) {
                 setSelectedTransaction(updatedDetail);
             } else {
@@ -115,8 +86,7 @@ const DataTableDetailsTransaction = ({
                                 <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                     <CardContent>
                                         <Typography variant="h5" gutterBottom>
-                                            {filteredTransactions[0]?.customer
-                                                ?.name
+                                            {filteredTransactions[0]?.customer?.name
                                                 ? `Transaksi a.n. ${filteredTransactions[0].customer.name}`
                                                 : "Pelanggan Tidak Ditemukan"}
                                         </Typography>
@@ -127,11 +97,7 @@ const DataTableDetailsTransaction = ({
                                                 <Button
                                                     variant="outlined"
                                                     size="small"
-                                                    onClick={() =>
-                                                        onDeleteTransaction(
-                                                            selectedTransaction.billId,
-                                                        )
-                                                    }
+                                                    onClick={() => onDeleteTransaction(selectedTransaction.billId)}
                                                 >
                                                     Hapus
                                                 </Button>
@@ -140,11 +106,7 @@ const DataTableDetailsTransaction = ({
                                                 <Button
                                                     variant="contained"
                                                     size="small"
-                                                    onClick={() =>
-                                                        onAddTransaction(
-                                                            selectedTransaction,
-                                                        )
-                                                    }
+                                                    onClick={() => onAddTransaction(selectedTransaction)}
                                                 >
                                                     Ubah
                                                 </Button>
@@ -156,9 +118,7 @@ const DataTableDetailsTransaction = ({
                                         <Button
                                             variant="outlined"
                                             size="small"
-                                            onClick={() =>
-                                                navigate(`/transactions`)
-                                            }
+                                            onClick={() => navigate(`/transactions`)}
                                         >
                                             Kembali
                                         </Button>
@@ -177,11 +137,7 @@ const DataTableDetailsTransaction = ({
                                     ].map((title) => (
                                         <div className="w-[12.5%]" key={title}>
                                             <CardContent>
-                                                <Typography
-                                                    variant="body1"
-                                                    gutterBottom
-                                                    fontWeight={500}
-                                                >
+                                                <Typography variant="body1" gutterBottom fontWeight={500}>
                                                     {title}
                                                 </Typography>
                                             </CardContent>
@@ -193,45 +149,27 @@ const DataTableDetailsTransaction = ({
                                 paginatedDetails.map((detail) => (
                                     <div
                                         className={`flex cursor-pointer px-[0.83rem] ${
-                                            selectedTransaction?.id ===
-                                            detail.id
-                                                ? "bg-[#d6d6d6]"
-                                                : ""
+                                            selectedTransaction?.id === detail.id ? "bg-[#d6d6d6]" : ""
                                         }`}
-                                        onClick={() =>
-                                            handleSelectTransaction(detail)
-                                        }
-                                        onMouseEnter={(e) =>
-                                            handleHoverTransaction(e, detail)
-                                        }
+                                        onClick={() => handleSelectTransaction(detail)}
+                                        onMouseEnter={(e) => handleHoverTransaction(e, detail)}
                                         onMouseLeave={handleLeaveTransaction}
                                         key={detail.id}
                                     >
                                         <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.invoiceId.toUpperCase()}
-                                                size="small"
-                                            />
+                                            <Chip label={detail.invoiceId.toUpperCase()} size="small" />
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                    {dayjs(
-                                                        new Date(
-                                                            detail.createdAt,
-                                                        ),
-                                                    ).format("DD-MM-YYYY")}
+                                                    {dayjs(new Date(detail.createdAt)).format("DD-MM-YYYY")}
                                                 </Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                    {dayjs(
-                                                        new Date(
-                                                            detail.finishDate,
-                                                        ),
-                                                    ).format("DD-MM-YYYY")}
+                                                    {dayjs(new Date(detail.finishDate)).format("DD-MM-YYYY")}
                                                 </Typography>
                                             </CardContent>
                                         </div>
@@ -243,15 +181,11 @@ const DataTableDetailsTransaction = ({
                                                         <Typography
                                                             variant="body2"
                                                             sx={{
-                                                                fontSize:
-                                                                    "0.85rem",
+                                                                fontSize: "0.85rem",
                                                                 color: "gray",
                                                             }}
                                                         >
-                                                            {
-                                                                detail.product
-                                                                    .name
-                                                            }
+                                                            {detail.product.name}
                                                         </Typography>
                                                     </div>
                                                 </div>
@@ -267,62 +201,40 @@ const DataTableDetailsTransaction = ({
                                         <div className="flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                    {new Intl.NumberFormat(
-                                                        "id-ID",
-                                                        {
-                                                            style: "currency",
-                                                            currency: "IDR",
-                                                            minimumFractionDigits: 0,
-                                                        },
-                                                    ).format(detail.price)}
+                                                    {new Intl.NumberFormat("id-ID", {
+                                                        style: "currency",
+                                                        currency: "IDR",
+                                                        minimumFractionDigits: 0,
+                                                    }).format(detail.price)}
                                                 </Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center justify-center">
                                             <Chip
-                                                label={detail.paymentStatus
-                                                    .toUpperCase()
-                                                    .replace("-", " ")}
+                                                label={detail.paymentStatus.toUpperCase().replace("-", " ")}
                                                 size="small"
                                                 style={{
                                                     backgroundColor:
-                                                        detail.paymentStatus ===
-                                                        "belum-dibayar"
-                                                            ? getCSSVariable(
-                                                                  "--theme-color-1",
-                                                              )
-                                                            : getCSSVariable(
-                                                                  "--theme-color-2",
-                                                              ),
+                                                        detail.paymentStatus === "belum-dibayar"
+                                                            ? "var(--theme-color-1)"
+                                                            : "var(--theme-color-2)",
                                                     color: "white",
                                                 }}
                                             />
                                         </div>
                                         <div className="flex w-[12.5%] items-center justify-center">
                                             <Chip
-                                                label={detail.status
-                                                    .toUpperCase()
-                                                    .replace("-", " ")}
+                                                label={detail.status.toUpperCase().replace("-", " ")}
                                                 size="small"
                                                 style={{
                                                     backgroundColor:
                                                         detail.status === "baru"
-                                                            ? getCSSVariable(
-                                                                  "--theme-color-3",
-                                                              )
-                                                            : detail.status ===
-                                                                "proses"
-                                                              ? getCSSVariable(
-                                                                    "--theme-color-4",
-                                                                )
-                                                              : detail.status ===
-                                                                  "selesai"
-                                                                ? getCSSVariable(
-                                                                      "--theme-color-5",
-                                                                  )
-                                                                : getCSSVariable(
-                                                                      "--theme-color-6",
-                                                                  ),
+                                                            ? "var(--theme-color-3)"
+                                                            : detail.status === "proses"
+                                                              ? "var(--theme-color-4)"
+                                                              : detail.status === "selesai"
+                                                                ? "var(--theme-color-5)"
+                                                                : "var(--theme-color-6)",
                                                     color: "white",
                                                 }}
                                             />
@@ -339,12 +251,7 @@ const DataTableDetailsTransaction = ({
                 </div>
             </section>
             {details.length > itemsPerPage && (
-                <Pagination
-                    count={pageCount}
-                    page={page}
-                    onChange={handlePageChange}
-                    color="hanPurple"
-                />
+                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
             )}
 
             {/* Popover */}
@@ -363,14 +270,11 @@ const DataTableDetailsTransaction = ({
                     }}
                 >
                     <Typography variant="body2">
-                        <strong>Terakhir diperbarui oleh:</strong>{" "}
-                        {selectedFullTransaction.user?.name || "Unknown"}
+                        <strong>Terakhir diperbarui oleh:</strong> {selectedFullTransaction.user?.name || "Unknown"}
                     </Typography>
                     <Typography variant="body2">
                         <strong>Tanggal:</strong>{" "}
-                        {dayjs(selectedFullTransaction.updatedAt).format(
-                            "DD-MM-YYYY HH:mm:ss",
-                        )}
+                        {dayjs(selectedFullTransaction.updatedAt).format("DD-MM-YYYY HH:mm:ss")}
                     </Typography>
                 </div>
             )}

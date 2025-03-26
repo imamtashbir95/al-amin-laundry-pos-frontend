@@ -1,10 +1,7 @@
 import { z } from "zod";
 
 export const transactionSchema = z.object({
-    invoiceId: z
-        .string()
-        .min(1, "No. nota harus diisi")
-        .max(100, "No. nota maksimal 50 karakter"),
+    invoiceId: z.string().min(1, "No. nota harus diisi").max(100, "No. nota maksimal 50 karakter"),
     customer: z.object({
         name: z.string().min(1, "Pelanggan harus diisi"),
     }),
@@ -28,12 +25,11 @@ export const transactionSchema = z.object({
                 return parsed <= 9007199254740992n;
             },
             {
-                message:
-                    "Kuantitas tidak boleh lebih dari 9.007.199.254.740.992",
+                message: "Kuantitas tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
     price: z.string(),
-    finishDate: z.any(),
     paymentStatus: z.string().min(1, "Status pembayaran harus diisi"),
     status: z.string().min(1, "Status harus diisi"),
+    finishDate: z.any(),
 });

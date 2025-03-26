@@ -29,10 +29,8 @@ const TransactionsPage = () => {
         };
     }, [modalState.show]);
 
-    const handleOpenModal = (transaction = null) =>
-        setModalState({ show: true, transaction });
-    const handleCloseModal = () =>
-        setModalState({ show: false, transaction: null });
+    const handleOpenModal = (transaction = null) => setModalState({ show: true, transaction });
+    const handleCloseModal = () => setModalState({ show: false, transaction: null });
 
     return (
         <TransactionProvider>
@@ -42,9 +40,7 @@ const TransactionsPage = () => {
                         <TopBar />
                         {isDesktop && <Sidebar />}
                         <PageContentWrapper>
-                            <DataTableTransactions
-                                onAddTransaction={() => handleOpenModal(null)}
-                            />
+                            <DataTableTransactions onAddTransaction={() => handleOpenModal(null)} />
                         </PageContentWrapper>
                         <FootBar />
                     </div>
@@ -56,10 +52,7 @@ const TransactionsPage = () => {
                                     onClick={handleCloseModal}
                                 ></div>
                                 <ModalAnimationWrapper>
-                                    <TransactionModal
-                                        onClose={handleCloseModal}
-                                        transaction={modalState.transaction}
-                                    />
+                                    <TransactionModal onClose={handleCloseModal} transaction={modalState.transaction} />
                                 </ModalAnimationWrapper>
                             </>
                         )}
