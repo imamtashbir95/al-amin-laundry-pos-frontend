@@ -6,7 +6,7 @@ import { useTransaction } from "../contexts/useTransaction";
 import Chart from "chart.js/auto";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 import { useAuth } from "../contexts/useAuth";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { getCSSVariable } from "../utils/getCSSVariable";
 
 const Dashboard = () => {

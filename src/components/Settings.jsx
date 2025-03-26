@@ -1,5 +1,4 @@
 import {
-    Autocomplete,
     Avatar,
     Button,
     Card,
@@ -13,7 +12,7 @@ import {
 } from "@mui/material";
 import default_profile_pic from "../assets/default-profile-pic.webp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faKey, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { getCSSVariable } from "../utils/getCSSVariable";
 
@@ -129,7 +128,7 @@ const Settings = () => {
                                                 labelId="select-timezone-label"
                                                 id="select-timezone"
                                                 onChange={(e) => setTimezone(e.target.value)}
-                                                value=""
+                                                value={timezone}
                                                 size="small"
                                             >
                                                 <MenuItem disabled value="">
