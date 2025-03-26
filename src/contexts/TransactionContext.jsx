@@ -45,12 +45,9 @@ export const TransactionProvider = ({ children }) => {
 
     const fetchTransactionsNotPaidOff = async (date) => {
         try {
-            const response = await axiosInstance.get(
-                "/bills/report/not-paid-off",
-                {
-                    params: { date },
-                },
-            );
+            const response = await axiosInstance.get("/bills/report/not-paid-off", {
+                params: { date },
+            });
             setTransactionsNotPaidOff(response.data.data);
         } catch {
             toast.error("Gagal mengambil data transaksi belum dibayar.");
@@ -59,12 +56,9 @@ export const TransactionProvider = ({ children }) => {
 
     const fetchTransactionsNotTakenYet = async (date) => {
         try {
-            const response = await axiosInstance.get(
-                "/bills/report/not-taken-yet",
-                {
-                    params: { date },
-                },
-            );
+            const response = await axiosInstance.get("/bills/report/not-taken-yet", {
+                params: { date },
+            });
             setTransactionsNotTakenYet(response.data.data);
         } catch {
             toast.error("Gagal mengambil data barang belum diambil.");

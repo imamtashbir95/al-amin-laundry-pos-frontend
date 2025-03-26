@@ -13,7 +13,7 @@ const NotFoundPage = () => {
                             sx={{
                                 fontSize: "1.33rem",
                                 fontWeight: "bold",
-                                color: "#441fee",
+                                color: "var(--brand-1)",
                             }}
                         >
                             404
@@ -21,9 +21,7 @@ const NotFoundPage = () => {
                     </div>
                 </div>
                 <div className="absolute top-1/2 left-1/2 flex h-[8.33rem] w-[75rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-[2rem]">
-                    <Typography sx={{ fontSize: "2.5rem", fontWeight: "bold" }}>
-                        Halaman Tidak Ditemukan
-                    </Typography>
+                    <Typography sx={{ fontSize: "2.5rem", fontWeight: "bold" }}>Halaman Tidak Ditemukan</Typography>
                     <Typography sx={{ fontSize: "1.5rem", color: "#4d4d4d" }}>
                         Maaf, kami tidak dapat menemukan halaman tersebut.
                     </Typography>

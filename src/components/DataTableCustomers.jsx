@@ -2,14 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Pagination,
-    Typography,
-} from "@mui/material";
+import { Button, Card, CardActions, CardContent, Pagination, Typography } from "@mui/material";
 import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
 import { useCustomer } from "../contexts/useCustomer";
@@ -26,23 +19,15 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
         let filtered = Array.isArray(customers) ? customers : [];
 
         if (searchTerm) {
-            filtered = filtered.filter((customer) =>
-                customer.name.toLowerCase().includes(searchTerm.toLowerCase()),
-            );
+            filtered = filtered.filter((customer) => customer.name.toLowerCase().includes(searchTerm.toLowerCase()));
         }
 
         if (sortBy === "name-asc") {
-            filtered = [...filtered].sort((a, b) =>
-                a.name.localeCompare(b.name),
-            );
+            filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
         } else if (sortBy === "created-at-desc") {
-            filtered = [...filtered].sort(
-                (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-            );
+            filtered = [...filtered].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         } else if (sortBy === "created-at-asc") {
-            filtered = [...filtered].sort(
-                (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-            );
+            filtered = [...filtered].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         }
 
         return filtered;
@@ -54,11 +39,7 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
     );
 
     const paginatedCustomers = useMemo(
-        () =>
-            filteredCustomers.slice(
-                (page - 1) * itemsPerPage,
-                page * itemsPerPage,
-            ),
+        () => filteredCustomers.slice((page - 1) * itemsPerPage, page * itemsPerPage),
         [filteredCustomers, page, itemsPerPage],
     );
 
@@ -89,15 +70,9 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
-                                    <Button
-                                        variant="contained"
-                                        size="small"
-                                        onClick={onAddCustomer}
-                                    >
+                                    <Button variant="contained" size="small" onClick={onAddCustomer}>
                                         <div className="flex items-center gap-[0.5rem]">
-                                            <FontAwesomeIcon
-                                                icon={faFileImport}
-                                            />
+                                            <FontAwesomeIcon icon={faFileImport} />
                                             Tambah Pelanggan
                                         </div>
                                     </Button>
@@ -108,19 +83,10 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                 <SortBy sortBy={sortBy} setSortBy={setSortBy} />
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
-                                {[
-                                    "Nama Pelanggan",
-                                    "No. Telepon",
-                                    "Alamat",
-                                    "Ubah/Hapus",
-                                ].map((title) => (
+                                {["Nama Pelanggan", "No. Telepon", "Alamat", "Ubah/Hapus"].map((title) => (
                                     <div className="w-[25%]" key={title}>
                                         <CardContent>
-                                            <Typography
-                                                variant="body1"
-                                                gutterBottom
-                                                fontWeight={500}
-                                            >
+                                            <Typography variant="body1" gutterBottom fontWeight={500}>
                                                 {title}
                                             </Typography>
                                         </CardContent>
@@ -131,49 +97,34 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                         <div data-testid="customer-table">
                             {paginatedCustomers.length > 0 ? (
                                 paginatedCustomers.map((customer) => (
-                                    <div
-                                        className="flex px-[0.83rem]"
-                                        key={customer.id}
-                                    >
+                                    <div className="flex px-[0.83rem]" key={customer.id}>
                                         <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body2">
-                                                    {customer.name}
-                                                </Typography>
+                                                <Typography variant="body2">{customer.name}</Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body2">
-                                                    {customer.phoneNumber}
-                                                </Typography>
+                                                <Typography variant="body2">{customer.phoneNumber}</Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center">
                                             <CardContent>
-                                                <Typography variant="body2">
-                                                    {customer.address}
-                                                </Typography>
+                                                <Typography variant="body2">{customer.address}</Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center justify-center gap-[1rem]">
                                             <Button
                                                 variant="contained"
                                                 size="small"
-                                                onClick={() =>
-                                                    onAddCustomer(customer)
-                                                }
+                                                onClick={() => onAddCustomer(customer)}
                                             >
                                                 Ubah
                                             </Button>
                                             <Button
                                                 variant="outlined"
                                                 size="small"
-                                                onClick={() =>
-                                                    onDeleteCustomer(
-                                                        customer.id,
-                                                    )
-                                                }
+                                                onClick={() => onDeleteCustomer(customer.id)}
                                             >
                                                 Hapus
                                             </Button>
@@ -181,21 +132,14 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                     </div>
                                 ))
                             ) : (
-                                <Typography className="p-4 text-center">
-                                    Belum ada pelanggan.
-                                </Typography>
+                                <Typography className="p-4 text-center">Belum ada pelanggan.</Typography>
                             )}
                         </div>
                     </Card>
                 </div>
             </section>
             {filteredCustomers.length > itemsPerPage && (
-                <Pagination
-                    count={pageCount}
-                    page={page}
-                    onChange={handlePageChange}
-                    color="hanPurple"
-                />
+                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
             )}
         </>
     );

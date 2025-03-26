@@ -22,8 +22,7 @@ Alamat: ${data.customer.address}
 Layanan: ${data.product.name}
 Qty.: ${data.qty} ${data.product.type}
 Harga: ${Number(data.product.price).toLocaleString("id-ID")}
-Total: ${Number(
-    data.product.price * data.qty)},
+Total: ${Number(data.product.price * data.qty)},
 ).toLocaleString("id-ID")}
 --------------------------------------------
 Pembayaran rek. BCA

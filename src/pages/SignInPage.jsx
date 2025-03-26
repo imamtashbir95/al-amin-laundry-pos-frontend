@@ -2,14 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Button,
-    Card,
-    CardContent,
-    InputLabel,
-    TextField,
-    Typography,
-} from "@mui/material";
+import { Button, Card, CardContent, InputLabel, TextField, Typography } from "@mui/material";
 import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/useAuth";
 import { signInSchema } from "../zod/signInSchema";
@@ -27,7 +20,7 @@ const SignInPage = () => {
         resolver: zodResolver(signInSchema),
     });
 
-    const {token, signIn } = useAuth();
+    const { user, token, signIn } = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -45,11 +38,11 @@ const SignInPage = () => {
     };
 
     useEffect(() => {
-        if (token) {
+        if (token && user !== null) {
             const from = location.state?.from?.pathname || "/dashboard";
             navigate(from, { replace: true });
         }
-    }, [token, navigate]);
+    }, [user, token, navigate]);
 
     return (
         <>
@@ -77,8 +70,7 @@ const SignInPage = () => {
                             {timeoutError && (
                                 <div className="rounded-[0.5rem] border border-[#ff0000] bg-[#ff6666]/[.2] p-[0.875rem]">
                                     <Typography color="#ff0000">
-                                        Anda butuh waktu terlalu lama untuk
-                                        masuk. Silakan coba lagi sekarang.
+                                        Anda butuh waktu terlalu lama untuk masuk. Silakan coba lagi sekarang.
                                     </Typography>
                                 </div>
                             )}
@@ -88,17 +80,13 @@ const SignInPage = () => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-username">
-                                                Username
-                                            </InputLabel>
+                                            <InputLabel id="text-username">Username</InputLabel>
                                             <TextField
                                                 {...field}
                                                 placeholder="Username"
                                                 size="small"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -110,9 +98,7 @@ const SignInPage = () => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-password">
-                                                Kata Sandi
-                                            </InputLabel>
+                                            <InputLabel id="text-password">Kata Sandi</InputLabel>
                                             <TextField
                                                 {...field}
                                                 type="password"
@@ -120,28 +106,16 @@ const SignInPage = () => {
                                                 size="small"
                                                 placeholder="Kata Sandi"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
                                 }}
                             ></Controller>
                             <div className="flex justify-end gap-4">
-                                <Button
-                                    variant="contained"
-                                    type="submit"
-                                    sx={{ width: "100%" }}
-                                    disabled={isLoading}
-                                >
+                                <Button variant="contained" type="submit" sx={{ width: "100%" }} disabled={isLoading}>
                                     {isLoading ? (
-                                        <l-waveform
-                                            size="27"
-                                            stroke="3.5"
-                                            speed="1"
-                                            color="white"
-                                        ></l-waveform>
+                                        <l-waveform size="27" stroke="3.5" speed="1" color="white"></l-waveform>
                                     ) : (
                                         "Masuk"
                                     )}
@@ -150,10 +124,7 @@ const SignInPage = () => {
                             <div className="flex items-center justify-center">
                                 <span>Belum punya akun?</span>
                                 <span>&nbsp;</span>
-                                <Link
-                                    to="/"
-                                    className="text-blue-600 underline"
-                                >
+                                <Link to="/" className="text-blue-600 underline">
                                     Daftar!
                                 </Link>
                             </div>

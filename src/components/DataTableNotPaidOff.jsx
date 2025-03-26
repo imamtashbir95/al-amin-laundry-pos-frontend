@@ -4,7 +4,6 @@ import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserClock } from "@fortawesome/free-solid-svg-icons";
-import { getCSSVariable } from "../utils/getCSSVariable";
 
 // Cari Belum Dibayar (Terkait "Pilih Tanggal" tidak Transaksi Masuk)
 // - Jika finishDate <= nowDate && paymentStatus === "belum-dibayar"
@@ -15,8 +14,7 @@ const DataTableNotPaidOff = () => {
     const itemsPerPage = 2;
 
     const transactionData = useMemo(
-        () =>
-            Array.isArray(transactionsNotPaidOff) ? transactionsNotPaidOff : [],
+        () => (Array.isArray(transactionsNotPaidOff) ? transactionsNotPaidOff : []),
         [transactionsNotPaidOff],
     );
 
@@ -25,11 +23,7 @@ const DataTableNotPaidOff = () => {
     }, [transactionData, itemsPerPage]);
 
     const paginatedTransactions = useMemo(
-        () =>
-            transactionData.slice(
-                (page - 1) * itemsPerPage,
-                page * itemsPerPage,
-            ),
+        () => transactionData.slice((page - 1) * itemsPerPage, page * itemsPerPage),
         [transactionData, page, itemsPerPage],
     );
 
@@ -52,10 +46,7 @@ const DataTableNotPaidOff = () => {
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent className="flex flex-row gap-[1rem]">
                                     <div className="flex h-[2.25rem] w-[2.25rem] items-center justify-center">
-                                        <FontAwesomeIcon
-                                            icon={faUserClock}
-                                            size="xl"
-                                        />
+                                        <FontAwesomeIcon icon={faUserClock} size="xl" />
                                     </div>
                                     <Typography variant="h5" gutterBottom>
                                         Daftar Transaksi Belum Dibayar
@@ -75,11 +66,7 @@ const DataTableNotPaidOff = () => {
                                 ].map((title) => (
                                     <div className="w-[12.5%]" key={title}>
                                         <CardContent>
-                                            <Typography
-                                                variant="body1"
-                                                gutterBottom
-                                                fontWeight={500}
-                                            >
+                                            <Typography variant="body1" gutterBottom fontWeight={500}>
                                                 {title}
                                             </Typography>
                                         </CardContent>
@@ -90,21 +77,13 @@ const DataTableNotPaidOff = () => {
                         {paginatedTransactions.length > 0 ? (
                             paginatedTransactions.map((transaction) =>
                                 transaction.billDetails.map((detail) => (
-                                    <div
-                                        key={detail.id}
-                                        className="flex px-[0.83rem]"
-                                    >
+                                    <div key={detail.id} className="flex px-[0.83rem]">
                                         <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.invoiceId.toUpperCase()}
-                                                size="small"
-                                            />
+                                            <Chip label={detail.invoiceId.toUpperCase()} size="small" />
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
                                             <CardContent>
-                                                <Typography variant="body2">
-                                                    {transaction.customer.name}
-                                                </Typography>
+                                                <Typography variant="body2">{transaction.customer.name}</Typography>
                                             </CardContent>
                                         </div>
                                         <div className="relative flex w-[12.5%] items-center">
@@ -115,15 +94,11 @@ const DataTableNotPaidOff = () => {
                                                         <Typography
                                                             variant="body2"
                                                             sx={{
-                                                                fontSize:
-                                                                    "0.85rem",
+                                                                fontSize: "0.85rem",
                                                                 color: "gray",
                                                             }}
                                                         >
-                                                            {
-                                                                detail.product
-                                                                    .name
-                                                            }
+                                                            {detail.product.name}
                                                         </Typography>
                                                     </div>
                                                 </div>
@@ -139,73 +114,47 @@ const DataTableNotPaidOff = () => {
                                         <div className="flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                    {new Intl.NumberFormat(
-                                                        "id-ID",
-                                                        {
-                                                            style: "currency",
-                                                            currency: "IDR",
-                                                            minimumFractionDigits: 0,
-                                                        },
-                                                    ).format(detail.price)}
+                                                    {new Intl.NumberFormat("id-ID", {
+                                                        style: "currency",
+                                                        currency: "IDR",
+                                                        minimumFractionDigits: 0,
+                                                    }).format(detail.price)}
                                                 </Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                    {dayjs(
-                                                        new Date(
-                                                            detail.finishDate,
-                                                        ),
-                                                    ).format("DD-MM-YYYY")}
+                                                    {dayjs(new Date(detail.finishDate)).format("DD-MM-YYYY")}
                                                 </Typography>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center justify-center">
                                             <Chip
-                                                label={detail.paymentStatus
-                                                    .toUpperCase()
-                                                    .replace("-", " ")}
+                                                label={detail.paymentStatus.toUpperCase().replace("-", " ")}
                                                 size="small"
                                                 style={{
                                                     backgroundColor:
-                                                        detail.paymentStatus ===
-                                                        "belum-dibayar"
-                                                            ? getCSSVariable(
-                                                                  "--theme-color-1",
-                                                              )
-                                                            : getCSSVariable(
-                                                                  "--theme-color-2",
-                                                              ),
+                                                        detail.paymentStatus === "belum-dibayar"
+                                                            ? "var(--theme-color-1)"
+                                                            : "var(--theme-color-2)",
                                                     color: "white",
                                                 }}
                                             />
                                         </div>
                                         <div className="flex w-[12.5%] items-center justify-center">
                                             <Chip
-                                                label={detail.status
-                                                    .toUpperCase()
-                                                    .replace("-", " ")}
+                                                label={detail.status.toUpperCase().replace("-", " ")}
                                                 size="small"
                                                 style={{
                                                     backgroundColor:
                                                         detail.status === "baru"
-                                                            ? getCSSVariable(
-                                                                  "--theme-color-3",
-                                                              )
-                                                            : detail.status ===
-                                                                "proses"
-                                                              ? getCSSVariable(
-                                                                    "--theme-color-4",
-                                                                )
-                                                              : detail.status ===
-                                                                  "selesai"
-                                                                ? getCSSVariable(
-                                                                      "--theme-color-5",
-                                                                  )
-                                                                : getCSSVariable(
-                                                                      "--theme-color-6",
-                                                                  ),
+                                                            ? "var(--theme-color-3)"
+                                                            : detail.status === "proses"
+                                                              ? "var(--theme-color-4)"
+                                                              : detail.status === "selesai"
+                                                                ? "var(--theme-color-5)"
+                                                                : "var(--theme-color-6)",
                                                     color: "white",
                                                 }}
                                             />
@@ -215,20 +164,14 @@ const DataTableNotPaidOff = () => {
                             )
                         ) : (
                             <Typography className="p-4 text-center">
-                                Transaksi sudah dibayar semua pada batas tanggal
-                                ini.
+                                Transaksi sudah dibayar semua pada batas tanggal ini.
                             </Typography>
                         )}
                     </Card>
                 </div>
             </section>
             {transactionData.length > itemsPerPage && (
-                <Pagination
-                    count={pageCount}
-                    page={page}
-                    onChange={handlePageChange}
-                    color="hanPurple"
-                />
+                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
             )}
         </>
     );

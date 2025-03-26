@@ -1,10 +1,7 @@
 import { z } from "zod";
 
 export const expenseSchema = z.object({
-    name: z
-        .string()
-        .min(1, "Nama pengeluaran harus diisi")
-        .max(100, "Nama pengeluaran maksimal 100 karakter"),
+    name: z.string().min(1, "Nama pengeluaran harus diisi").max(100, "Nama pengeluaran maksimal 100 karakter"),
     price: z
         .string()
         .min(1, "Harga pengeluaran harus diisi")
@@ -31,8 +28,7 @@ export const expenseSchema = z.object({
                 return parsed <= 9007199254740992n;
             },
             {
-                message:
-                    "Harga pengeluaran tidak boleh lebih dari 9.007.199.254.740.992",
+                message: "Harga pengeluaran tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
     expenseDate: z.any(),

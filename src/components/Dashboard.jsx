@@ -1,20 +1,33 @@
-import {
-    faClipboardCheck,
-    faClipboardList,
-    faHourglassHalf,
-    faHouseUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faClipboardCheck, faClipboardList, faHourglassHalf, faHouseUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, Typography } from "@mui/material";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTransaction } from "../contexts/useTransaction";
 import Chart from "chart.js/auto";
 import background from "../assets/pexels-bri-schneiter-28802-346529.webp";
 import { useAuth } from "../contexts/useAuth";
+import { motion } from "framer-motion";
+import { getCSSVariable } from "../utils/getCSSVariable";
 
 const Dashboard = () => {
     const { user } = useAuth();
     const { transactions } = useTransaction();
+
+    const messages = [
+        "Pantau pesanan pelanggan dengan mudah di sini.",
+        "Cek laporan transaksi dan kelola bisnis dengan lebih efisien.",
+        "Semua pesanan dalam genggaman Anda. Kelola dengan mudah!",
+    ];
+
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentMessageIndex((prevIndex) => (prevIndex === messages.length - 1 ? 0 : prevIndex + 1));
+        }, 4000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
@@ -53,28 +66,15 @@ const Dashboard = () => {
             chartInstance.current = new Chart(ctx, {
                 type: "bar",
                 data: {
-                    labels: [
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "Mei",
-                        "Jun",
-                        "Jul",
-                        "Agu",
-                        "Sep",
-                        "Okt",
-                        "Nov",
-                        "Des",
-                    ],
+                    labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
                     datasets: [
                         {
                             label: "Omzet per Bulan (IDR)",
                             data: monthlyRevenue,
                             // backgroundColor: "rgba(54, 162, 235, 0.2)",
                             // borderColor: "rgba(54, 162, 235, 1)",
-                            backgroundColor: "#441fee",
-                            borderColor: "#441fee",
+                            backgroundColor: getCSSVariable("--brand-1"),
+                            borderColor: getCSSVariable("--brand-1"),
                             borderWidth: 1,
                             borderRadius: 5,
                         },
@@ -104,14 +104,11 @@ const Dashboard = () => {
                                     let label = context.dataset.label || "";
                                     if (label) label += ": ";
                                     if (context.parsed.y !== null) {
-                                        label += new Intl.NumberFormat(
-                                            "id-ID",
-                                            {
-                                                style: "currency",
-                                                currency: "IDR",
-                                                maximumFractionDigits: 0,
-                                            },
-                                        ).format(context.parsed.y);
+                                        label += new Intl.NumberFormat("id-ID", {
+                                            style: "currency",
+                                            currency: "IDR",
+                                            maximumFractionDigits: 0,
+                                        }).format(context.parsed.y);
                                     }
                                     return label;
                                 },
@@ -129,16 +126,10 @@ const Dashboard = () => {
         };
     }, [monthlyRevenue]);
 
-    const transactionData = useMemo(
-        () => (Array.isArray(transactions) ? transactions : []),
-        [transactions],
-    );
+    const transactionData = useMemo(() => (Array.isArray(transactions) ? transactions : []), [transactions]);
 
     const details = useMemo(
-        () =>
-            transactionData.flatMap(
-                (transaction) => transaction.billDetails || [],
-            ),
+        () => transactionData.flatMap((transaction) => transaction.billDetails || []),
         [transactionData],
     );
 
@@ -197,24 +188,15 @@ const Dashboard = () => {
                         }}
                     >
                         <div className="absolute top-[1.5rem] left-[1.5rem]">
-                            <Typography sx={{ fontWeight: 600 }}>
-                                Barang baru
-                            </Typography>
+                            <Typography sx={{ fontWeight: 600 }}>Barang baru</Typography>
                         </div>
                         <div className="absolute bottom-[1.5rem] left-[1.5rem]">
-                            <Typography
-                                variant="h2"
-                                sx={{ fontWeight: "bold" }}
-                            >
+                            <Typography variant="h2" sx={{ fontWeight: "bold" }}>
                                 {newItems >= 100 ? "99+" : newItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
-                            <FontAwesomeIcon
-                                icon={faClipboardList}
-                                size="3x"
-                                color="#6A5ACD"
-                            ></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faClipboardList} size="3x" color="#6A5ACD"></FontAwesomeIcon>
                         </div>
                     </Card>
                     <Card
@@ -231,24 +213,15 @@ const Dashboard = () => {
                         }}
                     >
                         <div className="absolute top-[1.5rem] left-[1.5rem]">
-                            <Typography sx={{ fontWeight: 600 }}>
-                                Barang proses
-                            </Typography>
+                            <Typography sx={{ fontWeight: 600 }}>Barang proses</Typography>
                         </div>
                         <div className="absolute bottom-[1.5rem] left-[1.5rem]">
-                            <Typography
-                                variant="h2"
-                                sx={{ fontWeight: "bold" }}
-                            >
+                            <Typography variant="h2" sx={{ fontWeight: "bold" }}>
                                 {processItems >= 100 ? "99+" : processItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
-                            <FontAwesomeIcon
-                                icon={faHourglassHalf}
-                                size="3x"
-                                color="#f39c12"
-                            ></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faHourglassHalf} size="3x" color="#f39c12"></FontAwesomeIcon>
                         </div>
                     </Card>
                     <Card
@@ -265,24 +238,15 @@ const Dashboard = () => {
                         }}
                     >
                         <div className="absolute top-[1.5rem] left-[1.5rem]">
-                            <Typography sx={{ fontWeight: 600 }}>
-                                Barang selesai
-                            </Typography>
+                            <Typography sx={{ fontWeight: 600 }}>Barang selesai</Typography>
                         </div>
                         <div className="absolute bottom-[1.5rem] left-[1.5rem]">
-                            <Typography
-                                variant="h2"
-                                sx={{ fontWeight: "bold" }}
-                            >
+                            <Typography variant="h2" sx={{ fontWeight: "bold" }}>
                                 {doneItems >= 100 ? "99+" : doneItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
-                            <FontAwesomeIcon
-                                icon={faClipboardCheck}
-                                size="3x"
-                                color="#2ecc71"
-                            ></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faClipboardCheck} size="3x" color="#2ecc71"></FontAwesomeIcon>
                         </div>
                     </Card>
                     <Card
@@ -299,24 +263,15 @@ const Dashboard = () => {
                         }}
                     >
                         <div className="absolute top-[1.5rem] left-[1.5rem]">
-                            <Typography sx={{ fontWeight: 600 }}>
-                                Barang diambil
-                            </Typography>
+                            <Typography sx={{ fontWeight: 600 }}>Barang diambil</Typography>
                         </div>
                         <div className="absolute bottom-[1.5rem] left-[1.5rem]">
-                            <Typography
-                                variant="h2"
-                                sx={{ fontWeight: "bold" }}
-                            >
+                            <Typography variant="h2" sx={{ fontWeight: "bold" }}>
                                 {takenItems >= 100 ? "99+" : takenItems}
                             </Typography>
                         </div>
                         <div className="absolute top-1/2 right-[1.5rem] flex h-[4rem] w-[4rem] -translate-y-1/2 items-center justify-center">
-                            <FontAwesomeIcon
-                                icon={faHouseUser}
-                                size="3x"
-                                color="#1abc9c"
-                            ></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faHouseUser} size="3x" color="#1abc9c"></FontAwesomeIcon>
                         </div>
                     </Card>
                 </div>
@@ -355,15 +310,26 @@ const Dashboard = () => {
                             >
                                 Selamat datang kembali! {user.name}
                             </Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: 400,
-                                    color: "white",
+
+                            <motion.div
+                                key={currentMessageIndex}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{
+                                    duration: 0.5,
+                                    ease: "easeInOut",
                                 }}
                             >
-                                Semua pesanan dalam genggaman Anda. Kelola
-                                dengan mudah!
-                            </Typography>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 400,
+                                        color: "white",
+                                    }}
+                                >
+                                    {messages[currentMessageIndex]}
+                                </Typography>
+                            </motion.div>
                         </div>
                     </Card>
                     <Card
@@ -380,9 +346,7 @@ const Dashboard = () => {
                         }}
                     >
                         <div className="absolute top-[1.5rem] left-[1.5rem]">
-                            <Typography sx={{ fontSize: 18, fontWeight: 600 }}>
-                                Omzet kotor tahun ini
-                            </Typography>
+                            <Typography sx={{ fontSize: 18, fontWeight: 600 }}>Omzet kotor tahun ini</Typography>
                         </div>
                         <div
                             style={{

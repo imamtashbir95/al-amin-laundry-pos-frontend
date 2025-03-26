@@ -12,9 +12,7 @@ import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import DataTableDetailsTransaction from "../components/DataTableDetailsTransaction";
 
 const TransactionModal = lazy(() => import("../modals/TransactionModal"));
-const DeleteConfirmationModal = lazy(
-    () => import("../modals/DeleteConfirmationModal"),
-);
+const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
 
 const TransactionDetailsPage = () => {
     const { deleteTransaction } = useTransaction();
@@ -38,16 +36,13 @@ const TransactionDetailsPage = () => {
         };
     }, [modalState.show, confirmationModalState.show]);
 
-    const handleOpenModal = (transaction = null) =>
-        setModalState({ show: true, transaction });
-    const handleCloseModal = () =>
-        setModalState({ show: false, transaction: null });
+    const handleOpenModal = (transaction = null) => setModalState({ show: true, transaction });
+    const handleCloseModal = () => setModalState({ show: false, transaction: null });
 
     const handleOpenConfirmationModal = (transactionId = null) =>
         setConfirmationModalState({ show: true, transactionId });
 
-    const handleCloseConfirmationModal = () =>
-        setConfirmationModalState({ show: false, transactionId: null });
+    const handleCloseConfirmationModal = () => setConfirmationModalState({ show: false, transactionId: null });
 
     const handleDeleteConfirm = () => {
         deleteTransaction(confirmationModalState.transactionId);
@@ -70,15 +65,9 @@ const TransactionDetailsPage = () => {
                 <AnimatePresence>
                     {modalState.show && (
                         <>
-                            <div
-                                className="fixed inset-0 z-10 bg-black opacity-50"
-                                onClick={handleCloseModal}
-                            ></div>
+                            <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={handleCloseModal}></div>
                             <ModalAnimationWrapper>
-                                <TransactionModal
-                                    onClose={handleCloseModal}
-                                    transaction={modalState.transaction}
-                                />
+                                <TransactionModal onClose={handleCloseModal} transaction={modalState.transaction} />
                             </ModalAnimationWrapper>
                         </>
                     )}

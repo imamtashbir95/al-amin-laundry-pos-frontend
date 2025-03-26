@@ -1,18 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
 import dayjs from "dayjs";
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Chip,
-    Pagination,
-    Typography,
-} from "@mui/material";
+import { Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from "@mui/material";
 import { useTransaction } from "../contexts/useTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartArrowDown, faMagic } from "@fortawesome/free-solid-svg-icons";
-import { getCSSVariable } from "../utils/getCSSVariable";
 
 // - Jika createdAt === nowDate
 const DataTableReportIn = () => {
@@ -23,9 +14,7 @@ const DataTableReportIn = () => {
 
     // Flatten transactions and apply sorting
     const flattenedBillDetails = useMemo(() => {
-        const transactions = Array.isArray(transactionsIn)
-            ? transactionsIn
-            : [];
+        const transactions = Array.isArray(transactionsIn) ? transactionsIn : [];
         let details = transactions.flatMap((transaction) =>
             transaction.billDetails.map((detail) => ({
                 ...detail,
@@ -48,16 +37,8 @@ const DataTableReportIn = () => {
                 if (aPriority < bPriority) return 1;
 
                 // Urutan prioritas 3: Status pembayaran
-                if (
-                    a.paymentStatus === "sudah-dibayar" &&
-                    b.paymentStatus !== "sudah-dibayar"
-                )
-                    return -1;
-                if (
-                    b.paymentStatus === "sudah-dibayar" &&
-                    a.paymentStatus !== "sudah-dibayar"
-                )
-                    return 1;
+                if (a.paymentStatus === "sudah-dibayar" && b.paymentStatus !== "sudah-dibayar") return -1;
+                if (b.paymentStatus === "sudah-dibayar" && a.paymentStatus !== "sudah-dibayar") return 1;
 
                 // Urutan prioritas 4: Jumlah barang (ascending)
                 return a.qty - b.qty;
@@ -69,9 +50,7 @@ const DataTableReportIn = () => {
 
     const getPackagePriority = (productName) => {
         const lowerName = productName.toLowerCase();
-        return lowerName.includes("express") || lowerName.includes("1 hari")
-            ? 1
-            : 0;
+        return lowerName.includes("express") || lowerName.includes("1 hari") ? 1 : 0;
     };
 
     // Reset page ketika sorting berubah
@@ -85,11 +64,7 @@ const DataTableReportIn = () => {
     );
 
     const paginatedBillDetails = useMemo(
-        () =>
-            flattenedBillDetails.slice(
-                (page - 1) * itemsPerPage,
-                page * itemsPerPage,
-            ),
+        () => flattenedBillDetails.slice((page - 1) * itemsPerPage, page * itemsPerPage),
         [flattenedBillDetails, page, itemsPerPage],
     );
 
@@ -112,10 +87,7 @@ const DataTableReportIn = () => {
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent className="flex flex-row gap-[1rem]">
                                     <div className="flex h-[2.25rem] w-[2.25rem] items-center justify-center">
-                                        <FontAwesomeIcon
-                                            icon={faCartArrowDown}
-                                            size="xl"
-                                        />
+                                        <FontAwesomeIcon icon={faCartArrowDown} size="xl" />
                                     </div>
                                     <Typography variant="h5" gutterBottom>
                                         Daftar Transaksi Masuk
@@ -125,9 +97,7 @@ const DataTableReportIn = () => {
                                     <Button
                                         variant="outlined"
                                         size="small"
-                                        onClick={() =>
-                                            setSortByAI((prev) => !prev)
-                                        }
+                                        onClick={() => setSortByAI((prev) => !prev)}
                                     >
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon icon={faMagic} />
@@ -149,11 +119,7 @@ const DataTableReportIn = () => {
                                 ].map((title) => (
                                     <div className="w-[12.5%]" key={title}>
                                         <CardContent>
-                                            <Typography
-                                                variant="body1"
-                                                gutterBottom
-                                                fontWeight={500}
-                                            >
+                                            <Typography variant="body1" gutterBottom fontWeight={500}>
                                                 {title}
                                             </Typography>
                                         </CardContent>
@@ -163,23 +129,15 @@ const DataTableReportIn = () => {
                         </div>
                         {paginatedBillDetails.length > 0 ? (
                             paginatedBillDetails.map((detail) => (
-                                <div
-                                    key={detail.id}
-                                    className="flex px-[0.83rem]"
-                                >
+                                <div key={detail.id} className="flex px-[0.83rem]">
                                     {/* No. Nota */}
                                     <div className="flex w-[12.5%] items-center justify-center">
-                                        <Chip
-                                            label={detail.invoiceId.toUpperCase()}
-                                            size="small"
-                                        />
+                                        <Chip label={detail.invoiceId.toUpperCase()} size="small" />
                                     </div>
                                     {/* Nama Pelanggan */}
                                     <div className="flex w-[12.5%] items-center">
                                         <CardContent>
-                                            <Typography variant="body2">
-                                                {detail.customer.name}
-                                            </Typography>
+                                            <Typography variant="body2">{detail.customer.name}</Typography>
                                         </CardContent>
                                     </div>
                                     {/* Paket Laundry */}
@@ -213,14 +171,11 @@ const DataTableReportIn = () => {
                                     <div className="flex w-[12.5%] items-center">
                                         <CardContent>
                                             <Typography variant="body2">
-                                                {new Intl.NumberFormat(
-                                                    "id-ID",
-                                                    {
-                                                        style: "currency",
-                                                        currency: "IDR",
-                                                        minimumFractionDigits: 0,
-                                                    },
-                                                ).format(detail.price)}
+                                                {new Intl.NumberFormat("id-ID", {
+                                                    style: "currency",
+                                                    currency: "IDR",
+                                                    minimumFractionDigits: 0,
+                                                }).format(detail.price)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -228,29 +183,20 @@ const DataTableReportIn = () => {
                                     <div className="flex w-[12.5%] items-center">
                                         <CardContent>
                                             <Typography variant="body2">
-                                                {dayjs(
-                                                    new Date(detail.finishDate),
-                                                ).format("DD-MM-YYYY")}
+                                                {dayjs(new Date(detail.finishDate)).format("DD-MM-YYYY")}
                                             </Typography>
                                         </CardContent>
                                     </div>
                                     {/* Dibayar */}
                                     <div className="flex w-[12.5%] items-center justify-center">
                                         <Chip
-                                            label={detail.paymentStatus
-                                                .toUpperCase()
-                                                .replace("-", " ")}
+                                            label={detail.paymentStatus.toUpperCase().replace("-", " ")}
                                             size="small"
                                             style={{
                                                 backgroundColor:
-                                                    detail.paymentStatus ===
-                                                    "belum-dibayar"
-                                                        ? getCSSVariable(
-                                                              "--theme-color-1",
-                                                          )
-                                                        : getCSSVariable(
-                                                              "--theme-color-2",
-                                                          ),
+                                                    detail.paymentStatus === "belum-dibayar"
+                                                        ? "var(--theme-color-1)"
+                                                        : "var(--theme-color-2)",
                                                 color: "white",
                                             }}
                                         />
@@ -258,29 +204,17 @@ const DataTableReportIn = () => {
                                     {/* Status */}
                                     <div className="flex w-[12.5%] items-center justify-center">
                                         <Chip
-                                            label={detail.status
-                                                .toUpperCase()
-                                                .replace("-", " ")}
+                                            label={detail.status.toUpperCase().replace("-", " ")}
                                             size="small"
                                             style={{
                                                 backgroundColor:
                                                     detail.status === "baru"
-                                                        ? getCSSVariable(
-                                                              "--theme-color-3",
-                                                          )
-                                                        : detail.status ===
-                                                            "proses"
-                                                          ? getCSSVariable(
-                                                                "--theme-color-4",
-                                                            )
-                                                          : detail.status ===
-                                                              "selesai"
-                                                            ? getCSSVariable(
-                                                                  "--theme-color-5",
-                                                              )
-                                                            : getCSSVariable(
-                                                                  "--theme-color-6",
-                                                              ),
+                                                        ? "var(--theme-color-3)"
+                                                        : detail.status === "proses"
+                                                          ? "var(--theme-color-4)"
+                                                          : detail.status === "selesai"
+                                                            ? "var(--theme-color-5)"
+                                                            : "var(--theme-color-6)",
                                                 color: "white",
                                             }}
                                         />
@@ -288,20 +222,13 @@ const DataTableReportIn = () => {
                                 </div>
                             ))
                         ) : (
-                            <Typography className="p-4 text-center">
-                                Belum ada transaksi masuk.
-                            </Typography>
+                            <Typography className="p-4 text-center">Belum ada transaksi masuk.</Typography>
                         )}
                     </Card>
                 </div>
             </section>
             {flattenedBillDetails.length > itemsPerPage && (
-                <Pagination
-                    count={pageCount}
-                    page={page}
-                    onChange={handlePageChange}
-                    color="hanPurple"
-                />
+                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
             )}
         </>
     );

@@ -2,13 +2,7 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Button,
-    Card,
-    CardContent,
-    InputLabel,
-    TextField,
-} from "@mui/material";
+import { Button, Card, CardContent, InputLabel, TextField } from "@mui/material";
 import { signUpSchema } from "../zod/signUpSchema";
 import { useUser } from "../contexts/useUser";
 
@@ -71,27 +65,20 @@ const UserModal = ({ onClose, user }) => {
                     }}
                 >
                     <CardContent>
-                        <form
-                            onSubmit={form.handleSubmit(handleUserSubmit)}
-                            className="flex flex-col gap-4"
-                        >
+                        <form onSubmit={form.handleSubmit(handleUserSubmit)} className="flex flex-col gap-4">
                             <Controller
                                 name="name"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-user">
-                                                Nama Karyawan
-                                            </InputLabel>
+                                            <InputLabel id="text-user">Nama Karyawan</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Nama Karyawan"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -103,17 +90,13 @@ const UserModal = ({ onClose, user }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-email">
-                                                E-mail
-                                            </InputLabel>
+                                            <InputLabel id="text-email">E-mail</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="E-mail"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -125,17 +108,13 @@ const UserModal = ({ onClose, user }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-username">
-                                                Username
-                                            </InputLabel>
+                                            <InputLabel id="text-username">Username</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Username"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
@@ -147,36 +126,24 @@ const UserModal = ({ onClose, user }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-password">
-                                                Kata Sandi
-                                            </InputLabel>
+                                            <InputLabel id="text-password">Kata Sandi</InputLabel>
                                             <TextField
                                                 {...field}
                                                 size="small"
                                                 placeholder="Kata Sandi"
                                                 type="password"
                                                 error={fieldState.invalid}
-                                                helperText={
-                                                    fieldState.error?.message
-                                                }
+                                                helperText={fieldState.error?.message}
                                             />
                                         </>
                                     );
                                 }}
                             ></Controller>
                             <div className="flex justify-end gap-4">
-                                <Button
-                                    variant="contained"
-                                    className="w-[6.25rem]"
-                                    type="submit"
-                                >
+                                <Button variant="contained" className="w-[6.25rem]" type="submit">
                                     Simpan
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    className="w-[6.25rem]"
-                                    onClick={onClose}
-                                >
+                                <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
                                     Tutup
                                 </Button>
                             </div>

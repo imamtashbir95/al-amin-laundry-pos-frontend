@@ -1,14 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    Box,
-    Divider,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemButton,
-    ListItemText,
-} from "@mui/material";
+import { Box, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import {
     faBox,
     faChartSimple,
@@ -34,9 +26,7 @@ const Sidebar = () => {
         ];
 
         if (user?.role === "admin") {
-            const dashboardIndex = items.findIndex(
-                (item) => item.path === "/dashboard",
-            );
+            const dashboardIndex = items.findIndex((item) => item.path === "/dashboard");
             if (dashboardIndex !== -1) {
                 items.splice(
                     dashboardIndex + 1,
@@ -54,8 +44,8 @@ const Sidebar = () => {
         return items;
     }, [user?.role]);
 
-    const activeColor = "#441fee";
-    const defaultColor = "#4d4d4d";
+    const activeColor = "var(--brand-1)";
+    const defaultColor = "var(--text-secondary)";
 
     return (
         <>
@@ -76,8 +66,7 @@ const Sidebar = () => {
                     >
                         <List>
                             {navItems.map(({ path, label, icon }) => {
-                                const isActive =
-                                    location.pathname.startsWith(path);
+                                const isActive = location.pathname.startsWith(path);
                                 return (
                                     <ListItem disablePadding key={path}>
                                         {isActive && (
@@ -88,7 +77,7 @@ const Sidebar = () => {
                                                     stiffness: 200,
                                                     damping: 20,
                                                 }}
-                                                className="absolute top-1/2 left-0 h-[100%] w-[0.25rem] -translate-y-1/2 bg-[#441fee]"
+                                                className="absolute top-1/2 left-0 h-[100%] w-[0.25rem] -translate-y-1/2 bg-[var(--brand-1)]"
                                             ></motion.div>
                                         )}
                                         <ListItemButton
@@ -107,20 +96,14 @@ const Sidebar = () => {
                                                 >
                                                     <FontAwesomeIcon
                                                         icon={icon}
-                                                        color={
-                                                            isActive
-                                                                ? activeColor
-                                                                : defaultColor
-                                                        }
+                                                        color={isActive ? activeColor : defaultColor}
                                                     />
                                                 </ListItemAvatar>
                                             </div>
                                             <ListItemText
                                                 primary={label}
                                                 sx={{
-                                                    color: isActive
-                                                        ? activeColor
-                                                        : defaultColor,
+                                                    color: isActive ? activeColor : defaultColor,
                                                 }}
                                             />
                                         </ListItemButton>

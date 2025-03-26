@@ -23,11 +23,38 @@ const theme = createTheme({
         fontSize: 14,
         body1: {
             fontSize: "0.875rem",
-            fontWeight: 500,
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
+        },
+        h6: {
+            fontSize: "1.25rem",
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
         },
         h5: {
             fontSize: "1.5rem",
-            fontWeight: 500,
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
+        },
+        h4: {
+            fontSize: "2.125rem",
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
+        },
+        h3: {
+            fontSize: "3rem",
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
+        },
+        h2: {
+            fontSize: "4rem",
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
+        },
+        h1: {
+            fontSize: "6rem",
+            fontWeight: getCSSVariable("--font-weight-medium"),
+            lineHeight: getCSSVariable("--line-height"),
         },
     },
     palette: {

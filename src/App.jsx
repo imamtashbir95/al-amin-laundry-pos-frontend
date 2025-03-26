@@ -15,9 +15,7 @@ const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const CustomersPage = lazy(() => import("./pages/CustomersPage"));
 const TransactionsPage = lazy(() => import("./pages/TransactionsPage"));
-const TransactionDetailsPage = lazy(
-    () => import("./pages/TransactionDetailsPage"),
-);
+const TransactionDetailsPage = lazy(() => import("./pages/TransactionDetailsPage"));
 const SkeletonPage = lazy(() => import("./pages/SkeletonPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const UsersPage = lazy(() => import("./pages/UsersPage"));

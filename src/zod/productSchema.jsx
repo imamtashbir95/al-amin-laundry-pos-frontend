@@ -1,10 +1,7 @@
 import { z } from "zod";
 
 export const productSchema = z.object({
-    name: z
-        .string()
-        .min(1, "Nama produk harus diisi")
-        .max(100, "Nama produk maksimal 100 karakter"),
+    name: z.string().min(1, "Nama produk harus diisi").max(100, "Nama produk maksimal 100 karakter"),
     price: z
         .string()
         .min(1, "Harga produk harus diisi")
@@ -31,12 +28,8 @@ export const productSchema = z.object({
                 return parsed <= 9007199254740992n;
             },
             {
-                message:
-                    "Harga produk tidak boleh lebih dari 9.007.199.254.740.992",
+                message: "Harga produk tidak boleh lebih dari 9.007.199.254.740.992",
             },
         ),
-    type: z
-        .string()
-        .min(1, "Satuan produk harus diisi")
-        .max(100, "Satuan produk maksimal 100 karakter"),
+    type: z.string().min(1, "Satuan produk harus diisi").max(100, "Satuan produk maksimal 100 karakter"),
 });
