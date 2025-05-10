@@ -1,7 +1,9 @@
-import { Button, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
 
 const NotFoundPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -21,18 +23,18 @@ const NotFoundPage = () => {
                     </div>
                 </div>
                 <div className="absolute top-1/2 left-1/2 flex h-[8.33rem] w-[75rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-[2rem]">
-                    <Typography sx={{ fontSize: "2.5rem", fontWeight: "bold" }}>Halaman Tidak Ditemukan</Typography>
+                    <Typography sx={{ fontSize: "2.5rem", fontWeight: "bold" }}>{t("notFoundPage.title")}</Typography>
                     <Typography sx={{ fontSize: "1.5rem", color: "#4d4d4d" }}>
-                        Maaf, kami tidak dapat menemukan halaman tersebut.
+                        {t("notFoundPage.description")}
                     </Typography>
                 </div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[250%]">
                     <Button
-                        variant="contained"
-                        sx={{ height: "3.125rem", width: "13.125rem" }}
                         onClick={() => navigate(`/dashboard`)}
+                        sx={{ width: "13.125rem", height: "3.125rem" }}
+                        variant="contained"
                     >
-                        Kembali
+                        {t("notFoundPage.button")}
                     </Button>
                 </div>
             </div>

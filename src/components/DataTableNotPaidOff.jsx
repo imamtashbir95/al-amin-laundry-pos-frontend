@@ -1,13 +1,19 @@
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
-import { useTransaction } from "../contexts/useTransaction";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 import { faUserClock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Card, CardContent, Chip, Pagination, Typography } from "@mui/material";
+import { statuses } from "../data/statuses";
+import { formatCurrency } from "../utils/formatCurrency";
+import { paymentStatuses } from "../data/paymentStatuses";
+import TruncatedTooltipText from "./TruncatedTooltipText";
+import { useTransaction } from "../contexts/useTransaction";
 
-// Cari Belum Dibayar (Terkait "Pilih Tanggal" tidak Transaksi Masuk)
-// - Jika finishDate <= nowDate && paymentStatus === "belum-dibayar"
+// Search Not Paid Off (Related to "Pick Date" not Report In)
+// - If finishDate <= nowDate && paymentStatus === "not-paid"
 const DataTableNotPaidOff = () => {
+    const { t } = useTranslation();
     const { transactionsNotPaidOff } = useTransaction();
 
     const [page, setPage] = useState(1);
@@ -37,8 +43,8 @@ const DataTableNotPaidOff = () => {
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
-                            backgroundColor: "#ffffff",
                             padding: "0.625rem",
+                            backgroundColor: "#ffffff",
                             borderRadius: "1.375rem",
                         }}
                     >
@@ -48,26 +54,26 @@ const DataTableNotPaidOff = () => {
                                     <div className="flex h-[2.25rem] w-[2.25rem] items-center justify-center">
                                         <FontAwesomeIcon icon={faUserClock} size="xl" />
                                     </div>
-                                    <Typography variant="h5" gutterBottom>
-                                        Daftar Transaksi Belum Dibayar
+                                    <Typography gutterBottom variant="h5">
+                                        {t("dataTableNotPaidOff.title")}
                                     </Typography>
                                 </CardContent>
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
                                 {[
-                                    "Kode Transaksi",
-                                    "Nama Pelanggan",
-                                    "Paket Laundry",
-                                    "Qty.",
-                                    "Total Bayar",
-                                    "Tanggal Selesai",
-                                    "Dibayar",
-                                    "Status",
+                                    "invoiceNumber",
+                                    "customerName",
+                                    "laundryPackage",
+                                    "quantity",
+                                    "totalCharge",
+                                    "finishDate",
+                                    "paymentStatus",
+                                    "status",
                                 ].map((title) => (
                                     <div className="w-[12.5%]" key={title}>
                                         <CardContent>
-                                            <Typography variant="body1" gutterBottom fontWeight={500}>
-                                                {title}
+                                            <Typography fontWeight={500} gutterBottom variant="body1">
+                                                {t(`dataTableNotPaidOff.${title}`)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -82,96 +88,103 @@ const DataTableNotPaidOff = () => {
                                             <Chip label={detail.invoiceId.toUpperCase()} size="small" />
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{transaction.customer.name}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={transaction.customer.name} />
                                             </CardContent>
                                         </div>
                                         <div className="relative flex w-[12.5%] items-center">
                                             <CardContent>
                                                 <div className="flex items-center">
+                                                    <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] animate-ping rounded-full bg-[var(--brand-2)] opacity-75"></div>
                                                     <div className="absolute mr-[0.5rem] h-[0.75rem] w-[0.75rem] rounded-full bg-[var(--brand-2)]"></div>
-                                                    <div className="absolute left-[2.25rem]">
-                                                        <Typography
-                                                            variant="body2"
+                                                    <div className="absolute left-[2.25rem] w-[calc(100%-2.25rem)] truncate">
+                                                        <TruncatedTooltipText
+                                                            text={detail.product.name}
                                                             sx={{
                                                                 fontSize: "0.85rem",
                                                                 color: "gray",
                                                             }}
-                                                        >
-                                                            {detail.product.name}
-                                                        </Typography>
+                                                        />
                                                     </div>
                                                 </div>
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {`${detail.qty} ${detail.product.type}`}
-                                                </Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={`${detail.qty} ${detail.product.type}`} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {new Intl.NumberFormat("id-ID", {
-                                                        style: "currency",
-                                                        currency: "IDR",
-                                                        minimumFractionDigits: 0,
-                                                    }).format(detail.price)}
-                                                </Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={formatCurrency(detail.price)} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">
-                                                    {dayjs(new Date(detail.finishDate)).format("DD-MM-YYYY")}
-                                                </Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText
+                                                    text={dayjs(new Date(detail.finishDate)).format("DD-MM-YYYY")}
+                                                />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.paymentStatus.toUpperCase().replace("-", " ")}
-                                                size="small"
-                                                style={{
-                                                    backgroundColor:
-                                                        detail.paymentStatus === "belum-dibayar"
-                                                            ? "var(--theme-color-1)"
-                                                            : "var(--theme-color-2)",
-                                                    color: "white",
-                                                }}
-                                            />
+                                            {(() => {
+                                                const paymentStatus = paymentStatuses.find(
+                                                    (item) => item.value === detail.paymentStatus,
+                                                );
+                                                const translatedLabel = paymentStatus
+                                                    ? t(paymentStatus.label)
+                                                    : detail.paymentStatus.toUpperCase().replace("-", " ");
+                                                return (
+                                                    <Chip
+                                                        label={translatedLabel.toUpperCase()}
+                                                        size="small"
+                                                        style={{
+                                                            backgroundColor:
+                                                                detail.paymentStatus === "not-paid"
+                                                                    ? "var(--theme-color-1)"
+                                                                    : "var(--theme-color-2)",
+                                                            color: "white",
+                                                        }}
+                                                    />
+                                                );
+                                            })()}
                                         </div>
                                         <div className="flex w-[12.5%] items-center justify-center">
-                                            <Chip
-                                                label={detail.status.toUpperCase().replace("-", " ")}
-                                                size="small"
-                                                style={{
-                                                    backgroundColor:
-                                                        detail.status === "baru"
-                                                            ? "var(--theme-color-3)"
-                                                            : detail.status === "proses"
-                                                              ? "var(--theme-color-4)"
-                                                              : detail.status === "selesai"
-                                                                ? "var(--theme-color-5)"
-                                                                : "var(--theme-color-6)",
-                                                    color: "white",
-                                                }}
-                                            />
+                                            {(() => {
+                                                const status = statuses.find((item) => item.value === detail.status);
+                                                const translatedLabel = status
+                                                    ? t(status.label)
+                                                    : detail.status.toUpperCase().replace("-", " ");
+                                                return (
+                                                    <Chip
+                                                        label={translatedLabel.toUpperCase()}
+                                                        size="small"
+                                                        style={{
+                                                            backgroundColor:
+                                                                detail.status === "new"
+                                                                    ? "var(--theme-color-3)"
+                                                                    : detail.status === "process"
+                                                                      ? "var(--theme-color-4)"
+                                                                      : detail.status === "done"
+                                                                        ? "var(--theme-color-5)"
+                                                                        : "var(--theme-color-6)",
+                                                            color: "white",
+                                                        }}
+                                                    />
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                 )),
                             )
                         ) : (
-                            <Typography className="p-4 text-center">
-                                Transaksi sudah dibayar semua pada batas tanggal ini.
-                            </Typography>
+                            <Typography className="p-4 text-center">{t("dataTableNotPaidOff.blank")}</Typography>
                         )}
                     </Card>
                 </div>
             </section>
             {transactionData.length > itemsPerPage && (
-                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
+                <Pagination color="hanPurple" count={pageCount} onChange={handlePageChange} page={page} />
             )}
         </>
     );

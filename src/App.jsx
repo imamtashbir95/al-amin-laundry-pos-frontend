@@ -1,26 +1,28 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "sonner";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import { ProtectedRoute } from "./pages/ProtectedRoute";
-import { lazy, Suspense } from "react";
-import { ProductProvider } from "./contexts/ProductContext";
-import { CustomerProvider } from "./contexts/CustomerContext";
-import { UserProvider } from "./contexts/UserContext";
 import ScrollToTop from "./components/ScrollToTop";
-import { TransactionProvider } from "./contexts/TransactionContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { UserProvider } from "./contexts/UserContext";
+import { ProtectedRoute } from "./pages/ProtectedRoute";
+import { ProductProvider } from "./contexts/ProductContext";
 import { ExpenseProvider } from "./contexts/ExpenseContext";
+import { CustomerProvider } from "./contexts/CustomerContext";
+import { SettingsProvider } from "./contexts/SettingsContext";
+import { TransactionProvider } from "./contexts/TransactionContext";
 
-const SignInPage = lazy(() => import("./pages/SignInPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const SkeletonPage = lazy(() => import("./pages/SkeletonPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const SignInPage = lazy(() => import("./pages/SignInPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const UsersPage = lazy(() => import("./pages/UsersPage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const CustomersPage = lazy(() => import("./pages/CustomersPage"));
 const TransactionsPage = lazy(() => import("./pages/TransactionsPage"));
 const TransactionDetailsPage = lazy(() => import("./pages/TransactionDetailsPage"));
-const SkeletonPage = lazy(() => import("./pages/SkeletonPage"));
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
-const UsersPage = lazy(() => import("./pages/UsersPage"));
 const ReportPage = lazy(() => import("./pages/ReportPage"));
-const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 
 const App = () => {
     return (
@@ -126,6 +128,18 @@ const App = () => {
                                     </ProtectedRoute>
                                 </ExpenseProvider>
                             </TransactionProvider>
+                        }
+                    />
+                    <Route
+                        path="/settings"
+                        element={
+                            <SettingsProvider>
+                                <ProtectedRoute>
+                                    <Suspense fallback={<SkeletonPage />}>
+                                        <SettingsPage />
+                                    </Suspense>
+                                </ProtectedRoute>
+                            </SettingsProvider>
                         }
                     />
                 </Routes>

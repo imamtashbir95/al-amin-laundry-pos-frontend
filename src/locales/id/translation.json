@@ -1,0 +1,596 @@
+{
+    "entities": {
+        "customer": "pelanggan",
+        "product": "produk",
+        "expense": "pengeluaran",
+        "transaction": "transaksi",
+        "user": "karyawan"
+    },
+    "genders": {
+        "male": "Laki-laki",
+        "female": "Perempuan"
+    },
+    "languages": {
+        "en": "Inggris",
+        "id": "Indonesia"
+    },
+    "messages":{
+        "1": "Pantau pesanan pelanggan dengan mudah di sini.",
+        "2": "Cek laporan transaksi dan kelola bisnis dengan lebih efisien.",
+        "3": "Semua pesanan dalam genggaman Anda. Kelola dengan mudah!"
+    },
+    "paymentStatuses": {
+        "notPaid": "Belum Dibayar",
+        "paid": "Sudah Dibayar"
+    },
+    "statuses": {
+        "new": "Baru",
+        "process": "Proses",
+        "done": "Selesai",
+        "taken": "Diambil"
+    },
+    "signUpForm": {
+        "nameLabel": "Nama",
+        "namePlaceholder": "Nama",
+        "emailLabel": "E-mail",
+        "emailPlaceholder": "E-mail",
+        "usernameLabel": "Username",
+        "usernamePlaceholder": "Username",
+        "genderLabel": "Jenis Kelamin",
+        "genderEmptyItem": "Pilih Jenis Kelamin",
+        "languageLabel": "Bahasa",
+        "languageEmptyItem": "Pilih Bahasa",
+        "phoneNumberLabel": "No. Telepon",
+        "phoneNumberPlaceholder": "No. Telepon",
+        "passwordLabel": "Kata Sandi",
+        "passwordPlaceholder": "Kata Sandi",
+        "passwordConfirmationLabel": "Konfirmasi Kata Sandi",
+        "passwordConfirmationPlaceholder": "Konfirmasi Kata Sandi",
+        "signUpButton": "Daftarkan Saya",
+        "switch": "Sudah punya akun?",
+        "switchLink": "Masuk!"
+    },
+    "signInForm": {
+        "usernameLabel": "Username",
+        "usernamePlaceholder": "Username",
+        "passwordLabel": "Kata Sandi",
+        "passwordPlaceholder": "Kata Sandi",
+        "signInButton": "Masuk",
+        "switch": "Belum punya akun?",
+        "switchLink": "Daftar!",
+        "timeoutError": "Anda butuh waktu terlalu lama untuk masuk. Silakan coba lagi sekarang."
+    },
+    "notFoundPage": {
+        "title": "Halaman Tidak Ditemukan",
+        "description": "Maaf, kami tidak dapat menemukan halaman tersebut.",
+        "button": "Kembali"
+    },
+    "months": {
+        "1": "Jan",
+        "2": "Feb",
+        "3": "Mar",
+        "4": "Apr",
+        "5": "Mei",
+        "6": "Jun",
+        "7": "Jul",
+        "8": "Agu",
+        "9": "Sep",
+        "10": "Okt",
+        "11": "Nov",
+        "12": "Des"
+    },
+    "validation": {
+        "name": {
+            "min": "Nama minimal 3 karakter",
+            "max": "Nama maksimal 100 karakter",
+            "product": {
+                "min": "Nama produk minimal 3 karakter",
+                "max": "Nama produk maksimal 100 karakter"
+            },
+            "customer": {
+                "required": "Nama pelanggan harus diisi",
+                "max": "Nama pelanggan maksimal 100 karakter"
+            },
+            "expense": {
+                "required": "Nama pengeluaran harus diisi",
+                "max": "Nama pengeluaran maksimal 100 karakter"
+            }
+        },
+        "email": {
+            "invalid": "Format e-mail tidak valid",
+            "min": "E-mail minimal 5 karakter",
+            "max": "E-mail maksimal 50 karakter"
+        },
+        "username": {
+            "required": "Username harus diisi",
+            "invalid": "Username hanya boleh mengandung huruf, angka, dan tanda garis bawah (_)",
+            "min": "Username minimal 3 karakter",
+            "max": "Username maksimal 25 karakter"
+        },
+        "gender": {
+            "required": "Jenis kelamin harus diisi"
+        },
+        "language": {
+            "required": "Bahasa harus diisi"
+        },
+        "phoneNumber": {
+            "invalid": "Format nomor telepon tidak valid",
+            "min": "Nomor telepon minimal 10 karakter",
+            "max": "Nomor telepon maksimal 15 karakter",
+            "customer": {
+                "invalid": "Format nomor telepon tidak valid",
+                "min": "Nomor telepon minimal 10 karakter",
+                "max": "Nomor telepon maksimal 15 karakter"
+            }
+        },
+        "password": {
+            "required": "Kata sandi harus diisi",
+            "min": "Kata sandi minimal 8 karakter",
+            "max": "Kata sandi maksimal 255 karakter",
+            "requirements": "Kata sandi harus terdiri dari satu huruf kapital, satu angka, dan satu karakter khusus (!@#$%^&*())",
+            "mismatch": "Kata sandi tidak cocok",
+            "sameAsOld": "Kata sandi baru tidak boleh sama dengan kata sandi lama"
+        },
+        "passwordConfirmation": {
+            "required": "Konfirmasi kata sandi harus diisi."
+        },
+        "oldPassword": {
+            "required": "Kata sandi lama harus diisi"
+        },
+        "price": {
+            "expense": {
+                "required": "Harga pengeluaran harus diisi",
+                "positive": "Harga pengeluaran harus berupa angka positif",
+                "minValue": "Harga pengeluaran tidak boleh kurang dari 1.000",
+                "maxValue": "Harga pengeluaran tidak boleh lebih dari 2.147.483.647"
+            },
+            "product": {
+                "required": "Harga produk harus diisi",
+                "positive": "Harga produk harus berupa angka positif",
+                "minValue": "Harga produk tidak boleh kurang dari 1.000",
+                "maxValue": "Harga produk tidak boleh lebih dari 2.147.483.647"
+            }
+        },
+        "type": {
+            "product": {
+                "required": "Satuan produk harus diisi",
+                "max": "Satuan produk maksimal 100 karakter"
+            }
+        },
+        "address": {
+            "customer": {
+                "required": "Alamat harus diisi",
+                "max": "Alamat maksimal 100 karakter"
+            }
+        },
+        "invoiceId": {
+            "required": "No. nota harus diisi",
+            "max": "No. nota maksimal 50 karakter"
+        },
+        "customer": {
+            "required": "Pelanggan harus diisi"
+        },
+        "product": {
+            "required": "Produk harus diisi"
+        },
+        "qty": {
+            "required": "Kuantitas harus diisi",
+            "positive": "Kuantitas harus berupa angka positif",
+            "maxValue": "Kuantitas tidak boleh lebih dari 2.147.483.647"
+        },
+        "paymentStatus": {
+            "required": "Status pembayaran harus diisi"
+        },
+        "status": {
+            "required": "Status harus diisi"
+        },
+        "expenseDate": {
+            "required": "Tanggal pengeluaran harus diisi",
+            "invalid": "Tanggal pengeluaran harus merupakan tanggal ISO 8601 yang valid"
+        },
+        "finishDate": {
+            "required": "Tanggal selesai harus diisi",
+            "invalid": "Tanggal selesai harus merupakan tanggal ISO 8601 yang valid"
+        }
+    },
+    "billPicker": {
+        "netTurnover": "Omzet Bersih",
+        "date": "Tanggal"
+    },
+    "dashboard": {
+        "newItems": "Barang baru",
+        "processItems": "Barang proses",
+        "doneItems": "Barang selesai",
+        "takenItems": "Barang diambil",
+        "welcome": "Selamat datang kembali!",
+        "chart1Title": "Omzet kotor tahun ini",
+        "chart1Label": "Omzet per Bulan (IDR)"
+    },
+    "dataTableCustomers": {
+        "title": "Daftar Pelanggan",
+        "addButton": "Tambah Pelanggan",
+        "customerName": "Nama Pelanggan",
+        "phoneNumber": "No. Telepon",
+        "address": "Alamat",
+        "editOrDelete": "Ubah/Hapus",
+        "editButton": "Ubah",
+        "deleteButton": "Hapus",
+        "blank": "Belum ada pelanggan."
+    },
+    "dataTableDetailsTransaction": {
+        "title": "Transaksi a.n.",
+        "titleAlt": "Pelanggan Tidak Ditemukan",
+        "editButton": "Ubah",
+        "deleteButton": "Hapus",
+        "backButton": "Kembali",
+        "invoiceNumber": "No. Nota",
+        "transactionDate": "Tanggal Transaksi",
+        "finishDate": "Tanggal Selesai",
+        "laundryPackage": "Paket Laundry",
+        "quantity": "Qty.",
+        "totalCharge": "Total Bayar",
+        "paymentStatus": "Dibayar",
+        "status": "Status",
+        "blank": "Tidak ada transaksi untuk pelanggan ini.",
+        "lastUpdatedBy": "Terakhir diperbarui oleh:",
+        "dateAndTime": "Tanggal dan waktu:"
+    },
+    "dataTableExpense": {
+        "title": "Daftar Pengeluaran",
+        "addButton": "Tambah Pengeluaran",
+        "name": "Nama",
+        "price": "Harga",
+        "expenseDate": "Tanggal Pengeluaran",
+        "editOrDelete": "Ubah/Hapus",
+        "editButton": "Ubah",
+        "deleteButton": "Hapus",
+        "blank": "Belum ada pengeluaran."
+    },
+    "dataTableNotPaidOff": {
+        "title": "Daftar Transaksi Belum Dibayar",
+        "invoiceNumber": "Invoice Number",
+        "customerName": "Customer Name",
+        "laundryPackage": "Laundry Package",
+        "quantity": "Qty.",
+        "totalCharge": "Total Charge",
+        "finishDate": "Finish Date",
+        "paymentStatus": "Paid",
+        "status": "Status",
+        "blank": "Transaksi sudah dibayar semua pada batas tanggal ini."
+    },
+    "dataTableNotTakenYet": {
+        "title": "Daftar Barang Belum Diambil",
+        "invoiceNumber": "No. Nota",
+        "customerName": "Nama Pelanggan",
+        "laundryPackage": "Paket Laundry",
+        "quantity": "Qty.",
+        "totalCharge": "Total Bayar",
+        "finishDate": "Tanggal Selesai",
+        "paymentStatus": "Dibayar",
+        "status": "Status",
+        "blank": "Barang sudah diambil semua pada batas tanggal ini."
+    },
+    "dataTableProducts": {
+        "title": "Daftar Produk",
+        "addButton": "Tambah Produk",
+        "productName": "Nama Produk",
+        "productPricePerUnit": "Harga Produk Per Unit",
+        "unit": "Unit",
+        "editOrDelete": "Ubah/Hapus",
+        "editButton": "Ubah",
+        "deleteButton": "Hapus",
+        "blank": "Belum ada produk."
+    },
+    "dataTableReportIn": {
+        "title": "Daftar Transaksi Masuk",
+        "sortWithAiButton": "Urutkan dengan AI",
+        "invoiceNumber": "No. Nota",
+        "customerName": "Nama Pelanggan",
+        "laundryPackage": "Paket Laundry",
+        "quantity": "Qty.",
+        "totalCharge": "Total Bayar",
+        "finishDate": "Tanggal Selesai",
+        "paymentStatus": "Dibayar",
+        "status": "Status",
+        "blank": "Belum ada transaksi masuk."
+    },
+    "dataTableReportOut": {
+        "title": "Daftar Transaksi Keluar",
+        "invoiceNumber": "No. Nota",
+        "customerName": "Nama Pelanggan",
+        "laundryPackage": "Paket Laundry",
+        "quantity": "Qty.",
+        "totalCharge": "Total Bayar",
+        "transactionDate": "Tanggal Transaksi",
+        "paymentStatus": "Dibayar",
+        "status": "Status",
+        "blank": "Belum ada transaksi keluar."
+    },
+    "dataTableTransactions": {
+        "title": "Daftar Transaksi",
+        "addButton": "Tambah Transaksi",
+        "customerCode": "Kode Pelanggan",
+        "customerName": "Nama Pelanggan",
+        "transactionDetails": "Detail Transaksi",
+        "transaction": "transaksi",
+        "inspectTransactionButton": "Lihat Transaksi",
+        "blank": "Belum ada transaksi."
+    },
+    "dataTableUsers": {
+        "title": "Daftar Karyawan",
+        "addButton": "Tambah Karyawan",
+        "userName": "Nama Karyawan",
+        "email": "E-mail",
+        "username": "Username",
+        "editOrDelete": "Ubah/Hapus",
+        "editButton": "Ubah",
+        "deleteButton": "Hapus",
+        "blank": "Belum ada karyawan."
+    },
+    "pageContentWrapper": {
+        "time1": "Selamat pagi!",
+        "time2": "Selamat siang!",
+        "time3": "Selamat sore!",
+        "time4": "Selamat malam!",
+        "time5": "Selamat malam!"
+    },
+    "searchField": {
+        "label": "Cari",
+        "placeholder": "Cari..."
+    },
+    "settings": {
+        "getCurrentUser": {
+            "error": "Gagal mengambil data pengguna."
+        },
+        "updateCurrentUser": {
+            "ok": "Berhasil memperbarui data pengguna.",
+            "notFound": "Pengguna tidak ditemukan.",
+            "conflict": "Username atau e-mail sudah ada.",
+            "error": "Gagal memperbarui data pengguna."
+        },
+        "updateCurrentUserPassword": {
+            "ok": "Berhasil memperbarui kata sandi pengguna.",
+            "notFound": "Pengguna tidak ditemukan.",
+            "forbidden": "Kata sandi lama salah.",
+            "error": "Gagal memperbarui kata sandi pengguna."
+        },
+        "nameLabel": "Nama",
+        "namePlaceholder": "Nama",
+        "emailLabel": "E-mail",
+        "emailPlaceholder": "E-mail",
+        "usernameLabel": "Username",
+        "usernamePlaceholder": "Username",
+        "genderLabel": "Jenis Kelamin",
+        "genderEmptyItem": "Pilih Jenis Kelamin",
+        "languageLabel": "Bahasa",
+        "languageEmptyItem": "Pilih Bahasa",
+        "phoneNumberLabel": "No. Telepon",
+        "phoneNumberPlaceholder": "No. Telepon",
+        "editButton": "Ubah",
+        "submitButton": "Simpan",
+        "password": "Kata Sandi",
+        "changePasswordButton": "Ubah Kata Sandi"
+    },
+    "navItems": {
+        "dashboard": "Dasbor",
+        "users": "Karyawan",
+        "products": "Produk",
+        "customers": "Pelanggan",
+        "transactions": "Transaksi",
+        "report": "Laporan",
+        "settings": "Pengaturan"
+    },
+    "sortBy": {
+        "label": "Urutkan Berdasarkan",
+        "newest": "Terbaru",
+        "oldest": "Terlama",
+        "nameAsc": "Nama (A–Z)"
+    },
+    "topBar": {
+        "myAccount": "Akun saya",
+        "signOut": "Keluar"
+    },
+    "auth": {
+        "sessionExpired": "Sesi Anda telah berakhir. Silakan masuk kembali.",
+        "invalidSignature": "Token tidak valid. Silakan masuk kembali.",
+        "tokenExpired": "Token telah kedaluwarsa. Silakan masuk kembali.",
+        "invalidToken": "Token tidak valid.",
+        "signIn": {
+            "unauthorized": "Username atau kata sandi salah.",
+            "internalServerError": "Gagal terhubung ke server!"
+        },
+        "signUp": {
+            "created": "Pengguna berhasil didaftarkan!",
+            "unauthorized": "Username atau email sudah ada.",
+            "internalServerError": "Gagal terhubung ke server!"
+        }
+    },
+    "customer": {
+        "fetchCustomers": {
+            "error": "Gagal mengambil data pelanggan."
+        },
+        "addCustomer": {
+            "created": "Berhasil menambah data pelanggan.",
+            "error": "Gagal menambah data pelanggan."
+        },
+        "updateCustomer": {
+            "created": "Berhasil memperbarui data pelanggan.",
+            "notFound": "Pelanggan tidak ditemukan.",
+            "error": "Gagal memperbarui data pelanggan."
+        },
+        "deleteCustomer": {
+            "deleted": "Berhasil menghapus data pelanggan.",
+            "notFound": "Pelanggan tidak ditemukan.",
+            "error": "Gagal menghapus data pelanggan."
+        }
+    },
+    "expense": {
+        "fetchExpenses": {
+            "error": "Gagal mengambil data pengeluaran."
+        },
+        "addExpense": {
+            "created": "Berhasil menambah data pengeluaran.",
+            "error": "Gagal menambah data pengeluaran."
+        },
+        "updateExpense": {
+            "created": "Berhasil memperbarui data pengeluaran.",
+            "notFound": "Pengeluaran tidak ditemukan.",
+            "error": "Gagal memperbarui data pengeluaran."
+        },
+        "deleteExpense": {
+            "deleted": "Berhasil menghapus data pengeluaran.",
+            "notFound": "Pengeluaran tidak ditemukan.",
+            "error": "Gagal menghapus data pengeluaran."
+        }
+    },
+    "product": {
+        "fetchProducts": {
+            "error": "Gagal mengambil data produk."
+        },
+        "addProduct": {
+            "created": "Berhasil menambah data produk.",
+            "error": "Gagal menambah data produk."
+        },
+        "updateProduct": {
+            "created": "Berhasil memperbarui data produk.",
+            "notFound": "Produk tidak ditemukan.",
+            "error": "Gagal memperbarui data produk."
+        },
+        "deleteProduct": {
+            "deleted": "Berhasil menghapus data produk.",
+            "notFound": "Produk tidak ditemukan.",
+            "error": "Gagal menghapus data produk."
+        }
+    },
+    "transaction": {
+        "fetchTransactions": {
+            "error": "Gagal mengambil data transaksi."
+        },
+        "fetchTransactionsIn": {
+            "error": "Gagal mengambil data transaksi masuk."
+        },
+        "fetchTransactionsOut": {
+            "error": "Gagal mengambil data transaksi keluar."
+        },
+        "fetchTransactionsNotPaidOff": {
+            "error": "Gagal mengambil data transaksi belum di bayar."
+        },
+        "fetchTransactionsNotTakenYet": {
+            "error": "Gagal mengambil data barang belum diambil."
+        },
+        "addTransaction": {
+            "created": "Berhasil menambah data transkasi.",
+            "notFound": "Pelanggan atau karyawan tidak ditemukan.",
+            "error": "Gagal menambah data transaksi."
+        },
+        "updateTransaction": {
+            "created": "Berhasil memperbarui data transaksi.",
+            "notFound": "Transaksi tidak ditemukan.",
+            "error": "Gagal memperbarui data transaksi."
+        },
+        "deleteTransaction": {
+            "deleted": "Berhasil menghapus data transaksi.",
+            "notFound": "Transaksi tidak ditemukan.",
+            "error": "Gagal menghapus data transaksi."
+        }
+    },
+    "user": {
+        "fetchUsers": {
+            "error": "Gagal mengambil data karyawan."
+        },
+        "registerUser": {
+            "created": "Berhasil menambah data karyawan.",
+            "conflict": "Username atau e-mail sudah ada.",
+            "error": "Gagal menambah data karyawan."
+        },
+        "updateUser": {
+            "created": "Berhasil memperbarui data karyawan.",
+            "notFound": "Karyawan tidak ditemukan.",
+            "conflict": "Username atau e-mail sudah ada.",
+            "error": "Gagal memperbarui data karyawan."
+        },
+        "deleteUser": {
+            "deleted": "Berhasil menghapus data karyawan.",
+            "notFound": "Karyawan tidak ditemukan.",
+            "error": "Gagal menghapus data karyawan."
+        }
+    },
+    "changePasswordModal": {
+        "oldPasswordLabel": "Kata Sandi Lama",
+        "oldPasswordPlaceholder": "Kata Sandi Lama",
+        "passwordLabel": "Kata Sandi",
+        "passwordPlaceholder": "Kata Sandi",
+        "passwordConfirmationLabel": "Konfirmasi Kata Sandi",
+        "passwordConfirmationPlaceholder": "Konfirmasi Kata Sandi",
+        "submitButton": "Simpan",
+        "closeButton": "Tutup"
+    },
+    "customerModal": {
+        "nameLabel": "Nama Pelanggan",
+        "namePlaceholder": "Nama Pelanggan",
+        "phoneNumberLabel": "No. Telepon",
+        "phoneNumberPlaceholder": "No. Telepon",
+        "addressLabel": "Alamat",
+        "addressPlaceholder": "Alamat",
+        "submitButton": "Simpan",
+        "closeButton": "Tutup"
+    },
+    "deleteConfirmationModal": {
+        "title": "Konfirmasi",
+        "message1": "Apakah Anda yang ingin menghapus",
+        "message2": "ini?",
+        "deleteButton": "Hapus",
+        "cancelButton": "Batal"
+    },
+    "expenseModal": {
+        "nameLabel": "Nama Pengeluaran",
+        "namePlaceholder": "Nama Pengeluaran",
+        "expensePriceLabel": "Harga Pengeluarna",
+        "expensePricePlaceholder": "Harga Pengeluaran",
+        "expenseDateLabel": "Tanggal Pengeluaran",
+        "submitButton": "Simpan",
+        "closeButton": "Tutup"
+    },
+    "productModal": {
+        "nameLabel": "Nama Produk",
+        "namePlaceholder": "Nama Produk",
+        "productPricePerUnitLabel": "Harga Produk Per Unit",
+        "productPricePerUnitPlaceholder": "Harga Produk Per Unit",
+        "unitLabel": "Unit",
+        "unitPlaceholder": "Unit",
+        "submitButton": "Simpan",
+        "closeButton": "Tutup"
+    },
+    "transactionModal": {
+        "invoiceNumberLabel": "No. Nota",
+        "invoiceNumberPlaceholder": "No. Nota",
+        "customerLabel": "Pelanggan",
+        "customerEmptyItem": "Pilih Pelanggan",
+        "laundryPackageLabel": "Paket Laundry",
+        "laundryPackageEmptyItem": "Pilih Paket Laundry",
+        "finishDateLabel": "Tanggal Selesai",
+        "paymentStatusLabel": "Dibayar",
+        "paymentStatusEmptyItem": "Pilih Status Pembayaran",
+        "statusLabel": "Status",
+        "statusEmptyItem": "Status",
+        "quantityLabel": "Qty.",
+        "quantityPlaceholder": "Kuantitas",
+        "totalChargeLabel": "Total Bayar",
+        "submitButton": "Simpan",
+        "closeButton": "Tutup"
+    },
+    "userModal": {
+        "nameLabel": "Nama Karyawan",
+        "namePlaceholder": "Nama Karyawan",
+        "emailLabel": "E-mail",
+        "emailPlaceholder": "E-mail",
+        "usernameLabel": "Username",
+        "usernamePlaceholder": "Username",
+        "passwordLabel": "Kata Sandi",
+        "passwordPlaceholder": "Kata Sandi",
+        "passwordConfirmationLabel": "Konfirmasi Kata Sandi",
+        "passwordConfirmationPlaceholder": "Konfirmasi Kata Sandi",
+        "submitButton": "Simpan",
+        "closeButton": "Tutup"
+    }
+}

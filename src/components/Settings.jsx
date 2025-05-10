@@ -1,25 +1,87 @@
+import { useEffect, useMemo, useState } from "react";
+import dayjs from "dayjs";
+import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
+import { Controller, useForm } from "react-hook-form";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faKey, faPencil } from "@fortawesome/free-solid-svg-icons";
 import {
     Avatar,
     Button,
     Card,
     CardActions,
     CardContent,
+    FormControl,
+    FormHelperText,
     InputLabel,
     MenuItem,
     Select,
     TextField,
     Typography,
 } from "@mui/material";
-import default_profile_pic from "../assets/default-profile-pic.webp";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faPencil } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import i18n from "../i18n";
+import { genders } from "../data/genders";
+import { languages } from "../data/languages";
+import { useSettings } from "../contexts/useSettings";
 import { getCSSVariable } from "../utils/getCSSVariable";
+import { createSettingsSchema } from "../zod/settingsSchema";
+import default_profile_pic from "../assets/default-profile-pic.webp";
+import "dayjs/locale/id";
+import "dayjs/locale/en";
+import TruncatedTooltipText from "./TruncatedTooltipText";
 
-const timezones = ["Asia/Jakarta", "Asia/Bangkok", "Asia/Singapore", "Asia/Tokyo", "America/New_York", "Europe/London"];
+dayjs.extend(relativeTime);
+i18n.language === "en" ? dayjs.locale("en") : dayjs.locale("id");
 
-const Settings = () => {
-    const [timezone, setTimezone] = useState(null);
+const Settings = ({ onChangePassword }) => {
+    const { t } = useTranslation();
+    const settingsSchema = useMemo(() => createSettingsSchema(t), [t]);
+    const form = useForm({
+        defaultValues: {
+            name: "",
+            email: "",
+            username: "",
+            gender: "", // should be optional
+            language: "", // should be optional
+            phoneNumber: "", // should be optional
+        },
+        resolver: zodResolver(settingsSchema),
+    });
+
+    const { currentUser, updateCurrentUser } = useSettings();
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        if (currentUser) {
+            form.reset({
+                name: currentUser?.name || "",
+                email: currentUser?.email || "",
+                username: currentUser?.username || "",
+                gender: currentUser?.gender || "",
+                language: currentUser?.language || "",
+                phoneNumber: currentUser?.phoneNumber || "",
+            });
+        }
+    }, [currentUser, form]);
+
+    // Re-validate all fields when the language changes
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (Object.keys(form.formState.errors).length > 0) {
+                form.trigger();
+            }
+        }, 300); // Debounce 300ms
+
+        return () => clearTimeout(handler);
+    }, [i18n.language]);
+
+    const handleSettings = async () => {
+        setIsEditing(false);
+        const finalData = form.getValues();
+        updateCurrentUser(finalData);
+    };
 
     return (
         <>
@@ -34,36 +96,51 @@ const Settings = () => {
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center bg-linear-to-r from-[var(--brand-1)] to-[var(--brand-2)] p-[2.083rem]"></div>
                         </div>
-                        <div className="flex flex-col gap-[1rem] p-[2.083rem]">
+                        <form
+                            // onSubmit={form.handleSubmit(handleSettings)}
+                            className="flex flex-col gap-[1rem] p-[2.083rem]"
+                        >
                             <div>
                                 <CardContent className="flex gap-[2rem]">
-                                    <div className="flex">
-                                        <a href="/">
-                                            <Avatar
-                                                id="profile"
-                                                alt="profile"
-                                                src={default_profile_pic}
-                                                className=""
-                                                // onClick={handleClick}
-                                                sx={{
-                                                    cursor: "pointer",
-                                                    height: "100px",
-                                                    width: "auto",
-                                                }}
-                                            ></Avatar>
-                                        </a>
+                                    <div className="group relative flex">
+                                        <div className="absolute inset-0 z-5 cursor-pointer rounded-full bg-linear-to-r from-[var(--brand-1)]/80 to-[var(--brand-2)]/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                            <div className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+                                                <FontAwesomeIcon color="var(--background)" icon={faPencil} size="2xl" />
+                                            </div>
+                                        </div>
+                                        <Avatar
+                                            alt="profile"
+                                            id="profile"
+                                            src={default_profile_pic}
+                                            sx={{
+                                                width: "auto",
+                                                height: "100px",
+                                                cursor: "pointer",
+                                            }}
+                                        ></Avatar>
                                     </div>
-                                    <div className="flex flex-col justify-center">
-                                        <Typography variant="h6" gutterBottom>
-                                            Nisrina Sara
-                                        </Typography>
-                                        <Typography gutterBottom>saranisrina123@gmail.com</Typography>
+                                    <div className="flex w-[50%] flex-col justify-center truncate">
+                                        <TruncatedTooltipText text={currentUser?.name} variant="h6" gutterBottom />
+                                        <TruncatedTooltipText text={currentUser?.email} variant="body1" gutterBottom />
                                     </div>
-                                    <CardActions className="absolute right-[calc(2.583rem+2.083rem)] flex h-[6.25rem] w-[6.25rem] items-center justify-center">
-                                        <Button variant="contained" size="small">
+                                    <CardActions className="absolute right-[calc(2.583rem+2.083rem)] flex h-[6.25rem] w-[12rem] items-center justify-center">
+                                        <Button
+                                            className="!absolute right-3"
+                                            disabled={isEditing && !form.formState.isDirty}
+                                            loading={isEditing && form.formState.isSubmitting}
+                                            onClick={() => {
+                                                if (isEditing) {
+                                                    form.handleSubmit(handleSettings)();
+                                                } else {
+                                                    setIsEditing(true);
+                                                }
+                                            }}
+                                            size="small"
+                                            variant="contained"
+                                        >
                                             <div className="flex items-center gap-[0.5rem]">
                                                 <FontAwesomeIcon icon={faPencil} />
-                                                Ubah
+                                                {isEditing ? t("settings.submitButton") : t("settings.editButton")}
                                             </div>
                                         </Button>
                                     </CardActions>
@@ -73,73 +150,175 @@ const Settings = () => {
                                 <CardContent className="flex flex-col gap-4">
                                     <div className="flex gap-4">
                                         <div className="flex w-[50%] flex-col gap-4">
-                                            <InputLabel id="text-name">Nama</InputLabel>
-                                            <TextField disabled placeholder="Nama" value="Nisrina Sara" size="small" />
-                                            <InputLabel id="text-username">Username</InputLabel>
-                                            <TextField
-                                                disabled
-                                                placeholder="Username"
-                                                value="nisrinasara"
-                                                size="small"
-                                            />
-                                            <InputLabel id="select-language-label">Bahasa</InputLabel>
-                                            <Select
-                                                disabled
-                                                displayEmpty
-                                                labelId="select-language-label"
-                                                id="select-language"
-                                                value="indonesia"
-                                                size="small"
-                                            >
-                                                <MenuItem disabled value="">
-                                                    Pilih Bahasa
-                                                </MenuItem>
-                                                <MenuItem value="indonesia">Indonesia</MenuItem>
-                                                <MenuItem value="inggris">Inggris</MenuItem>
-                                            </Select>
+                                            <Controller
+                                                name="name"
+                                                control={form.control}
+                                                render={({ field, fieldState }) => {
+                                                    return (
+                                                        <>
+                                                            <InputLabel id="text-name">
+                                                                {t("settings.nameLabel")}
+                                                            </InputLabel>
+                                                            <TextField
+                                                                {...field}
+                                                                disabled={!isEditing}
+                                                                placeholder={t("settings.namePlaceholder")}
+                                                                size="small"
+                                                                error={fieldState.invalid}
+                                                                helperText={fieldState.error?.message}
+                                                            />
+                                                        </>
+                                                    );
+                                                }}
+                                            ></Controller>
+                                            <Controller
+                                                name="username"
+                                                control={form.control}
+                                                render={({ field, fieldState }) => {
+                                                    return (
+                                                        <>
+                                                            <InputLabel id="text-username">
+                                                                {t("settings.usernameLabel")}
+                                                            </InputLabel>
+                                                            <TextField
+                                                                {...field}
+                                                                disabled={!isEditing}
+                                                                placeholder={t("settings.usernamePlaceholder")}
+                                                                size="small"
+                                                                error={fieldState.invalid}
+                                                                helperText={fieldState.error?.message}
+                                                            />
+                                                        </>
+                                                    );
+                                                }}
+                                            ></Controller>
+                                            <Controller
+                                                name="language"
+                                                control={form.control}
+                                                render={({ field, fieldState }) => {
+                                                    return (
+                                                        <>
+                                                            <InputLabel id="select-language-label">
+                                                                {t("settings.languageLabel")}
+                                                            </InputLabel>
+                                                            <FormControl error={fieldState.invalid}>
+                                                                <Select
+                                                                    {...field}
+                                                                    disabled={!isEditing}
+                                                                    displayEmpty
+                                                                    id="select-language"
+                                                                    labelId="select-language-label"
+                                                                    onChange={(event) => {
+                                                                        field.onChange(event.target.value);
+                                                                        i18n.changeLanguage(event.target.value);
+                                                                    }}
+                                                                    size="small"
+                                                                    value={field.value || ""}
+                                                                >
+                                                                    <MenuItem disabled={!isEditing} value="">
+                                                                        {t("settings.languageEmptyItem")}
+                                                                    </MenuItem>
+                                                                    {languages.map((language, index) => (
+                                                                        <MenuItem value={language.value} key={index}>
+                                                                            {t(language.label)}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </Select>
+                                                                {fieldState.error && (
+                                                                    <FormHelperText>
+                                                                        {fieldState.error.message}
+                                                                    </FormHelperText>
+                                                                )}
+                                                            </FormControl>
+                                                        </>
+                                                    );
+                                                }}
+                                            ></Controller>
                                         </div>
                                         <div className="flex w-[50%] flex-col gap-4">
-                                            <InputLabel id="text-email">E-mail</InputLabel>
-                                            <TextField
-                                                disabled
-                                                size="small"
-                                                placeholder="E-mail"
-                                                value="saranisrina123@gmail.com"
-                                            />
-                                            <InputLabel id="select-gender-label">Jenis Kelamin</InputLabel>
-                                            <Select
-                                                disabled
-                                                displayEmpty
-                                                labelId="select-gender-label"
-                                                id="select-gender"
-                                                value="perempuan"
-                                                size="small"
-                                            >
-                                                <MenuItem disabled value="">
-                                                    Pilih Jenis Kelamin
-                                                </MenuItem>
-                                                <MenuItem value="laki_laki">Laki-laki</MenuItem>
-                                                <MenuItem value="perempuan">Perempuan</MenuItem>
-                                            </Select>
-                                            <InputLabel id="select-timezone-label">Zona Waktu</InputLabel>
-                                            <Select
-                                                disabled
-                                                displayEmpty
-                                                labelId="select-timezone-label"
-                                                id="select-timezone"
-                                                onChange={(e) => setTimezone(e.target.value)}
-                                                value={timezone}
-                                                size="small"
-                                            >
-                                                <MenuItem disabled value="">
-                                                    Pilih Zona Waktu
-                                                </MenuItem>
-                                                {timezones.map((timezone) => (
-                                                    <MenuItem key={timezone} value={timezone}>
-                                                        {timezone}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
+                                            <Controller
+                                                name="email"
+                                                control={form.control}
+                                                render={({ field, fieldState }) => {
+                                                    return (
+                                                        <>
+                                                            <InputLabel id="text-email">
+                                                                {t("settings.emailLabel")}
+                                                            </InputLabel>
+                                                            <TextField
+                                                                {...field}
+                                                                disabled={!isEditing}
+                                                                placeholder={t("settings.emailPlaceholder")}
+                                                                size="small"
+                                                                error={fieldState.invalid}
+                                                                helperText={fieldState.error?.message}
+                                                            />
+                                                        </>
+                                                    );
+                                                }}
+                                            ></Controller>
+                                            <Controller
+                                                name="gender"
+                                                control={form.control}
+                                                render={({ field, fieldState }) => {
+                                                    return (
+                                                        <>
+                                                            <InputLabel id="select-gender-label">
+                                                                {t("settings.genderLabel")}
+                                                            </InputLabel>
+                                                            <FormControl error={fieldState.invalid}>
+                                                                <Select
+                                                                    {...field}
+                                                                    disabled={!isEditing}
+                                                                    displayEmpty
+                                                                    id="select-gender"
+                                                                    labelId="select-gender-label"
+                                                                    onChange={(event) => {
+                                                                        field.onChange(event.target.value);
+                                                                    }}
+                                                                    size="small"
+                                                                    value={field.value || ""}
+                                                                >
+                                                                    <MenuItem disabled={!isEditing} value="">
+                                                                        {t("settings.genderEmptyItem")}
+                                                                    </MenuItem>
+                                                                    {genders.map((gender, index) => (
+                                                                        <MenuItem value={gender.value} key={index}>
+                                                                            {t(gender.label)}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </Select>
+                                                                {fieldState.error && (
+                                                                    <FormHelperText>
+                                                                        {fieldState.error.message}
+                                                                    </FormHelperText>
+                                                                )}
+                                                            </FormControl>
+                                                        </>
+                                                    );
+                                                }}
+                                            ></Controller>
+                                            <Controller
+                                                name="phoneNumber"
+                                                control={form.control}
+                                                render={({ field, fieldState }) => {
+                                                    return (
+                                                        <>
+                                                            <InputLabel id="text-name">
+                                                                {t("settings.phoneNumberLabel")}
+                                                            </InputLabel>
+                                                            <TextField
+                                                                {...field}
+                                                                disabled={!isEditing}
+                                                                placeholder={t("settings.phoneNumberPlaceholder")}
+                                                                size="small"
+                                                                error={fieldState.invalid}
+                                                                helperText={fieldState.error?.message}
+                                                            />
+                                                        </>
+                                                    );
+                                                }}
+                                            ></Controller>
                                         </div>
                                     </div>
                                 </CardContent>
@@ -147,39 +326,47 @@ const Settings = () => {
                             <div>
                                 <CardContent className="flex flex-col gap-4">
                                     <div className="flex flex-col gap-4">
-                                        <Typography variant="h6" gutterBottom>
-                                            Kata Sandi
+                                        <Typography gutterBottom variant="h6">
+                                            {t("settings.password")}
                                         </Typography>
                                         <div className="flex gap-4">
                                             <div className="flex h-[3.75rem] w-[3.75rem] items-center justify-center rounded-full bg-[var(--brand-1)]">
                                                 <FontAwesomeIcon
+                                                    color={getCSSVariable("--background")}
                                                     icon={faKey}
                                                     size="xl"
-                                                    color={getCSSVariable("--background")}
                                                 ></FontAwesomeIcon>
                                             </div>
                                             <div className="flex flex-col justify-center gap-1">
                                                 <Typography variant="h6">•••••••••••••</Typography>
-                                                <Typography gutterBottom>1 bulan yang lalu</Typography>
+                                                <Typography gutterBottom>
+                                                    {dayjs(currentUser?.passwordUpdatedAt)
+                                                        .fromNow()
+                                                        .replace(/^./, (c) => c.toUpperCase())}
+                                                </Typography>
                                             </div>
                                         </div>
                                         <div>
-                                            <Button variant="contained" size="small">
+                                            <Button onClick={onChangePassword} size="small" variant="contained">
                                                 <div className="flex items-center gap-[0.5rem]">
                                                     <FontAwesomeIcon icon={faPencil} />
-                                                    Ubah Kata Sandi
+                                                    {t("settings.changePasswordButton")}
                                                 </div>
                                             </Button>
                                         </div>
                                     </div>
                                 </CardContent>
                             </div>
-                        </div>
+                        </form>
                     </Card>
                 </div>
             </section>
         </>
     );
+};
+
+Settings.propTypes = {
+    onChangePassword: PropTypes.func.isRequired,
 };
 
 export default Settings;

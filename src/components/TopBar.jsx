@@ -1,25 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, Divider, Menu, MenuItem } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sidebar from "./Sidebar";
-import logo_black from "../assets/logo-el.png";
 import { useAuth } from "../contexts/useAuth";
+import logo_black from "../assets/logo.png";
 import default_profile_pic from "../assets/default-profile-pic.webp";
+import { useTranslation } from "react-i18next";
 
 const TopBar = () => {
+    const { t } = useTranslation();
     const { signOut } = useAuth();
     const [anchorEl, setAnchorEl] = useState(null);
     const [showSidebar, setShowSidebar] = useState(false);
     const isMobile = useMediaQuery({ maxWidth: 1024 });
     const open = Boolean(anchorEl);
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleMyAccount = () => {
+        navigate("/settings");
+        handleClose();
     };
 
     const handleSignOut = () => {
@@ -45,14 +54,14 @@ const TopBar = () => {
 
     return (
         <>
-            <header className="fixed top-0 z-10 flex w-full flex-col bg-white">
+            <header className="fixed top-0 z-10 flex w-full max-w-[1920px] flex-col bg-white">
                 <div className="relative flex h-[4.167rem] flex-row items-center justify-end gap-[1rem] px-[2.083rem] shadow-xl">
                     <div className="absolute top-[0.83rem] left-[2.083rem] lg:hidden">
                         <Avatar
-                            id="profile"
                             alt="sidebar_button"
-                            sx={{ bgcolor: "var(--brand-1)", cursor: "pointer" }}
+                            id="profile"
                             onClick={toggleSidebar}
+                            sx={{ backgroundColor: "var(--brand-1)", cursor: "pointer" }}
                         >
                             <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
                         </Avatar>
@@ -63,33 +72,31 @@ const TopBar = () => {
                         </a>
                     </div>
                     <Avatar
-                        id="profile"
                         alt="profile"
-                        src={default_profile_pic}
-                        className=""
+                        id="profile"
                         onClick={handleClick}
+                        src={default_profile_pic}
                         sx={{ cursor: "pointer" }}
                     ></Avatar>
                     <Menu
-                        id="basic-menu"
                         anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            "aria-labelledby": "profile",
-                        }}
                         anchorOrigin={{
                             vertical: "bottom",
                             horizontal: "right",
                         }}
+                        id="basic-menu"
+                        MenuListProps={{
+                            "aria-labelledby": "profile",
+                        }}
+                        onClose={handleClose}
+                        open={open}
                         transformOrigin={{
                             vertical: "top",
                             horizontal: "right",
                         }}
                     >
-                        <MenuItem onClick={handleClose}>Profil</MenuItem>
-                        <MenuItem onClick={handleClose}>Akun saya</MenuItem>
-                        <MenuItem onClick={handleSignOut}>Keluar</MenuItem>
+                        <MenuItem onClick={handleMyAccount}>{t("topBar.myAccount")}</MenuItem>
+                        <MenuItem onClick={handleSignOut}>{t("topBar.signOut")}</MenuItem>
                     </Menu>
                 </div>
                 <Divider flexItem />
@@ -104,10 +111,10 @@ const TopBar = () => {
                     >
                         <div className="absolute top-[0.83rem] left-[2.083rem]">
                             <Avatar
-                                id="profile"
                                 alt="sidebar_button"
-                                sx={{ bgcolor: "var(--brand-1)", cursor: "pointer" }}
+                                id="profile"
                                 onClick={toggleSidebar}
+                                sx={{ backgroundColor: "var(--brand-1)", cursor: "pointer" }}
                             >
                                 <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
                             </Avatar>

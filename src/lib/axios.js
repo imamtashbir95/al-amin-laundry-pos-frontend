@@ -31,18 +31,13 @@ axiosInstance.interceptors.response.use(
 
             try {
                 const refreshToken = localStorage.getItem("refreshToken");
-                const response = await axiosInstance.post(
-                    "/auth/refresh-token",
-                    {
-                        refreshToken,
-                    },
-                );
-                const { token, refreshToken: newRefreshToken } =
-                    response.data.data;
+                const response = await axiosInstance.post("/auth/refresh-token", {
+                    refreshToken,
+                });
+                const { token, refreshToken: newRefreshToken } = response.data.data;
                 localStorage.setItem("token", token);
                 localStorage.setItem("refreshToken", newRefreshToken);
-                axiosInstance.defaults.headers.common["Authorization"] =
-                    `Bearer ${token}`;
+                axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
                 // originalRequest.headers["Authorization"] = `Bearer ${token}`;
                 return axiosInstance(originalRequest);
             } catch (err) {

@@ -1,12 +1,16 @@
 import { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from "@mui/material";
-import { useTransaction } from "../contexts/useTransaction";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
+import { Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from "@mui/material";
+import { useTransaction } from "../contexts/useTransaction";
+import i18next from "i18next";
+import TruncatedTooltipText from "./TruncatedTooltipText";
 
 const DataTableTransactions = ({ onAddTransaction }) => {
+    const { t } = useTranslation();
     const { transactions } = useTransaction();
     const navigate = useNavigate();
 
@@ -51,33 +55,33 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
-                            backgroundColor: "#ffffff",
                             padding: "0.625rem",
+                            backgroundColor: "#ffffff",
                             borderRadius: "1.375rem",
                         }}
                     >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
-                                    <Typography variant="h5" gutterBottom>
-                                        Daftar Transaksi
+                                    <Typography gutterBottom variant="h5">
+                                        {t("dataTableTransactions.title")}
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
-                                    <Button variant="contained" size="small" onClick={onAddTransaction}>
+                                    <Button onClick={() => onAddTransaction(null)} size="small" variant="contained">
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon icon={faFileImport} />
-                                            Tambah Transaksi
+                                            {t("dataTableTransactions.addButton")}
                                         </div>
                                     </Button>
                                 </CardActions>
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
-                                {["Kode Pelanggan", "Nama Pelanggan", "Detail Transaksi"].map((title) => (
+                                {["customerCode", "customerName", "transactionDetails"].map((title) => (
                                     <div className="w-[33.3333%]" key={title}>
                                         <CardContent>
-                                            <Typography variant="body1" gutterBottom fontWeight={500}>
-                                                {title}
+                                            <Typography fontWeight={500} gutterBottom variant="body1">
+                                                {t(`dataTableTransactions.${title}`)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -91,32 +95,34 @@ const DataTableTransactions = ({ onAddTransaction }) => {
                                         <Chip label={item.customer.id.toUpperCase().substring(0, 8)} size="small" />
                                     </div>
                                     <div className="flex w-[33.3333%] items-center">
-                                        <CardContent>
-                                            <Typography variant="body1">{item.customer.name}</Typography>
-                                            <Typography variant="body1" className="text-gray-500">
-                                                {item.transactionCount} transaksi
+                                        <CardContent className="w-full truncate">
+                                            <TruncatedTooltipText text={item.customer.name} variant="body1" />
+                                            <Typography className="text-gray-500" variant="body1">
+                                                {i18next.language === "en"
+                                                    ? `${item.transactionCount} ${t("dataTableTransactions.transaction")}${item.transactionCount > 1 ? "s" : ""}`
+                                                    : `${item.transactionCount} ${t("dataTableTransactions.transaction")}`}
                                             </Typography>
                                         </CardContent>
                                     </div>
                                     <div className="flex w-[33.3333%] items-center justify-center">
                                         <Button
-                                            variant="outlined"
-                                            size="small"
                                             onClick={() => navigate(`/transactions/${item.customer.id}`)}
+                                            size="small"
+                                            variant="outlined"
                                         >
-                                            Lihat Transaksi
+                                            {t("dataTableTransactions.inspectTransactionButton")}
                                         </Button>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <Typography className="p-4 text-center">Belum ada transaksi.</Typography>
+                            <Typography className="p-4 text-center">{t("dataTableTransactions.blank")}</Typography>
                         )}
                     </Card>
                 </div>
             </section>
             {uniqueTransactions.length > itemsPerPage && (
-                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
+                <Pagination color="hanPurple" count={pageCount} onChange={handlePageChange} page={page} />
             )}
         </>
     );

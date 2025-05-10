@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const signInSchema = z.object({
-    username: z.string().min(1, "Username harus diisi"),
-    password: z.string().min(1, "Kata sandi harus diisi"),
+export const createSignInSchema = (t) => z.object({
+    username: z.string().min(1, t("validation.username.required")),
+    password: z.string().min(1, t("validation.password.required")),
 });

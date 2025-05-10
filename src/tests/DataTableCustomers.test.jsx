@@ -1,8 +1,10 @@
+import { I18nextProvider } from "react-i18next";
 import { describe, expect, it, vitest } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import i18n from "../i18n";
 import { axiosInstance } from "../lib/axios";
-import DataTableCustomers from "../components/DataTableCustomers";
 import { CustomerProvider } from "../contexts/CustomerContext";
+import DataTableCustomers from "../components/DataTableCustomers";
 
 vitest.mock("../lib/axios");
 
@@ -27,9 +29,11 @@ const mockDeleteCustomer = vitest.fn();
 describe("DataTableCustomers", () => {
     const renderWithContext = (customers) => {
         return render(
-            <CustomerProvider value={{ customers, deleteCustomer: mockDeleteCustomer }}>
-                <DataTableCustomers onAddCustomer={mockAddCustomer} />
-            </CustomerProvider>,
+            <I18nextProvider i18n={i18n}>
+                <CustomerProvider value={{ customers, deleteCustomer: mockDeleteCustomer }}>
+                    <DataTableCustomers onAddCustomer={mockAddCustomer} />
+                </CustomerProvider>
+            </I18nextProvider>,
         );
     };
 
@@ -40,10 +44,10 @@ describe("DataTableCustomers", () => {
 
         renderWithContext(mockCustomers);
 
-        expect(screen.getByText("Daftar Pelanggan")).toBeInTheDocument();
-        expect(screen.getByText("Nama Pelanggan")).toBeInTheDocument();
-        expect(screen.getByText("No. Telepon")).toBeInTheDocument();
-        expect(screen.getByText("Alamat")).toBeInTheDocument();
+        expect(screen.getByText("Customer List")).toBeInTheDocument();
+        expect(screen.getByText("Customer Name")).toBeInTheDocument();
+        expect(screen.getByText("Phone Number")).toBeInTheDocument();
+        expect(screen.getByText("Address")).toBeInTheDocument();
 
         await waitFor(() => {
             expect(screen.getByText(mockCustomers[0].name)).toBeInTheDocument();
@@ -54,13 +58,13 @@ describe("DataTableCustomers", () => {
     it("should render DataTableCustomers with no data", () => {
         renderWithContext([]);
 
-        expect(screen.getByText(/Belum ada pelanggan./)).toBeInTheDocument();
+        expect(screen.getByText(/There are no customers yet./)).toBeInTheDocument();
     });
 
     it("should click add customer button", () => {
         renderWithContext(mockCustomers);
 
-        const addButton = screen.getByText(/Tambah Pelanggan/);
+        const addButton = screen.getByText(/Add Customer/);
         fireEvent.click(addButton);
 
         expect(mockAddCustomer).toHaveBeenCalledTimes(1);

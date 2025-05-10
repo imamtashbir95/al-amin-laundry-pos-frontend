@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { Button, Card, CardActions, CardContent, Pagination, Typography } from "@mui/material";
 import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
 import { useCustomer } from "../contexts/useCustomer";
+import TruncatedTooltipText from "./TruncatedTooltipText";
 
 const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
+    const { t } = useTranslation();
     const { customers } = useCustomer();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("created-at-asc");
@@ -57,23 +60,23 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
-                            backgroundColor: "#ffffff",
                             padding: "0.625rem",
+                            backgroundColor: "#ffffff",
                             borderRadius: "1.375rem",
                         }}
                     >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
-                                    <Typography variant="h5" gutterBottom>
-                                        Daftar Pelanggan
+                                    <Typography gutterBottom variant="h5">
+                                        {t("dataTableCustomers.title")}
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
-                                    <Button variant="contained" size="small" onClick={onAddCustomer}>
+                                    <Button onClick={onAddCustomer} size="small" variant="contained">
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon icon={faFileImport} />
-                                            Tambah Pelanggan
+                                            {t("dataTableCustomers.addButton")}
                                         </div>
                                     </Button>
                                 </CardActions>
@@ -83,11 +86,11 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                 <SortBy sortBy={sortBy} setSortBy={setSortBy} />
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
-                                {["Nama Pelanggan", "No. Telepon", "Alamat", "Ubah/Hapus"].map((title) => (
+                                {["customerName", "phoneNumber", "address", "editOrDelete"].map((title) => (
                                     <div className="w-[25%]" key={title}>
                                         <CardContent>
-                                            <Typography variant="body1" gutterBottom fontWeight={500}>
-                                                {title}
+                                            <Typography fontWeight={500} gutterBottom variant="body1">
+                                                {t(`dataTableCustomers.${title}`)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -99,47 +102,47 @@ const DataTableCustomers = ({ onAddCustomer, onDeleteCustomer }) => {
                                 paginatedCustomers.map((customer) => (
                                     <div className="flex px-[0.83rem]" key={customer.id}>
                                         <div className="flex w-[25%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{customer.name}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={customer.name} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{customer.phoneNumber}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={customer.phoneNumber} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{customer.address}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={customer.address} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center justify-center gap-[1rem]">
                                             <Button
-                                                variant="contained"
-                                                size="small"
                                                 onClick={() => onAddCustomer(customer)}
+                                                size="small"
+                                                variant="contained"
                                             >
-                                                Ubah
+                                                {t("dataTableCustomers.editButton")}
                                             </Button>
                                             <Button
-                                                variant="outlined"
-                                                size="small"
                                                 onClick={() => onDeleteCustomer(customer.id)}
+                                                size="small"
+                                                variant="outlined"
                                             >
-                                                Hapus
+                                                {t("dataTableCustomers.deleteButton")}
                                             </Button>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <Typography className="p-4 text-center">Belum ada pelanggan.</Typography>
+                                <Typography className="p-4 text-center">{t("dataTableCustomers.blank")}</Typography>
                             )}
                         </div>
                     </Card>
                 </div>
             </section>
             {filteredCustomers.length > itemsPerPage && (
-                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
+                <Pagination color="hanPurple" count={pageCount} onChange={handlePageChange} page={page} />
             )}
         </>
     );

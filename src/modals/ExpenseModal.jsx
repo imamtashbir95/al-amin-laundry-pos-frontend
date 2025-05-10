@@ -1,15 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Button, Card, CardContent, InputLabel, TextField } from "@mui/material";
-import { expenseSchema } from "../zod/expenseSchema";
+import i18n from "../i18n";
 import { useExpense } from "../contexts/useExpense";
+import { createExpenseSchema } from "../zod/expenseSchema";
 
 const ExpenseModal = ({ onClose, expense }) => {
+    const { t } = useTranslation();
+    const expenseSchema = useMemo(() => createExpenseSchema(t), [t]);
     const form = useForm({
         defaultValues: {
             name: "",
@@ -30,6 +34,17 @@ const ExpenseModal = ({ onClose, expense }) => {
             });
         }
     }, [expense, form]);
+
+    // Re-validate all fields when the language changes
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (Object.keys(form.formState.errors).length > 0) {
+                form.trigger();
+            }
+        }, 300); // Debounce 300ms
+
+        return () => clearTimeout(handler);
+    }, [i18n.language]);
 
     const handleExpenseSubmit = () => {
         const finalData = form.getValues();
@@ -54,27 +69,29 @@ const ExpenseModal = ({ onClose, expense }) => {
             <div className="fixed top-1/2 left-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
                 <Card
                     sx={{
-                        backgroundColor: "rgba(255, 255, 255, 0.8)",
                         backdropFilter: "blur(12px)",
+                        overflowY: "scroll",
                         width: "31.25rem",
+                        maxHeight: "calc(100vh - 4rem)",
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
                         "@media (max-width: 36rem)": {
                             width: "calc(100vw - 2rem)",
                         },
                     }}
                 >
                     <CardContent>
-                        <form onSubmit={form.handleSubmit(handleExpenseSubmit)} className="flex flex-col gap-4">
+                        <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(handleExpenseSubmit)}>
                             <Controller
                                 name="name"
                                 control={form.control}
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-expense">Nama Pengeluaran</InputLabel>
+                                            <InputLabel id="text-expense">{t("expenseModal.nameLabel")}</InputLabel>
                                             <TextField
                                                 {...field}
+                                                placeholder={t("expenseModal.namePlaceholder")}
                                                 size="small"
-                                                placeholder="Nama Pengeluaran"
                                                 error={fieldState.invalid}
                                                 helperText={fieldState.error?.message}
                                             />
@@ -88,12 +105,14 @@ const ExpenseModal = ({ onClose, expense }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-price">Harga Pengeluaran</InputLabel>
+                                            <InputLabel id="text-price">
+                                                {t("expenseModal.expensePriceLabel")}
+                                            </InputLabel>
                                             <TextField
                                                 {...field}
-                                                type="number"
+                                                placeholder={t("expenseModal.expensePricePlaceholder")}
                                                 size="small"
-                                                placeholder="Harga Pengeluaran"
+                                                type="number"
                                                 error={fieldState.invalid}
                                                 helperText={fieldState.error?.message}
                                             />
@@ -107,14 +126,15 @@ const ExpenseModal = ({ onClose, expense }) => {
                                 render={({ field, fieldState }) => {
                                     return (
                                         <>
-                                            <InputLabel id="text-expense-date-label">Tanggal Pengeluaran</InputLabel>
-                                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                                            <InputLabel id="text-expense-date-label">
+                                                {t("expenseModal.expenseDateLabel")}
+                                            </InputLabel>
+                                            <LocalizationProvider adapterLocale="en-gb" dateAdapter={AdapterDayjs}>
                                                 <DatePicker
-                                                    value={field.value ? dayjs(field.value) : null}
+                                                    disablePast
                                                     onChange={(newValue) =>
                                                         field.onChange(newValue ? newValue.toISOString() : null)
                                                     }
-                                                    disablePast
                                                     slotProps={{
                                                         textField: {
                                                             size: "small",
@@ -122,6 +142,7 @@ const ExpenseModal = ({ onClose, expense }) => {
                                                             helperText: fieldState.error?.message,
                                                         },
                                                     }}
+                                                    value={field.value ? dayjs(field.value) : null}
                                                 />
                                             </LocalizationProvider>
                                         </>
@@ -129,11 +150,17 @@ const ExpenseModal = ({ onClose, expense }) => {
                                 }}
                             ></Controller>
                             <div className="flex justify-end gap-4">
-                                <Button variant="contained" className="w-[6.25rem]" type="submit">
-                                    Simpan
+                                <Button
+                                    className="w-[6.25rem]"
+                                    disabled={!form.formState.isDirty}
+                                    loading={form.formState.isSubmitting}
+                                    type="submit"
+                                    variant="contained"
+                                >
+                                    {t("expenseModal.submitButton")}
                                 </Button>
-                                <Button variant="outlined" className="w-[6.25rem]" onClick={onClose}>
-                                    Tutup
+                                <Button className="w-[6.25rem]" onClick={onClose} variant="outlined">
+                                    {t("expenseModal.closeButton")}
                                 </Button>
                             </div>
                         </form>

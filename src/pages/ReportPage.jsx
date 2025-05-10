@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
+import { useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
@@ -8,6 +10,7 @@ import FootBar from "../components/FootBar";
 import BillPicker from "../components/BillPicker";
 import ExpenseModal from "../modals/ExpenseModal";
 import { useExpense } from "../contexts/useExpense";
+import { useTransaction } from "../contexts/useTransaction";
 import { ProductProvider } from "../contexts/ProductContext";
 import DataTableExpense from "../components/DataTableExpense";
 import { CustomerProvider } from "../contexts/CustomerContext";
@@ -18,10 +21,9 @@ import DataTableNotPaidOff from "../components/DataTableNotPaidOff";
 import DataTableNotTakenYet from "../components/DataTableNotTakenYet";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
-import { useSearchParams } from "react-router-dom";
-import { useTransaction } from "../contexts/useTransaction";
 
 const ReportPage = () => {
+    const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
     const { fetchTransactionsIn, fetchTransactionsOut, fetchTransactionsNotPaidOff, fetchTransactionsNotTakenYet } =
         useTransaction();
@@ -115,7 +117,7 @@ const ReportPage = () => {
     return (
         <CustomerProvider>
             <ProductProvider>
-                <div className="relative flex flex-col bg-[#fafafa]">
+                <div className="relative flex w-screen max-w-[1920px] flex-col bg-[#fafafa]">
                     <TopBar />
                     {isDesktop && <Sidebar />}
                     <PageContentWrapper>
@@ -158,7 +160,7 @@ const ReportPage = () => {
                                 <DeleteConfirmationModal
                                     onClose={handleCloseConfirmationModal}
                                     onConfirm={handleDeleteConfirm}
-                                    entityName="pengeluaran"
+                                    entityName={t("entities.expense")}
                                 />
                             </ModalAnimationWrapper>
                         </>

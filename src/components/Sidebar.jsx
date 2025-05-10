@@ -1,28 +1,32 @@
-import { useLocation, Link } from "react-router-dom";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useLocation } from "react-router-dom";
+import { motion } from "motion/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import {
     faBox,
     faChartSimple,
+    faGears,
     faHome,
     faReceipt,
     faUsers,
     faUserShield,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../contexts/useAuth";
-import { useMemo } from "react";
-import { motion } from "motion/react";
 
 const Sidebar = () => {
+    const { t } = useTranslation();
     const location = useLocation();
     const { user } = useAuth();
 
     const navItems = useMemo(() => {
         const items = [
-            { path: "/dashboard", label: "Dasbor", icon: faHome },
-            { path: "/customers", label: "Pelanggan", icon: faUsers },
-            { path: "/transactions", label: "Transaksi", icon: faReceipt },
-            { path: "/report", label: "Laporan", icon: faChartSimple },
+            { path: "/dashboard", label: t("navItems.dashboard"), icon: faHome },
+            { path: "/customers", label: t("navItems.customers"), icon: faUsers },
+            { path: "/transactions", label: t("navItems.transactions"), icon: faReceipt },
+            { path: "/report", label: t("navItems.report"), icon: faChartSimple },
+            { path: "/settings", label: t("navItems.settings"), icon: faGears },
         ];
 
         if (user?.role === "admin") {
@@ -33,10 +37,10 @@ const Sidebar = () => {
                     0,
                     {
                         path: "/users",
-                        label: "Karyawan",
+                        label: t("navItems.users"),
                         icon: faUserShield,
                     },
-                    { path: "/products", label: "Produk", icon: faBox },
+                    { path: "/products", label: t("navItems.products"), icon: faBox },
                 );
             }
         }
@@ -50,18 +54,14 @@ const Sidebar = () => {
     return (
         <>
             <nav
-                className="fixed top-[4.167rem] z-5 flex w-[14.5rem] bg-white shadow-xl"
-                style={{
-                    height: "calc(100vh - 4.167rem)",
-                }}
+                className="fixed top-[4.167rem] z-5 flex w-[14.5rem] bg-white shadow-xl h-[calc(100vh-4.167rem)]"
             >
                 <div className="flex w-full flex-col items-center px-[1.042rem] py-[2.5rem]">
                     <Box
                         sx={{
+                            overflowX: "scroll",
                             width: "100%",
                             maxWidth: 360,
-                            bgcolor: "",
-                            overflowX: "scroll",
                         }}
                     >
                         <List>
@@ -71,13 +71,13 @@ const Sidebar = () => {
                                     <ListItem disablePadding key={path}>
                                         {isActive && (
                                             <motion.div
+                                                className="absolute top-1/2 left-0 h-[100%] w-[0.25rem] -translate-y-1/2 bg-[var(--brand-1)]"
                                                 layoutId="activeSidebarIndicator"
                                                 transition={{
                                                     type: "spring",
                                                     stiffness: 200,
                                                     damping: 20,
                                                 }}
-                                                className="absolute top-1/2 left-0 h-[100%] w-[0.25rem] -translate-y-1/2 bg-[var(--brand-1)]"
                                             ></motion.div>
                                         )}
                                         <ListItemButton
@@ -113,7 +113,7 @@ const Sidebar = () => {
                         </List>
                     </Box>
                 </div>
-                <Divider orientation="vertical" flexItem />
+                <Divider flexItem orientation="vertical" />
             </nav>
         </>
     );

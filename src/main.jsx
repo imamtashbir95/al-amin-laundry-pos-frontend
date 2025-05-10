@@ -1,10 +1,11 @@
 // import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.jsx";
-import { createTheme, ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material";
+import App from "./App";
 import { getCSSVariable } from "./utils/getCSSVariable";
+import "./i18n";
+import "./index.css";
 
 const theme = createTheme({
     typography: {
@@ -103,18 +104,26 @@ const theme = createTheme({
                 },
             },
         },
-        MuiListItemButton: {
-            styleOverrides: {
-                root: {
-                    borderRadius: "0.5rem",
-                },
-            },
-        },
         MuiChip: {
             styleOverrides: {
                 root: {
                     backgroundColor: getCSSVariable("--brand-2"),
                     color: getCSSVariable("--background"),
+                },
+            },
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    width: "40px",
+                    height: "40px",
+                },
+            },
+        },
+        MuiListItemButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: "0.5rem",
                 },
             },
         },

@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { Button, Card, CardActions, CardContent, Pagination, Typography } from "@mui/material";
 import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
 import { useUser } from "../contexts/useUser";
+import TruncatedTooltipText from "./TruncatedTooltipText";
 
 const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
+    const { t } = useTranslation();
     const { users } = useUser();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("created-at-asc");
@@ -54,23 +57,23 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
-                            backgroundColor: "#ffffff",
                             padding: "0.625rem",
+                            backgroundColor: "#ffffff",
                             borderRadius: "1.375rem",
                         }}
                     >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
-                                    <Typography variant="h5" gutterBottom>
-                                        Daftar Karyawan
+                                    <Typography gutterBottom variant="h5">
+                                        {t("dataTableUsers.title")}
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
-                                    <Button variant="contained" size="small" onClick={() => onRegisterUser(null)}>
+                                    <Button onClick={() => onRegisterUser(null)} size="small" variant="contained">
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon icon={faFileImport} />
-                                            Tambah Karyawan
+                                            {t("dataTableUsers.addButton")}
                                         </div>
                                     </Button>
                                 </CardActions>
@@ -80,11 +83,11 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                 <SortBy sortBy={sortBy} setSortBy={setSortBy} />
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
-                                {["Nama Karyawan", "E-mail", "Username", "Ubah/Hapus"].map((title) => (
+                                {["userName", "email", "username", "editOrDelete"].map((title) => (
                                     <div className="w-[25%]" key={title}>
                                         <CardContent>
-                                            <Typography variant="body1" gutterBottom fontWeight={500}>
-                                                {title}
+                                            <Typography fontWeight={500} gutterBottom variant="body1">
+                                                {t(`dataTableUsers.${title}`)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -96,47 +99,47 @@ const DataTableUsers = ({ onRegisterUser, onDeleteUser }) => {
                                 paginatedUsers.map((user) => (
                                     <div className="flex px-[0.83rem]" key={user.id}>
                                         <div className="flex w-[25%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{user.name}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={user.name} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{user.email}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={user.email} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center">
-                                            <CardContent>
-                                                <Typography variant="body2">{user.username}</Typography>
+                                            <CardContent className="w-full truncate">
+                                                <TruncatedTooltipText text={user.username} />
                                             </CardContent>
                                         </div>
                                         <div className="flex w-[25%] items-center justify-center gap-[1rem]">
                                             <Button
-                                                variant="contained"
-                                                size="small"
                                                 onClick={() => onRegisterUser(user)}
+                                                size="small"
+                                                variant="contained"
                                             >
-                                                Ubah
+                                                {t("dataTableUsers.editButton")}
                                             </Button>
                                             <Button
-                                                variant="outlined"
-                                                size="small"
                                                 onClick={() => onDeleteUser(user.id)}
+                                                size="small"
+                                                variant="outlined"
                                             >
-                                                Hapus
+                                                {t("dataTableUsers.deleteButton")}
                                             </Button>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <Typography className="p-4 text-center">Belum ada karyawan.</Typography>
+                                <Typography className="p-4 text-center">{t("dataTableUsers.blank")}</Typography>
                             )}
                         </div>
                     </Card>
                 </div>
             </section>
             {filteredUsers.length > itemsPerPage && (
-                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
+                <Pagination color="hanPurple" count={pageCount} onChange={handlePageChange} page={page} />
             )}
         </>
     );

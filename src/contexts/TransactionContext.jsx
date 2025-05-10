@@ -1,11 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../lib/axios";
-
 const TransactionContext = createContext();
 
-export const TransactionProvider = ({ children }) => {
+const TransactionProvider = ({ children }) => {
+    const { t } = useTranslation();
     const [transactions, setTransactions] = useState([]);
     const [transactionsIn, setTransactionsIn] = useState([]);
     const [transactionsOut, setTransactionsOut] = useState([]);
@@ -17,7 +18,7 @@ export const TransactionProvider = ({ children }) => {
             const response = await axiosInstance.get("/bills");
             setTransactions(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data transaksi.");
+            toast.error(t("transaction.fetchTransactions.error"));
         }
     };
 
@@ -28,7 +29,7 @@ export const TransactionProvider = ({ children }) => {
             });
             setTransactionsIn(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data transaksi masuk.");
+            toast.error(t("transaction.fetchTransactionsIn.error"));
         }
     };
 
@@ -39,7 +40,7 @@ export const TransactionProvider = ({ children }) => {
             });
             setTransactionsOut(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data transaksi keluar.");
+            toast.error(t("transaction.fetchTransactionsOut.error"));
         }
     };
 
@@ -50,7 +51,7 @@ export const TransactionProvider = ({ children }) => {
             });
             setTransactionsNotPaidOff(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data transaksi belum dibayar.");
+            toast.error(t("transaction.fetchTransactionsNotPaidOff.error"));
         }
     };
 
@@ -61,7 +62,7 @@ export const TransactionProvider = ({ children }) => {
             });
             setTransactionsNotTakenYet(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data barang belum diambil.");
+            toast.error(t("transaction.fetchTransactionsNotTakenYet.error"));
         }
     };
 
@@ -72,14 +73,14 @@ export const TransactionProvider = ({ children }) => {
     const addTransaction = async (newTransaction) => {
         try {
             await axiosInstance.post("/bills", newTransaction);
-            toast.success("Berhasil menambah data transaksi.");
+            toast.success(t("transaction.addTransaction.created"));
             fetchTransactions();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Pelanggan atau karyawan tidak ditemukan.");
+                toast.error(t("transaction.addTransaction.notFound"));
             } else {
-                toast.error("Gagal menambah data transaksi.");
+                toast.error(t("transaction.addTransaction.error"));
             }
         }
     };
@@ -87,14 +88,14 @@ export const TransactionProvider = ({ children }) => {
     const updateTransaction = async (updatedTransaction) => {
         try {
             await axiosInstance.put("/bills", updatedTransaction);
-            toast.success("Berhasil memperbarui data transaksi.");
+            toast.success(t("transaction.updateTransaction.created"));
             fetchTransactions();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Transaksi tidak ditemukan.");
+                toast.error(t("transaction.updateTransaction.notFound"));
             } else {
-                toast.error("Gagal menambah data transaksi.");
+                toast.error(t("transaction.updateTransaction.error"));
             }
         }
     };
@@ -102,14 +103,14 @@ export const TransactionProvider = ({ children }) => {
     const deleteTransaction = async (id) => {
         try {
             await axiosInstance.delete(`/bills/${id}`);
-            toast.success("Berhasil menghapus data transaksi.");
+            toast.success(t("transaction.deleteTransaction.deleted"));
             fetchTransactions();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Transaksi tidak ditemukan.");
+                toast.error(t("transaction.deleteTransaction.notFound"));
             } else {
-                toast.error("Gagal menghapus data transaksi.");
+                toast.error(t("transaction.deleteTransaction.error"));
             }
         }
     };
@@ -140,4 +141,4 @@ TransactionProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export { TransactionContext };
+export { TransactionContext, TransactionProvider };

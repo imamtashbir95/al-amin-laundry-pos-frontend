@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../lib/axios";
 
 const CustomerContext = createContext();
 
-export const CustomerProvider = ({ children }) => {
+const CustomerProvider = ({ children }) => {
+    const { t } = useTranslation();
     const [customers, setCustomers] = useState([]);
 
     const fetchCustomers = async () => {
@@ -13,7 +15,7 @@ export const CustomerProvider = ({ children }) => {
             const response = await axiosInstance.get("/customers");
             setCustomers(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data pelanggan.");
+            toast.error(t("customer.fetchCustomers.error"));
         }
     };
 
@@ -24,24 +26,24 @@ export const CustomerProvider = ({ children }) => {
     const addCustomer = async (newCustomer) => {
         try {
             await axiosInstance.post("/customers", newCustomer);
-            toast.success("Berhasil menambah data pelanggan.");
+            toast.success(t("customer.addCustomer.created"));
             fetchCustomers();
         } catch {
-            toast.error("Gagal menambah data pelanggan.");
+            toast.error(t("customer.addCustomer.error"));
         }
     };
 
     const updateCustomer = async (updatedCustomer) => {
         try {
             await axiosInstance.put(`/customers`, updatedCustomer);
-            toast.success("Berhasil memperbarui data pelanggan.");
+            toast.success(t("customer.updateCustomer.created"));
             fetchCustomers();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Pelanggan tidak ditemukan.");
+                toast.error(t("customer.updateCustomer.notFound"));
             } else {
-                toast.error("Gagal memperbarui data pelanggan.");
+                toast.error(t("customer.updateCustomer.error"));
             }
         }
     };
@@ -49,14 +51,14 @@ export const CustomerProvider = ({ children }) => {
     const deleteCustomer = async (id) => {
         try {
             await axiosInstance.delete(`/customers/${id}`);
-            toast.success("Berhasil menghapus data pelanggan.");
+            toast.success(t("customer.deleteCustomer.deleted"));
             fetchCustomers();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Pelanggan tidak ditemukan.");
+                toast.error(t("customer.deleteCustomer.notFound"));
             } else {
-                toast.error("Gagal menghapus data pelanggan.");
+                toast.error(t("customer.deleteCustomer.error"));
             }
         }
     };
@@ -72,4 +74,4 @@ CustomerProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export { CustomerContext };
+export { CustomerContext, CustomerProvider };
