@@ -41,7 +41,7 @@ Status: ${data.paymentStatus
 Antar jemput gratiss..
 WA: 085283267928
 --------------------------------------------
-${data.paymentStatus === "belum-dibayar" ? "Silakan selesaikan pembayaran tagihan. " : ""}Kami akan antar langsung bila sudah selesai. Terima kasih
+${data.paymentStatus === "not-paid" ? "Silakan selesaikan pembayaran tagihan. " : ""}Kami akan antar langsung bila sudah selesai. Terima kasih
 Salam
 --------------------------------------------
 `;

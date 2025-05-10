@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
 
 const PageContentWrapper = ({ children }) => {
+    const { t } = useTranslation();
     const [greeting, setGreeting] = useState("");
 
     useEffect(() => {
@@ -10,13 +12,15 @@ const PageContentWrapper = ({ children }) => {
 
         let message;
         if (hour >= 0 && hour < 12) {
-            message = "Selamat pagi!";
+            message = t("pageContentWrapper.time1");
         } else if (hour >= 12 && hour < 15) {
-            message = "Selamat siang!";
+            message = t("pageContentWrapper.time2");
         } else if (hour >= 15 && hour < 18) {
-            message = "Selamat sore!";
+            message = t("pageContentWrapper.time3");
+        } else if (hour >= 18 && hour < 21) {
+            message = t("pageContentWrapper.time4");
         } else {
-            message = "Selamat malam!";
+            message = t("pageContentWrapper.time5");
         }
 
         setGreeting(message);
@@ -26,7 +30,7 @@ const PageContentWrapper = ({ children }) => {
         <main className="mt-[4.167rem] ml-[14.5rem] min-h-screen w-[calc(100%-14.5rem)] p-[2.083rem] max-lg:ml-0 max-lg:w-full">
             <div className="flex flex-col items-center gap-[1rem]">
                 <div className="w-full">
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: "light", m: 1 }}>
+                    <Typography gutterBottom variant="h5" sx={{ fontWeight: "light", m: 1 }}>
                         {greeting}
                     </Typography>
                 </div>

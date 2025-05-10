@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
-import { Button, Card, CardActions, CardContent, Chip, Pagination, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Chip, Pagination, Tooltip, Typography } from "@mui/material";
 import SortBy from "./SortyBy";
 import SearchField from "./SearchField";
 import { useProduct } from "../contexts/useProduct";
+import { formatCurrency } from "../utils/formatCurrency";
+import TruncatedTooltipText from "./TruncatedTooltipText";
 
 const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
+    const { t } = useTranslation();
     const { products } = useProduct();
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("created-at-asc");
@@ -57,23 +61,23 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
-                            backgroundColor: "#ffffff",
                             padding: "0.625rem",
+                            backgroundColor: "#ffffff",
                             borderRadius: "1.375rem",
                         }}
                     >
                         <div className="">
                             <div className="relative flex h-[4.167rem] flex-row items-center p-[2.083rem]">
                                 <CardContent>
-                                    <Typography variant="h5" gutterBottom>
-                                        Daftar Produk
+                                    <Typography gutterBottom variant="h5">
+                                        {t("dataTableProducts.title")}
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
-                                    <Button variant="contained" size="small" onClick={() => onAddProduct(null)}>
+                                    <Button onClick={() => onAddProduct(null)} size="small" variant="contained">
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon icon={faFileImport} />
-                                            Tambah Produk
+                                            {t("dataTableProducts.addButton")}
                                         </div>
                                     </Button>
                                 </CardActions>
@@ -83,11 +87,11 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                                 <SortBy sortBy={sortBy} setSortBy={setSortBy} />
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
-                                {["Nama Produk", "Harga Produk Per Unit", "Unit", "Ubah/Hapus"].map((title) => (
+                                {["productName", "productPricePerUnit", "unit", "editOrDelete"].map((title) => (
                                     <div className="w-[25%]" key={title}>
                                         <CardContent>
-                                            <Typography variant="body1" gutterBottom fontWeight={500}>
-                                                {title}
+                                            <Typography fontWeight={500} gutterBottom variant="body1">
+                                                {t(`dataTableProducts.${title}`)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -98,46 +102,42 @@ const DataTableProducts = ({ onAddProduct, onDeleteProduct }) => {
                             paginatedProducts.map((product) => (
                                 <div className="flex px-[0.83rem]" key={product.id}>
                                     <div className="flex w-[25%] items-center justify-center">
-                                        <Chip label={product.name} size="small" />
+                                        <Tooltip title={product.name}>
+                                            <Chip label={product.name} size="small" />
+                                        </Tooltip>
                                     </div>
                                     <div className="flex w-[25%] items-center">
-                                        <CardContent>
-                                            <Typography variant="body2">
-                                                {new Intl.NumberFormat("id-ID", {
-                                                    style: "currency",
-                                                    currency: "IDR",
-                                                    minimumFractionDigits: 0,
-                                                }).format(product.price)}
-                                            </Typography>
+                                        <CardContent className="w-full truncate">
+                                            <TruncatedTooltipText text={formatCurrency(product.price)} />
                                         </CardContent>
                                     </div>
                                     <div className="flex w-[20%] items-center">
-                                        <CardContent>
-                                            <Typography variant="body2">{product.type}</Typography>
+                                        <CardContent className="w-full truncate">
+                                            <TruncatedTooltipText text={product.type} />
                                         </CardContent>
                                     </div>
                                     <div className="flex w-[25%] items-center justify-center gap-[1rem]">
-                                        <Button variant="contained" size="small" onClick={() => onAddProduct(product)}>
-                                            Ubah
+                                        <Button onClick={() => onAddProduct(product)} variant="contained" size="small">
+                                            {t("dataTableProducts.editButton")}
                                         </Button>
                                         <Button
-                                            variant="outlined"
-                                            size="small"
                                             onClick={() => onDeleteProduct(product.id)}
+                                            size="small"
+                                            variant="outlined"
                                         >
-                                            Hapus
+                                            {t("dataTableProducts.deleteButton")}
                                         </Button>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <Typography className="p-4 text-center">Belum ada produk.</Typography>
+                            <Typography className="p-4 text-center">{t("dataTableProducts.blank")}</Typography>
                         )}
                     </Card>
                 </div>
             </section>
             {filteredProducts.length > itemsPerPage && (
-                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
+                <Pagination color="hanPurple" count={pageCount} onChange={handlePageChange} page={page} />
             )}
         </>
     );

@@ -1,35 +1,40 @@
 import { z } from "zod";
 
-export const expenseSchema = z.object({
-    name: z.string().min(1, "Nama pengeluaran harus diisi").max(100, "Nama pengeluaran maksimal 100 karakter"),
-    price: z
-        .string()
-        .min(1, "Harga pengeluaran harus diisi")
-        .refine(
-            (val) => {
-                const parsed = parseFloat(val);
-                return !Number.isNaN(parsed) && parsed > 0;
-            },
-            { message: "Harga pengeluaran harus berupa angka positif" },
-        )
-        .refine(
-            (val) => {
-                const parsed = parseFloat(val);
-                return parsed >= 1000;
-            },
-            {
-                message: "Harga pengeluaran tidak boleh kurang dari 1.000",
-            },
-        )
-        .refine(
-            (val) => {
-                if (!val || Number.isNaN(Number(val))) return false;
-                const parsed = BigInt(val);
-                return parsed <= 9007199254740992n;
-            },
-            {
-                message: "Harga pengeluaran tidak boleh lebih dari 9.007.199.254.740.992",
-            },
-        ),
-    expenseDate: z.any(),
-});
+export const createExpenseSchema = (t) =>
+    z.object({
+        name: z.string().min(1, t("validation.name.expense.required")).max(100, t("validation.name.expense.max")),
+        price: z
+            .string()
+            .min(1, t("validation.price.expense.required"))
+            .refine(
+                (val) => {
+                    const parsed = parseFloat(val);
+                    return !Number.isNaN(parsed) && parsed > 0;
+                },
+                { message: t("validation.price.expense.positive") },
+            )
+            .refine(
+                (val) => {
+                    const parsed = parseFloat(val);
+                    return parsed >= 1000;
+                },
+                {
+                    message: t("validation.price.expense.minValue"),
+                },
+            )
+            .refine(
+                (val) => {
+                    if (!val || Number.isNaN(Number(val))) return false;
+                    const parsed = parseFloat(val);
+                    return parsed <= 2147483647;
+                },
+                {
+                    message: t("validation.price.expense.maxValue"),
+                },
+            ),
+        expenseDate: z
+            // .string()
+            // .min(1, t("validation.expenseDate.required"))
+            .any()
+            // .regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, t("validation.expenseDate.invalid")),
+    });

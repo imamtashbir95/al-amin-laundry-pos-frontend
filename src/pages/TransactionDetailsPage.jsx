@@ -1,13 +1,14 @@
 import { lazy, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { AnimatePresence } from "motion/react";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import FootBar from "../components/FootBar";
+import { useTransaction } from "../contexts/useTransaction";
 import { ProductProvider } from "../contexts/ProductContext";
 import { CustomerProvider } from "../contexts/CustomerContext";
 import PageContentWrapper from "../components/PageContentWrapper";
-import { useTransaction } from "../contexts/useTransaction";
 import ModalAnimationWrapper from "../components/ModalAnimationWrapper";
 import DataTableDetailsTransaction from "../components/DataTableDetailsTransaction";
 
@@ -15,6 +16,7 @@ const TransactionModal = lazy(() => import("../modals/TransactionModal"));
 const DeleteConfirmationModal = lazy(() => import("../modals/DeleteConfirmationModal"));
 
 const TransactionDetailsPage = () => {
+    const { t } = useTranslation();
     const { deleteTransaction } = useTransaction();
 
     const [modalState, setModalState] = useState({
@@ -51,7 +53,7 @@ const TransactionDetailsPage = () => {
     return (
         <CustomerProvider>
             <ProductProvider>
-                <div className="relative flex flex-col bg-[#fafafa]">
+                <div className="relative flex w-screen max-w-[1920px] flex-col bg-[#fafafa]">
                     <TopBar />
                     {isDesktop && <Sidebar />}
                     <PageContentWrapper>
@@ -83,7 +85,7 @@ const TransactionDetailsPage = () => {
                                 <DeleteConfirmationModal
                                     onClose={handleCloseConfirmationModal}
                                     onConfirm={handleDeleteConfirm}
-                                    entityName="transaksi"
+                                    entityName={t("entities.transaction")}
                                 />
                             </ModalAnimationWrapper>
                         </>

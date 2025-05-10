@@ -1,12 +1,14 @@
 import { createContext, useState } from "react";
+import dayjs from "dayjs";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../lib/axios";
-import dayjs from "dayjs";
 
 const ExpenseContext = createContext();
 
-export const ExpenseProvider = ({ children }) => {
+const ExpenseProvider = ({ children }) => {
+    const { t } = useTranslation();
     const [expenses, setExpenses] = useState([]);
 
     const fetchExpenses = async (date) => {
@@ -16,13 +18,9 @@ export const ExpenseProvider = ({ children }) => {
             });
             setExpenses(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data pengeluaran.");
+            toast.error(t("expense.fetchExpenses.error"));
         }
     };
-
-    // useEffect(() => {
-    //     fetchExpenses(date);
-    // }, [date]);
 
     const addExpense = async (newExpense) => {
         const newDate = dayjs(newExpense.expenseDate);
@@ -30,10 +28,10 @@ export const ExpenseProvider = ({ children }) => {
 
         try {
             await axiosInstance.post("/expenses", newExpense);
-            toast.success("Berhasil menambah data pengeluaran.");
+            toast.success(t("expense.addExpense.created"));
             fetchExpenses(formattedDate);
         } catch {
-            toast.error("Gagal menambah data pengeluaran.");
+            toast.error(t("expense.addExpense.error"));
         }
     };
 
@@ -43,14 +41,14 @@ export const ExpenseProvider = ({ children }) => {
 
         try {
             await axiosInstance.put(`/expenses`, updatedExpense);
-            toast.success("Berhasil memperbarui data pengeluaran.");
+            toast.success(t("expense.updateExpense.created"));
             fetchExpenses(formattedDate);
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Pengeluaran tidak ditemukan.");
+                toast.error(t("expense.updateExpense.notFound"));
             } else {
-                toast.error("Gagal memperbarui data pengeluaran.");
+                toast.error(t("expense.updateExpense.error"));
             }
         }
     };
@@ -58,14 +56,14 @@ export const ExpenseProvider = ({ children }) => {
     const deleteExpense = async (id, date) => {
         try {
             await axiosInstance.delete(`/expenses/${id}`);
-            toast.success("Berhasil menghapus data pengeluaran.");
+            toast.success(t("expense.deleteExpense.deleted"));
             fetchExpenses(date);
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Pengeluaran tidak ditemukan.");
+                toast.error(t("expense.deleteExpense.notFound"));
             } else {
-                toast.error("Gagal menghapus data pengeluaran.");
+                toast.error(t("expense.deleteExpense.error"));
             }
         }
     };
@@ -89,4 +87,4 @@ ExpenseProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export { ExpenseContext };
+export { ExpenseContext, ExpenseProvider };

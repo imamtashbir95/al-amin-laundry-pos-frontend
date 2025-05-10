@@ -1,8 +1,10 @@
+import { I18nextProvider } from "react-i18next";
 import { describe, expect, it, vitest } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import i18n from "../i18n";
 import { axiosInstance } from "../lib/axios";
-import DataTableProducts from "../components/DataTableProducts";
 import { ProductProvider } from "../contexts/ProductContext";
+import DataTableProducts from "../components/DataTableProducts";
 
 vitest.mock("../lib/axios");
 
@@ -27,9 +29,11 @@ const mockDeleteProduct = vitest.fn();
 describe("DataTableProducts", () => {
     const renderWithContext = (products) => {
         return render(
-            <ProductProvider value={{ products, deleteProduct: mockDeleteProduct }}>
-                <DataTableProducts onAddProduct={mockAddProduct} />
-            </ProductProvider>,
+            <I18nextProvider i18n={i18n}>
+                <ProductProvider value={{ products, deleteProduct: mockDeleteProduct }}>
+                    <DataTableProducts onAddProduct={mockAddProduct} />
+                </ProductProvider>
+            </I18nextProvider>,
         );
     };
 
@@ -40,9 +44,9 @@ describe("DataTableProducts", () => {
 
         renderWithContext(mockProducts);
 
-        expect(screen.getByText("Daftar Produk")).toBeInTheDocument();
-        expect(screen.getByText("Nama Produk")).toBeInTheDocument();
-        expect(screen.getByText("Harga Produk Per Unit")).toBeInTheDocument();
+        expect(screen.getByText("Product List")).toBeInTheDocument();
+        expect(screen.getByText("Product Name")).toBeInTheDocument();
+        expect(screen.getByText("Product Price Per Unit")).toBeInTheDocument();
         expect(screen.getByText("Unit")).toBeInTheDocument();
 
         await waitFor(() => {
@@ -54,13 +58,13 @@ describe("DataTableProducts", () => {
     it("should render DataTableProducts with no data", () => {
         renderWithContext([]);
 
-        expect(screen.getByText(/Belum ada produk./)).toBeInTheDocument();
+        expect(screen.getByText(/There are no products yet./)).toBeInTheDocument();
     });
 
     it("should click add product button", () => {
         renderWithContext(mockProducts);
 
-        const addButton = screen.getByText(/Tambah Produk/);
+        const addButton = screen.getByText(/Add Product/);
         fireEvent.click(addButton);
 
         expect(mockAddProduct).toHaveBeenCalledTimes(1);

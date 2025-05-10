@@ -1,0 +1,7 @@
+.div {
+    backdrop-filter: "blur(12px)";
+    overflow-y: "scroll";
+    width: "31.25rem";
+    max-height: "calc(100vh - 4rem)";
+    background-color: "rgba(255; 255; 255; 0.8)";
+}

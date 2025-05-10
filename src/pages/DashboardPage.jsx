@@ -16,7 +16,7 @@ const DashboardPage = () => {
             <TransactionProvider>
                 <CustomerProvider>
                     <ProductProvider>
-                        <div className="relative flex flex-col bg-[#fafafa]">
+                        <div className="relative flex w-screen max-w-[1920px] flex-col bg-[#fafafa]">
                             <TopBar />
                             {isDesktop && <Sidebar />}
                             <PageContentWrapper>

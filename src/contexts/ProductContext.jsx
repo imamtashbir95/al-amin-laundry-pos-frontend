@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../lib/axios";
 
 const ProductContext = createContext();
 
-export const ProductProvider = ({ children }) => {
+const ProductProvider = ({ children }) => {
+    const { t } = useTranslation();
     const [products, setProducts] = useState([]);
 
     const fetchProducts = async () => {
@@ -13,7 +15,7 @@ export const ProductProvider = ({ children }) => {
             const response = await axiosInstance.get("/products");
             setProducts(response.data.data);
         } catch {
-            toast.error("Gagal mengambil data produk.");
+            toast.error(t("product.fetchProducts.error"));
         }
     };
 
@@ -24,24 +26,24 @@ export const ProductProvider = ({ children }) => {
     const addProduct = async (newProduct) => {
         try {
             await axiosInstance.post("/products", newProduct);
-            toast.success("Berhasil menambah data produk.");
+            toast.success(t("product.addProduct.created"));
             fetchProducts();
         } catch {
-            toast.error("Gagal menambah data produk.");
+            toast.error(t("product.addProduct.error"));
         }
     };
 
     const updateProduct = async (updatedProduct) => {
         try {
             await axiosInstance.put(`/products`, updatedProduct);
-            toast.success("Berhasil memperbarui data produk.");
+            toast.success(t("product.updateProduct.created"));
             fetchProducts();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Produk tidak ditemukan.");
+                toast.error(t("product.updateProduct.notFound"));
             } else {
-                toast.error("Gagal memperbarui data produk.");
+                toast.error(t("product.updateProduct.error"));
             }
         }
     };
@@ -49,14 +51,14 @@ export const ProductProvider = ({ children }) => {
     const deleteProduct = async (id) => {
         try {
             await axiosInstance.delete(`/products/${id}`);
-            toast.success("Berhasil menghapus data produk.");
+            toast.success(t("product.deleteProduct.deleted"));
             fetchProducts();
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Produk tidak ditemukan.");
+                toast.error(t("product.deleteProduct.notFound"));
             } else {
-                toast.error("Gagal menghapus data produk.");
+                toast.error(t("product.deleteProduct.error"));
             }
         }
     };
@@ -72,4 +74,4 @@ ProductProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export { ProductContext };
+export { ProductContext, ProductProvider };

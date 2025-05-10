@@ -1,9 +1,11 @@
-import { TextField } from "@mui/material";
-import PropTypes from "prop-types";
 import { useState } from "react";
+import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
+import { TextField } from "@mui/material";
 
 const SearchField = ({ setSearchTerm }) => {
+    const { t } = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
 
     return (
@@ -12,13 +14,13 @@ const SearchField = ({ setSearchTerm }) => {
             animate={{ width: isFocused ? "calc(100% - 18.166rem)" : "12rem" }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
         >
-            Cari
+            {t("searchField.label")}
             <TextField
-                size="small"
-                placeholder="Cari..."
-                onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                placeholder={t("searchField.placeholder")}
+                size="small"
                 sx={{
                     width: "100%",
                     backgroundColor: "white",

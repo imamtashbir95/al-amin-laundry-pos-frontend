@@ -2,17 +2,16 @@ import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../lib/axios";
-// import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
+    const { t } = useTranslation();
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || null);
     const [loading, setLoading] = useState(true);
-    // const location = useLocation();
-    // const navigate = useNavigate();
 
     useEffect(() => {
         if (token) {
@@ -23,7 +22,7 @@ export const AuthProvider = ({ children }) => {
                 // Check if the token has expired
                 if (decoded.exp * 1000 < Date.now()) {
                     setUser(null);
-                    toast.error("Sesi Anda telah berakhir. Silakan login kembali.");
+                    toast.error(t("auth.sessionExpired"));
                     localStorage.removeItem("token");
                     setLoading(false);
                     return;
@@ -36,11 +35,11 @@ export const AuthProvider = ({ children }) => {
                 localStorage.removeItem("token");
 
                 if (error.message.includes("invalid signature")) {
-                    toast.error("Token tidak valid. Silakan login kembali.");
+                    toast.error(t("auth.invalidSignature"));
                 } else if (error.message.includes("expired")) {
-                    toast.error("Token telah kedaluwarsa. Silakan login kembali.");
+                    toast.error(t("auth.tokenExpired"));
                 } else {
-                    toast.error("Token tidak valid.");
+                    toast.error(t("auth.invalidToken"));
                 }
             }
         } else {
@@ -67,9 +66,9 @@ export const AuthProvider = ({ children }) => {
                 return { success: false, timeout: true };
             } else if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Username atau kata sandi salah.");
+                toast.error(t("auth.signIn.unauthorized"));
             } else {
-                toast.error("Gagal terhubung ke server!");
+                toast.error(t("auth.signIn.internalServerError"));
             }
             return { success: false, timeout: false };
         }
@@ -80,16 +79,16 @@ export const AuthProvider = ({ children }) => {
             const response = await axiosInstance.post("/auth/register", signUpData);
 
             if (response.data?.status.code === 201) {
-                toast.success("Pengguna berhasil didaftarkan!");
+                toast.success(t("auth.signUp.created"));
                 return true;
             }
         } catch (error) {
             if (error.response) {
                 // toast.error(error.response.data.error);
-                toast.error("Username atau e-mail sudah ada.");
+                toast.error(t("auth.signUp.unauthorized"));
                 return false;
             } else {
-                toast.error("Gagal terhubung ke server!");
+                toast.error(t("auth.signUp.internalServerError"));
                 return false;
             }
         }
@@ -120,4 +119,4 @@ AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export { AuthContext };
+export { AuthContext, AuthProvider };

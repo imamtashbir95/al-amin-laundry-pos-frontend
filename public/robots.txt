@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin
+Allow: /
+Sitemap: https://al-amin-laundry-pos.vercel.app/sitemap.xml

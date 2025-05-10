@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { Button, Card, CardActions, CardContent, Pagination, Typography } from "@mui/material";
 import { useExpense } from "../contexts/useExpense";
+import { formatCurrency } from "../utils/formatCurrency";
+import TruncatedTooltipText from "./TruncatedTooltipText";
 
 const DataTableExpense = ({ onAddExpense, onDeleteExpense, setTotalExpense }) => {
+    const { t } = useTranslation();
     const { expenses } = useExpense();
 
     const [page, setPage] = useState(1);
@@ -38,8 +42,8 @@ const DataTableExpense = ({ onAddExpense, onDeleteExpense, setTotalExpense }) =>
                 <div className="h-full max-lg:w-[58.33rem]">
                     <Card
                         sx={{
-                            backgroundColor: "#ffffff",
                             padding: "0.625rem",
+                            backgroundColor: "#ffffff",
                             borderRadius: "1.375rem",
                         }}
                     >
@@ -49,25 +53,25 @@ const DataTableExpense = ({ onAddExpense, onDeleteExpense, setTotalExpense }) =>
                                     <div className="flex h-[2.25rem] w-[2.25rem] items-center justify-center">
                                         <FontAwesomeIcon icon={faWallet} size="xl" />
                                     </div>
-                                    <Typography variant="h5" gutterBottom>
-                                        Daftar Pengeluaran
+                                    <Typography gutterBottom variant="h5">
+                                        {t("dataTableExpense.title")}
                                     </Typography>
                                 </CardContent>
                                 <CardActions className="absolute right-[2.083rem]">
-                                    <Button variant="contained" size="small" onClick={() => onAddExpense(null)}>
+                                    <Button onClick={() => onAddExpense(null)} size="small" variant="contained">
                                         <div className="flex items-center gap-[0.5rem]">
                                             <FontAwesomeIcon icon={faFileImport} />
-                                            Tambah Pengeluaran
+                                            {t("dataTableExpense.addButton")}
                                         </div>
                                     </Button>
                                 </CardActions>
                             </div>
                             <div className="flex bg-[#f5f6f8] px-[0.83rem] text-[#637381]">
-                                {["Nama", "Harga", "Tanggal Pengeluaran", "Ubah/Hapus"].map((title) => (
+                                {["name", "price", "expenseDate", "editOrDelete"].map((title) => (
                                     <div className="w-[25%]" key={title}>
                                         <CardContent>
-                                            <Typography variant="body1" gutterBottom fontWeight={500}>
-                                                {title}
+                                            <Typography fontWeight={500} gutterBottom variant="body1">
+                                                {t(`dataTableExpense.${title}`)}
                                             </Typography>
                                         </CardContent>
                                     </div>
@@ -78,50 +82,44 @@ const DataTableExpense = ({ onAddExpense, onDeleteExpense, setTotalExpense }) =>
                             paginatedExpenses.map((expense) => (
                                 <div key={expense.id} className="flex px-[0.83rem]">
                                     <div className="flex w-[25%] items-center">
-                                        <CardContent>
-                                            <Typography variant="body2">{expense.name}</Typography>
+                                        <CardContent className="w-full truncate">
+                                            <TruncatedTooltipText text={expense.name} />
+                                        </CardContent>
+                                    </div>
+                                    <div className="flex w-[25%] items-center">
+                                        <CardContent className="w-full truncate">
+                                            <TruncatedTooltipText text={formatCurrency(expense.price)} />
                                         </CardContent>
                                     </div>
                                     <div className="flex w-[25%] items-center">
                                         <CardContent>
-                                            <Typography variant="body2">
-                                                {new Intl.NumberFormat("id-ID", {
-                                                    style: "currency",
-                                                    currency: "IDR",
-                                                    minimumFractionDigits: 0,
-                                                }).format(expense.price)}
-                                            </Typography>
-                                        </CardContent>
-                                    </div>
-                                    <div className="flex w-[25%] items-center">
-                                        <CardContent>
-                                            <Typography variant="body2">
-                                                {dayjs(new Date(expense.expenseDate)).format("DD-MM-YYYY")}
-                                            </Typography>
+                                            <TruncatedTooltipText
+                                                text={dayjs(new Date(expense.expenseDate)).format("DD-MM-YYYY")}
+                                            />
                                         </CardContent>
                                     </div>
                                     <div className="flex w-[25%] items-center justify-center gap-[1rem]">
-                                        <Button variant="contained" size="small" onClick={() => onAddExpense(expense)}>
-                                            Ubah
+                                        <Button onClick={() => onAddExpense(expense)} size="small" variant="contained">
+                                            {t("dataTableExpense.editButton")}
                                         </Button>
                                         <Button
-                                            variant="outlined"
-                                            size="small"
                                             onClick={() => onDeleteExpense(expense.id)}
+                                            size="small"
+                                            variant="outlined"
                                         >
-                                            Hapus
+                                            {t("dataTableExpense.deleteButton")}
                                         </Button>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <Typography className="p-4 text-center">Belum ada pengeluaran.</Typography>
+                            <Typography className="p-4 text-center">{t("dataTableExpense.blank")}</Typography>
                         )}
                     </Card>
                 </div>
             </section>
             {expenseData.length > itemsPerPage && (
-                <Pagination count={pageCount} page={page} onChange={handlePageChange} color="hanPurple" />
+                <Pagination color="hanPurple" count={pageCount} onChange={handlePageChange} page={page} />
             )}
         </>
     );
